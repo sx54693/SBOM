@@ -1,5 +1,3 @@
-# hello_world.py
 print("Hello, World!")
-print("Welcome to version control!")
-print("This is Version 1.01")
-"# This is a new line" 
+print("Welcome to the main branch!")
+print("Welcome to Version 1.01!")
