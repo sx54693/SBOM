@@ -135,3 +135,5 @@ if parse_button and file1:
         else:
             st.error("❌ Failed to parse SBOM data.")
 
+
+
