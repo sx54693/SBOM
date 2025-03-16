@@ -12,3 +12,5 @@ scikit-learn
 PyYAML
 pygments
 pycryptodome
+fuzzywuzzy
+python-Levenshtein
