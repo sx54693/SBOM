@@ -1,0 +1,14 @@
+streamlit
+pefile
+pandas
+jsonschema
+requests
+datasets
+fastapi
+uvicorn
+numpy
+scipy
+scikit-learn
+PyYAML
+pygments
+pycryptodome
