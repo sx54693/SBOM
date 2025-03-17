@@ -73,44 +73,37 @@ def extract_metadata_from_exe(file_path):
     return vendor, version, compiler
 
 def generate_sbom(file_path):
-    """Generates an SBOM for the given file, extracting metadata and running Syft for analysis."""
+    """Generates SBOM for the given file using Syft, handling Streamlit Cloud limitations."""
+    if not os.path.exists(file_path):
+        print(f"❌ Error: File {file_path} not found.")
+        return None
+
+    # ✅ Check if running on Streamlit Cloud (limited environment)
+    is_streamlit_cloud = os.getenv("STREMLIT_CLOUD")  # Add this env variable in deployment
+    if is_streamlit_cloud:
+        print("⚠️ Running on Streamlit Cloud - Skipping extraction")
+        extracted_path = file_path  # Use the file as is (no extraction)
+    else:
+        extracted_path = extract_exe(file_path) if file_path.endswith(".exe") else file_path
+
+    if not extracted_path:
+        print("❌ Extraction returned None.")
+        return None
+
+    # ✅ Run Syft to generate SBOM
+    output_sbom = f"{file_path}.json"
+    command = ["syft", f"dir:{extracted_path}", "-o", "cyclonedx-json"]
+    
     try:
-        if not os.path.exists(file_path):
-            print(f"❌ Error: File {file_path} not found.")
-            return None
-
-        original_file_path = file_path
-        file_name = os.path.basename(original_file_path)
-        file_hash = calculate_file_hash(original_file_path)
-        digital_signature = get_pe_signature(file_path) if file_path.endswith(".exe") else "Not Available"
-
-        vendor, version, compiler = "Unknown", "Unknown", "Unknown"
-
-        if file_path.endswith(".exe"):
-            vendor, version, compiler = extract_metadata_from_exe(file_path)
-
-            # Extract EXE contents
-            extracted_path = extract_exe(file_path)
-            if not extracted_path:
-                print("❌ Extraction returned None.")
-                return None
-            file_path = extracted_path  # Update path for SBOM analysis
-
-        output_dir = os.path.join(BASE_DIR, "sbom_outputs")
-        os.makedirs(output_dir, exist_ok=True)
-        output_sbom = os.path.join(output_dir, secure_filename(file_name) + ".json")
-
-        # Run Syft to generate SBOM
-        command = ["syft", f"dir:{file_path}", "-o", "cyclonedx-json"]
-        result = subprocess.run(command, capture_output=True, text=True)
-
-        if result.returncode != 0:
-            print(f"❌ Syft Error: {result.stderr}")
-            return None
-
-        # Parse SBOM JSON
-        sbom_json = json.loads(result.stdout)
-
+        result = subprocess.run(command, capture_output=True, text=True, check=True)
+        sbom_data = json.loads(result.stdout)
+        with open(output_sbom, "w", encoding="utf-8") as f:
+            json.dump(sbom_data, f, indent=2)
+        print(f"✅ SBOM generated successfully: {output_sbom}")
+        return output_sbom
+    except Exception as e:
+        print(f"❌ SBOM Generation Failed: {e}")
+        return None
         # ✅ Enrich SBOM with missing metadata
         sbom_json = enrich_sbom(sbom_json)
 
