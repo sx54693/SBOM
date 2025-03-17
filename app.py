@@ -106,6 +106,10 @@ def extract_file_metadata(file_path):
 def check_digital_signature(file_path):
     """Checks if an EXE file is digitally signed using signtool.exe"""
 
+    # Check if running on Windows
+    if platform.system() != "Windows":
+        return "⚠️ Signature Check Not Supported on Non-Windows Platforms"
+
     # ✅ Use Correct signtool.exe Path
     signtool_path = "C:\\Users\\cyria\\signtool.exe"
 
@@ -188,7 +192,7 @@ def display_sbom_data(sbom_data, file_path):
 # ✅ RUN SBOM GENERATION
 if generate_button and file1:
     file1_path = save_uploaded_file(file1)
-    sbom_output = generate_sbom(file1_path)
+    sbom_output = generate_sbom(file1_path)  # Corrected line
 
     if sbom_output:
         with open(sbom_output, "r", encoding="utf-8") as f:

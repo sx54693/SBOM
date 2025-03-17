@@ -79,7 +79,7 @@ def generate_sbom(file_path):
         return None
 
     # ✅ Check if running on Streamlit Cloud (limited environment)
-    is_streamlit_cloud = os.getenv("STREMLIT_CLOUD")  # Add this env variable in deployment
+    is_streamlit_cloud = os.getenv("STREAMLIT_CLOUD")  # Corrected environment variable name
     if is_streamlit_cloud:
         print("⚠️ Running on Streamlit Cloud - Skipping extraction")
         extracted_path = file_path  # Use the file as is (no extraction)
@@ -104,50 +104,22 @@ def generate_sbom(file_path):
     except Exception as e:
         print(f"❌ SBOM Generation Failed: {e}")
         return None
-        # ✅ Enrich SBOM with missing metadata
-        sbom_json = enrich_sbom(sbom_json)
-
-        # Add top-level metadata
-        sbom_json.update({
-            "Software Name": file_name,
-            "Vendor": vendor if vendor else "Unknown Vendor",
-            "Version": version if version else "Unknown Version",
-            "Description": f"SBOM for {file_name}",
-            "File Hash": file_hash,
-            "Format": "CycloneDX",
-            "Digital Signature": digital_signature,
-            "OS Compatibility": platform.system(),
-            "Binary Architecture": platform.machine(),
-            "Compiler": compiler
-        })
-
-        # Save the final enriched SBOM JSON
-        with open(output_sbom, "w", encoding="utf-8") as f:
-            json.dump(sbom_json, f, indent=2)
-
-        print(f"✅ SBOM generated successfully: {output_sbom}")
-        return output_sbom
-
-    except Exception as e:
-        print(f"❌ Exception in generate_sbom: {e}")
-        return None
 
 def calculate_file_hash(file_path):
     """Calculates SHA-256 hash of a file."""
     sha256_hash = hashlib.sha256()
-    
     try:
         with open(file_path, "rb") as f:
             for byte_block in iter(lambda: f.read(4096), b""):
                 sha256_hash.update(byte_block)
         return sha256_hash.hexdigest()
-    
     except FileNotFoundError:
         print(f"❌ Error: File {file_path} not found.")
         return None
     except Exception as e:
         print(f"❌ Exception in calculating hash: {e}")
         return None
+
 def get_pe_signature(file_path):
     """Checks if an EXE file has a digital signature."""
     try:
@@ -161,6 +133,7 @@ def get_pe_signature(file_path):
     except Exception as e:
         print(f"❌ PE Signature Error: {e}")
         return "Not Available"
+
 def detect_compiler(pe):
     """Detects the compiler used based on PE headers."""
     try:
@@ -173,4 +146,7 @@ def detect_compiler(pe):
         }
         return compiler_mapping.get(machine, "Unknown Compiler")
     except AttributeError:
+        return "Unknown Compiler"
+    except Exception as e:
+        print(f"❌ Exception in detecting compiler: {e}")
         return "Unknown Compiler"
