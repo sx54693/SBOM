@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 streamlit
 pefile
 pandas
@@ -14,3 +15,17 @@ pygments
 pycryptodome
 fuzzywuzzy
 python-Levenshtein
+=======
+streamlit==1.32.2
+pandas==2.2.1
+numpy==1.26.4
+pefile==2024.8.26
+GitPython==3.1.42
+requests==2.31.0
+fuzzywuzzy==0.18.0
+python-Levenshtein==0.27.1
+py7zr==0.20.8
+pefile==2024.8.26
+
+
+>>>>>>> 72b1042e9665dae37c6c8ee540d4e8ead30edb15
