@@ -1,0 +1,35 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:9c23e5d5-0ffb-411e-92a0-5a505d4838ad",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2025-03-17T22:47:54-04:00",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "author": "anchore",
+          "name": "syft",
+          "version": "1.20.0"
+        }
+      ]
+    },
+    "component": {
+      "bom-ref": "33f71565753d3cc3",
+      "type": "file",
+      "name": "C:\\Users\\cyria\\extracted_apps\\devcpp"
+    }
+  },
+  "Software Name": "devcpp.exe",
+  "Vendor": "Unknown",
+  "Version": "Unknown",
+  "Description": "SBOM for devcpp.exe",
+  "File Hash": "2ae96f22bdaf684466f91ea4aec184feb166e41c992ea6fa0a937e4d8886eff8",
+  "Format": "CycloneDX",
+  "Digital Signature": "Not Signed",
+  "OS Compatibility": "Windows",
+  "Binary Architecture": "AMD64",
+  "Compiler": "Unknown"
+}

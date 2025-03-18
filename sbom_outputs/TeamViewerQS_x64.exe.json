@@ -1,0 +1,125 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:de1ae74b-9232-496a-942c-344926669317",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2025-03-17T22:45:31-04:00",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "author": "anchore",
+          "name": "syft",
+          "version": "1.20.0"
+        }
+      ]
+    },
+    "component": {
+      "bom-ref": "fb0ee4b34c3dd0b9",
+      "type": "file",
+      "name": "C:\\Users\\cyria\\extracted_apps\\TeamViewerQS_x64"
+    }
+  },
+  "components": [
+    {
+      "bom-ref": "pkg:nuget/7-Zip@9.21?package-id=d8a2e9c1e8351b25",
+      "type": "library",
+      "name": "7-Zip",
+      "version": "9.21",
+      "cpe": "cpe:2.3:a:7-Zip:7-Zip:9.21:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/7-Zip@9.21",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:7-Zip:7_Zip:9.21:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:7_Zip:7-Zip:9.21:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:7_Zip:7_Zip:9.21:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:7:7-Zip:9.21:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:7:7_Zip:9.21:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$PLUGINSDIR\\nsis7z.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/TeamViewer@3.0.0.1?package-id=365d40aac6753cd0",
+      "type": "library",
+      "name": "TeamViewer",
+      "version": "3.0.0.1",
+      "cpe": "cpe:2.3:a:TeamViewer:TeamViewer:3.0.0.1:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/TeamViewer@3.0.0.1",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$PLUGINSDIR\\TvGetVersion.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    }
+  ],
+  "Software Name": "TeamViewerQS_x64.exe",
+  "Vendor": "Unknown",
+  "Version": "Unknown",
+  "Description": "SBOM for TeamViewerQS_x64.exe",
+  "File Hash": "4ec1269edd9d017ddaee33d92237a9e85642d6510415607b36ddca0a9a475d52",
+  "Format": "CycloneDX",
+  "Digital Signature": "Not Signed",
+  "OS Compatibility": "Windows",
+  "Binary Architecture": "AMD64",
+  "Compiler": "Unknown"
+}

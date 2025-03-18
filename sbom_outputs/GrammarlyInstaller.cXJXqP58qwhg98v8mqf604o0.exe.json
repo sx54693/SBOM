@@ -1,0 +1,4686 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:6bbe6682-e725-4d05-8059-0d6059e7192c",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2025-03-17T22:45:48-04:00",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "author": "anchore",
+          "name": "syft",
+          "version": "1.20.0"
+        }
+      ]
+    },
+    "component": {
+      "bom-ref": "d405ec86e5ac0813",
+      "type": "file",
+      "name": "C:\\Users\\cyria\\extracted_apps\\GrammarlyInstaller.cXJXqP58qwhg98v8mqf604o0"
+    }
+  },
+  "components": [
+    {
+      "bom-ref": "pkg:nuget/ApplicationID@1%2C%200%2C%200%2C%200?package-id=005bd487cd1a1d04",
+      "type": "library",
+      "name": "ApplicationID",
+      "version": "1, 0, 0, 0",
+      "cpe": "cpe:2.3:a:ApplicationID:ApplicationID:1\\,_0\\,_0\\,_0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/ApplicationID@1%2C%200%2C%200%2C%200",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$PLUGINSDIR\\ApplicationID.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Dapper@2.1.35.13827?package-id=366a56a299b74092",
+      "type": "library",
+      "name": "Dapper",
+      "version": "2.1.35.13827",
+      "cpe": "cpe:2.3:a:Dapper:Dapper:2.1.35.13827:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Dapper@2.1.35.13827",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Dapper.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/DynamicData%20%28net462%29@7.14.6.44119?package-id=bdaeb5ef78e05bcf",
+      "type": "library",
+      "name": "DynamicData (net462)",
+      "version": "7.14.6.44119",
+      "cpe": "cpe:2.3:a:DynamicData_\\(net462\\):DynamicData_\\(net462\\):7.14.6.44119:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/DynamicData%20%28net462%29@7.14.6.44119",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\DynamicData.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/FParsec@1.1.1.0?package-id=692381c0d987b952",
+      "type": "library",
+      "name": "FParsec",
+      "version": "1.1.1.0",
+      "cpe": "cpe:2.3:a:FParsec:FParsec:1.1.1.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/FParsec@1.1.1.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\FParsec.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/FParsec@1.1.1.0?package-id=3da6536aded879d6",
+      "type": "library",
+      "name": "FParsec",
+      "version": "1.1.1.0",
+      "cpe": "cpe:2.3:a:FParsec:FParsec:1.1.1.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/FParsec@1.1.1.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\FParsecCS.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/FSharp.Core@8.3.124.27106?package-id=dba5efdb8bc1489a",
+      "type": "library",
+      "name": "FSharp.Core",
+      "version": "8.3.124.27106",
+      "cpe": "cpe:2.3:a:FSharp.Core:FSharp.Core:8.3.124.27106:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/FSharp.Core@8.3.124.27106",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\FSharp.Core.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grace@7.2.1.0?package-id=694942dc44c30a02",
+      "type": "library",
+      "name": "Grace",
+      "version": "7.2.1.0",
+      "cpe": "cpe:2.3:a:Grace:Grace:7.2.1.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grace@7.2.1.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grace.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20Web%20UI@0.0.1?package-id=f70323c49279441f",
+      "type": "library",
+      "name": "Grammarly Web UI",
+      "version": "0.0.1",
+      "cpe": "cpe:2.3:a:Grammarly_Web_UI:Grammarly_Web_UI:0.0.1:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20Web%20UI@0.0.1",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.WebUI.exe"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=f723cc9f1c14de71",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Client.WebUI.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=2b0e10d6145fe7a7",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Common.Abstractions.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=6bbfd5ddda7d198c",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Common.Batteries.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=d410baeebedc18dc",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Common.Data.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=30595573fb29226b",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Common.Diagnostics.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=b3a4b91b5959e87a",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Common.Logging.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=f6dc2aaeb7575232",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Common.Parallel.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=a41d471cd4feeb01",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Common.Polyfill.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=dd829b36c9a45d69",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Common.Reactive.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=66a5d28877546ca9",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Common.Security.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=ee91f29d4838b238",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Common.Serialization.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=9c428e7396eb8ea1",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Debugging.DeveloperTools.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=c95557226104f931",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.DesignSystem.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=3bb6b641800e22ae",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Desktop.Attachment.Accessible2.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=4ccd944e070ff63d",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Desktop.Attachment.MsOffice.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=c2937cfea67e9eea",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Desktop.Attachment.UIAutomation.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=3f4ac96768684675",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Desktop.Attachment.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=2c34024b87521076",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Desktop.BusinessMetric.Abstractions.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=5a8d14b8eafc27fa",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Desktop.Core.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=6bae06d7cbbe450a",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Desktop.Dependencies.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=eefe8ed8db989e04",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Desktop.Experimentation.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=44a03b62682b7370",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Desktop.Gnar.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=b97644fe5e069d07",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Desktop.Main.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=eca3eca593336a4f",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Desktop.Services.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=66040fc4c8d1029b",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Desktop.UI.Onboarding.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=1bd281a03b968b34",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Desktop.WebView.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=22d9e18fab00e8ad",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Desktop.exe"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=e26ca33199edb79e",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Domain.Application.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=1f51da47415ac3bc",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Domain.Common.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=aec87dee9d026be2",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Domain.Models.SDUI.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=054a6e852a616d8c",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Domain.Models.Suggestions.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=1cea9b6340ca33c9",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Domain.Models.Transforms.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=a11931c77f690e67",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Domain.QuillDelta.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=d73a606ed3e2ce12",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Domain.SDUI.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=de3011210d409047",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Domain.TextChecking.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=157e4447213aaa65",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Env.Keyboard.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=aad7b9b74bb441c4",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Env.Mouse.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=8879509ccff40f0f",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Env.Storage.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=105641432ccbfc9c",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Env.Utils.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=28818aefc44eaa73",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Env.WinEvents.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=873e94e7a0614a4d",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.LegacyCheetahProtocol.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=6c1ecdfea61a1110",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Services.Auth.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=b1af25cfff0adb05",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Services.Common.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=6ad5a3a169876f15",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Services.ConfigurationApi.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=018f213bab64673c",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Services.CoreApi.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=3e64f205f552e47d",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Services.Felog.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=2b61c6b12f785da8",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Services.GrammarlyBusinessApi.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=2a66502866b8ede5",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Services.Iterable.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=ed4fd86543b6fc6c",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Services.OAuth2.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=ed3cea9309dc43dc",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Services.Premium.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=d16d51f5a0451154",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.UI.Classic.Common.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=6aa28686dda949f1",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.UI.Classic.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=7e2cb2004f408fa1",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.UI.Common.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=c0ac22b25cd7f70c",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.UI.SDUI.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=dbf3038428e7bb69",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Utils.PInvoke.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=0310af59881598cd",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Utils.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482?package-id=a98472ce95686d8f",
+      "type": "library",
+      "name": "Grammarly for Windows",
+      "version": "1.2.101.1482",
+      "cpe": "cpe:2.3:a:Grammarly_for_Windows:Grammarly_for_Windows:1.2.101.1482:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly%20for%20Windows@1.2.101.1482",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\Uninstall.exe"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly.Auth@1.6.322?package-id=223c7a00325af056",
+      "type": "library",
+      "name": "Grammarly.Auth",
+      "version": "1.6.322",
+      "cpe": "cpe:2.3:a:Grammarly.Auth:Grammarly.Auth:1.6.322:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly.Auth@1.6.322",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Auth.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly.Auth@1.6.322.0?package-id=2ff651ae00b8c5fb",
+      "type": "library",
+      "name": "Grammarly.Auth",
+      "version": "1.6.322.0",
+      "cpe": "cpe:2.3:a:Grammarly.Auth:Grammarly.Auth:1.6.322.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly.Auth@1.6.322.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Auth.FSharp.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly.CheetahClient.Protocol@16.2.9.0?package-id=e5c1fcfe4e4b4bd4",
+      "type": "library",
+      "name": "Grammarly.CheetahClient.Protocol",
+      "version": "16.2.9.0",
+      "cpe": "cpe:2.3:a:Grammarly.CheetahClient.Protocol:Grammarly.CheetahClient.Protocol:16.2.9.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly.CheetahClient.Protocol@16.2.9.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.CheetahClient.Protocol.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly.Debugging.LogSearchingDialect.dll@0.0.0.0?package-id=733ca9ad6b833197",
+      "type": "library",
+      "name": "Grammarly.Debugging.LogSearchingDialect.dll",
+      "version": "0.0.0.0",
+      "cpe": "cpe:2.3:a:Grammarly.Debugging.LogSearchingDialect.dll:Grammarly.Debugging.LogSearchingDialect.dll:0.0.0.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly.Debugging.LogSearchingDialect.dll@0.0.0.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Debugging.LogSearchingDialect.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly.ExperimentationSDK@1.0.415.0?package-id=f69b4dce6338a490",
+      "type": "library",
+      "name": "Grammarly.ExperimentationSDK",
+      "version": "1.0.415.0",
+      "cpe": "cpe:2.3:a:Grammarly.ExperimentationSDK:Grammarly.ExperimentationSDK:1.0.415.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly.ExperimentationSDK@1.0.415.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.ExperimentationSDK.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly.Gnar@1.5.287.0?package-id=a2eab10b3a98e339",
+      "type": "library",
+      "name": "Grammarly.Gnar",
+      "version": "1.5.287.0",
+      "cpe": "cpe:2.3:a:Grammarly.Gnar:Grammarly.Gnar:1.5.287.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly.Gnar@1.5.287.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Tracking.GnarClient.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly.Gos.Sdk@10.0.10.0?package-id=3fb58d3104b4412c",
+      "type": "library",
+      "name": "Grammarly.Gos.Sdk",
+      "version": "10.0.10.0",
+      "cpe": "cpe:2.3:a:Grammarly.Gos.Sdk:Grammarly.Gos.Sdk:10.0.10.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly.Gos.Sdk@10.0.10.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Gos.Sdk.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly.Helpers@1.6.238?package-id=e8213a93c44f78eb",
+      "type": "library",
+      "name": "Grammarly.Helpers",
+      "version": "1.6.238",
+      "cpe": "cpe:2.3:a:Grammarly.Helpers:Grammarly.Helpers:1.6.238:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly.Helpers@1.6.238",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Logging.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly.Helpers@1.6.238.0?package-id=517e53276614adb9",
+      "type": "library",
+      "name": "Grammarly.Helpers",
+      "version": "1.6.238.0",
+      "cpe": "cpe:2.3:a:Grammarly.Helpers:Grammarly.Helpers:1.6.238.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly.Helpers@1.6.238.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Batteries.FSharp.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly.Helpers@1.6.238.0?package-id=cd9a99a0c5ccaf37",
+      "type": "library",
+      "name": "Grammarly.Helpers",
+      "version": "1.6.238.0",
+      "cpe": "cpe:2.3:a:Grammarly.Helpers:Grammarly.Helpers:1.6.238.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly.Helpers@1.6.238.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Http.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly.Helpers@1.6.238.0?package-id=fefcc1fa99725bad",
+      "type": "library",
+      "name": "Grammarly.Helpers",
+      "version": "1.6.238.0",
+      "cpe": "cpe:2.3:a:Grammarly.Helpers:Grammarly.Helpers:1.6.238.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly.Helpers@1.6.238.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.Json.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly.SDUI.Core@4.47.0.0?package-id=9715e7d2dc51ccf6",
+      "type": "library",
+      "name": "Grammarly.SDUI.Core",
+      "version": "4.47.0.0",
+      "cpe": "cpe:2.3:a:Grammarly.SDUI.Core:Grammarly.SDUI.Core:4.47.0.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly.SDUI.Core@4.47.0.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.SDUI.Core.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly.StorageClient.Protocol@3.0.21.0?package-id=b6ebff7667bb033e",
+      "type": "library",
+      "name": "Grammarly.StorageClient.Protocol",
+      "version": "3.0.21.0",
+      "cpe": "cpe:2.3:a:Grammarly.StorageClient.Protocol:Grammarly.StorageClient.Protocol:3.0.21.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly.StorageClient.Protocol@3.0.21.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.StorageClient.Protocol.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly.TextActions.Protocol@1.0.0.0?package-id=c284045846e860cc",
+      "type": "library",
+      "name": "Grammarly.TextActions.Protocol",
+      "version": "1.0.0.0",
+      "cpe": "cpe:2.3:a:Grammarly.TextActions.Protocol:Grammarly.TextActions.Protocol:1.0.0.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly.TextActions.Protocol@1.0.0.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.TextActions.Protocol.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Grammarly.WebUI@0.0.11.0?package-id=328c5f40107390af",
+      "type": "library",
+      "name": "Grammarly.WebUI",
+      "version": "0.0.11.0",
+      "cpe": "cpe:2.3:a:Grammarly.WebUI:Grammarly.WebUI:0.0.11.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Grammarly.WebUI@0.0.11.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Grammarly.WebUI.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Html%20Agility%20Pack@1.11.62?package-id=38c7aae44e571c8e",
+      "type": "library",
+      "name": "Html Agility Pack",
+      "version": "1.11.62",
+      "cpe": "cpe:2.3:a:Html_Agility_Pack:Html_Agility_Pack:1.11.62:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Html%20Agility%20Pack@1.11.62",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\HtmlAgilityPack.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Interop.IAccessible2Lib.dll@1.3.0.0?package-id=dd5a04d9d2a9e1e3",
+      "type": "library",
+      "name": "Interop.IAccessible2Lib.dll",
+      "version": "1.3.0.0",
+      "cpe": "cpe:2.3:a:Interop.IAccessible2Lib.dll:Interop.IAccessible2Lib.dll:1.3.0.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Interop.IAccessible2Lib.dll@1.3.0.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Interop.IAccessible2Lib.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Interop.UIAutomationClient.dll@1.0.0.0?package-id=a7f1032b9f2ff7e2",
+      "type": "library",
+      "name": "Interop.UIAutomationClient.dll",
+      "version": "1.0.0.0",
+      "cpe": "cpe:2.3:a:Interop.UIAutomationClient.dll:Interop.UIAutomationClient.dll:1.0.0.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Interop.UIAutomationClient.dll@1.0.0.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Interop.UIAutomationClient.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Json.NET@13.0.3.27908?package-id=53c90e06b2e91442",
+      "type": "library",
+      "name": "Json.NET",
+      "version": "13.0.3.27908",
+      "cpe": "cpe:2.3:a:Json.NET:Json.NET:13.0.3.27908:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Json.NET@13.0.3.27908",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Newtonsoft.Json.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/LZStringCSharp@1.4.0.0?package-id=67e5bb78ce5dd398",
+      "type": "library",
+      "name": "LZStringCSharp",
+      "version": "1.4.0.0",
+      "cpe": "cpe:2.3:a:LZStringCSharp:LZStringCSharp:1.4.0.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/LZStringCSharp@1.4.0.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\LZStringCSharp.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/LanguageExt.Core@4.0.0.0?package-id=ea2dc2987ccfc7ff",
+      "type": "library",
+      "name": "LanguageExt.Core",
+      "version": "4.0.0.0",
+      "cpe": "cpe:2.3:a:LanguageExt.Core:LanguageExt.Core:4.0.0.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/LanguageExt.Core@4.0.0.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\LanguageExt.Core.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/LanguageExt.FSharp@4.0.0.0?package-id=4ff2d61fbdb27edd",
+      "type": "library",
+      "name": "LanguageExt.FSharp",
+      "version": "4.0.0.0",
+      "cpe": "cpe:2.3:a:LanguageExt.FSharp:LanguageExt.FSharp:4.0.0.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/LanguageExt.FSharp@4.0.0.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\LanguageExt.FSharp.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Microsoft%20Edge%20Embedded%20Browser%20WebView%20Loader@1.0.2592.51?package-id=d0fc1c713f0a723d",
+      "type": "library",
+      "name": "Microsoft Edge Embedded Browser WebView Loader",
+      "version": "1.0.2592.51",
+      "cpe": "cpe:2.3:a:Microsoft_Edge_Embedded_Browser_WebView_Loader:Microsoft_Edge_Embedded_Browser_WebView_Loader:1.0.2592.51:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Microsoft%20Edge%20Embedded%20Browser%20WebView%20Loader@1.0.2592.51",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\runtimes\\win-arm64\\native\\WebView2Loader.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Microsoft%20Edge%20Embedded%20Browser%20WebView%20Loader@1.0.2592.51?package-id=fb7843a4b371ccd6",
+      "type": "library",
+      "name": "Microsoft Edge Embedded Browser WebView Loader",
+      "version": "1.0.2592.51",
+      "cpe": "cpe:2.3:a:Microsoft_Edge_Embedded_Browser_WebView_Loader:Microsoft_Edge_Embedded_Browser_WebView_Loader:1.0.2592.51:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Microsoft%20Edge%20Embedded%20Browser%20WebView%20Loader@1.0.2592.51",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\runtimes\\win-x64\\native\\WebView2Loader.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Microsoft%20Edge%20Embedded%20Browser%20WebView%20Loader@1.0.2592.51?package-id=fdc890682e60447f",
+      "type": "library",
+      "name": "Microsoft Edge Embedded Browser WebView Loader",
+      "version": "1.0.2592.51",
+      "cpe": "cpe:2.3:a:Microsoft_Edge_Embedded_Browser_WebView_Loader:Microsoft_Edge_Embedded_Browser_WebView_Loader:1.0.2592.51:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Microsoft%20Edge%20Embedded%20Browser%20WebView%20Loader@1.0.2592.51",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\runtimes\\win-x86\\native\\WebView2Loader.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Microsoft%20Edge%20Update%20Setup@1.3.177.11?package-id=1d79ac67041a6ba5",
+      "type": "library",
+      "name": "Microsoft Edge Update Setup",
+      "version": "1.3.177.11",
+      "cpe": "cpe:2.3:a:Microsoft_Edge_Update_Setup:Microsoft_Edge_Update_Setup:1.3.177.11:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Microsoft%20Edge%20Update%20Setup@1.3.177.11",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$PLUGINSDIR\\webview2bootstrapper\\MicrosoftEdgeWebview2Setup.exe"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Microsoft.Bcl.AsyncInterfaces@8.0.23.53103?package-id=2982c136e5546024",
+      "type": "library",
+      "name": "Microsoft.Bcl.AsyncInterfaces",
+      "version": "8.0.23.53103",
+      "cpe": "cpe:2.3:a:Microsoft.Bcl.AsyncInterfaces:Microsoft.Bcl.AsyncInterfaces:8.0.23.53103:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Microsoft.Bcl.AsyncInterfaces@8.0.23.53103",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Microsoft.Bcl.AsyncInterfaces.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Microsoft.BingAds.UETSdk@1.0.0.0?package-id=ea3328587b144c2a",
+      "type": "library",
+      "name": "Microsoft.BingAds.UETSdk",
+      "version": "1.0.0.0",
+      "cpe": "cpe:2.3:a:Microsoft.BingAds.UETSdk:Microsoft.BingAds.UETSdk:1.0.0.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Microsoft.BingAds.UETSdk@1.0.0.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Microsoft.BingAds.UETSdk.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Microsoft.Data.Sqlite@7.0.2024.26903?package-id=c4e3394b92649fc6",
+      "type": "library",
+      "name": "Microsoft.Data.Sqlite",
+      "version": "7.0.2024.26903",
+      "cpe": "cpe:2.3:a:Microsoft.Data.Sqlite:Microsoft.Data.Sqlite:7.0.2024.26903:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Microsoft.Data.Sqlite@7.0.2024.26903",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Microsoft.Data.Sqlite.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Microsoft.Web.WebView2.Core@1.0.2592.51?package-id=7ae2cafd0dee1ad2",
+      "type": "library",
+      "name": "Microsoft.Web.WebView2.Core",
+      "version": "1.0.2592.51",
+      "cpe": "cpe:2.3:a:Microsoft.Web.WebView2.Core:Microsoft.Web.WebView2.Core:1.0.2592.51:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Microsoft.Web.WebView2.Core@1.0.2592.51",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Microsoft.Web.WebView2.Core.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Microsoft.Web.WebView2.WinForms@1.0.2592.51?package-id=762e1092157c7ceb",
+      "type": "library",
+      "name": "Microsoft.Web.WebView2.WinForms",
+      "version": "1.0.2592.51",
+      "cpe": "cpe:2.3:a:Microsoft.Web.WebView2.WinForms:Microsoft.Web.WebView2.WinForms:1.0.2592.51:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Microsoft.Web.WebView2.WinForms@1.0.2592.51",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Microsoft.Web.WebView2.WinForms.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Microsoft.Web.WebView2.Wpf@1.0.2592.51?package-id=cb8f6efd5aaa3b93",
+      "type": "library",
+      "name": "Microsoft.Web.WebView2.Wpf",
+      "version": "1.0.2592.51",
+      "cpe": "cpe:2.3:a:Microsoft.Web.WebView2.Wpf:Microsoft.Web.WebView2.Wpf:1.0.2592.51:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Microsoft.Web.WebView2.Wpf@1.0.2592.51",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Microsoft.Web.WebView2.Wpf.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Microsoft.Xaml.Behaviors@1.1.122.28819?package-id=c341ccbd9d0e673a",
+      "type": "library",
+      "name": "Microsoft.Xaml.Behaviors",
+      "version": "1.1.122.28819",
+      "cpe": "cpe:2.3:a:Microsoft.Xaml.Behaviors:Microsoft.Xaml.Behaviors:1.1.122.28819:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Microsoft.Xaml.Behaviors@1.1.122.28819",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Microsoft.Xaml.Behaviors.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Microsoft%C2%AE%20Visual%20Studio%20.NET@7.00.9466?package-id=0e9d3e27f1bd08e3",
+      "type": "library",
+      "name": "Microsoft\u00c2\u00ae Visual Studio .NET",
+      "version": "7.00.9466",
+      "purl": "pkg:nuget/Microsoft%C2%AE%20Visual%20Studio%20.NET@7.00.9466",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\stdole.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/NLog%20v5.3.2@5.3.2.2526?package-id=665f441df927f5c2",
+      "type": "library",
+      "name": "NLog v5.3.2",
+      "version": "5.3.2.2526",
+      "cpe": "cpe:2.3:a:NLog_v5.3.2:NLog_v5.3.2:5.3.2.2526:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/NLog%20v5.3.2@5.3.2.2526",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\NLog.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/NSIS%20libcurl%20plugin@1.2022.2.5?package-id=1962581ae9548c70",
+      "type": "library",
+      "name": "NSIS libcurl plugin",
+      "version": "1.2022.2.5",
+      "cpe": "cpe:2.3:a:NSIS_libcurl_plugin:NSIS_libcurl_plugin:1.2022.2.5:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/NSIS%20libcurl%20plugin@1.2022.2.5",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$PLUGINSDIR\\NScurl.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/NetOffice@1.9.6.0?package-id=fee4c6857024f7b3",
+      "type": "library",
+      "name": "NetOffice",
+      "version": "1.9.6.0",
+      "cpe": "cpe:2.3:a:NetOffice:NetOffice:1.9.6.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/NetOffice@1.9.6.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\NetOffice.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/NetOffice@1.9.6.0?package-id=86e0c2bfd5f50a96",
+      "type": "library",
+      "name": "NetOffice",
+      "version": "1.9.6.0",
+      "cpe": "cpe:2.3:a:NetOffice:NetOffice:1.9.6.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/NetOffice@1.9.6.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\OfficeApi.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/NetOffice@1.9.6.0?package-id=dc0a5ba7b9bf8cae",
+      "type": "library",
+      "name": "NetOffice",
+      "version": "1.9.6.0",
+      "cpe": "cpe:2.3:a:NetOffice:NetOffice:1.9.6.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/NetOffice@1.9.6.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\PowerPointApi.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/NetOffice@1.9.6.0?package-id=4d74d768153c3e72",
+      "type": "library",
+      "name": "NetOffice",
+      "version": "1.9.6.0",
+      "cpe": "cpe:2.3:a:NetOffice:NetOffice:1.9.6.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/NetOffice@1.9.6.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\VBIDEApi.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/NetOffice@1.9.6.0?package-id=28cbee8f14e9ec51",
+      "type": "library",
+      "name": "NetOffice",
+      "version": "1.9.6.0",
+      "cpe": "cpe:2.3:a:NetOffice:NetOffice:1.9.6.0:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/NetOffice@1.9.6.0",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\WordApi.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/PInvoke.AdvApi32@0.7.124.52293?package-id=3d3f96802954c7bd",
+      "type": "library",
+      "name": "PInvoke.AdvApi32",
+      "version": "0.7.124.52293",
+      "cpe": "cpe:2.3:a:PInvoke.AdvApi32:PInvoke.AdvApi32:0.7.124.52293:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/PInvoke.AdvApi32@0.7.124.52293",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\PInvoke.AdvApi32.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/PInvoke.Kernel32@0.7.124.52293?package-id=684c82b84802c4ff",
+      "type": "library",
+      "name": "PInvoke.Kernel32",
+      "version": "0.7.124.52293",
+      "cpe": "cpe:2.3:a:PInvoke.Kernel32:PInvoke.Kernel32:0.7.124.52293:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/PInvoke.Kernel32@0.7.124.52293",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\PInvoke.Kernel32.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/PInvoke.SHCore@0.7.124.52293?package-id=b7f94b391465a634",
+      "type": "library",
+      "name": "PInvoke.SHCore",
+      "version": "0.7.124.52293",
+      "cpe": "cpe:2.3:a:PInvoke.SHCore:PInvoke.SHCore:0.7.124.52293:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/PInvoke.SHCore@0.7.124.52293",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\PInvoke.SHCore.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/PInvoke.User32@0.7.124.52293?package-id=792e59f363ec0fa0",
+      "type": "library",
+      "name": "PInvoke.User32",
+      "version": "0.7.124.52293",
+      "cpe": "cpe:2.3:a:PInvoke.User32:PInvoke.User32:0.7.124.52293:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/PInvoke.User32@0.7.124.52293",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\PInvoke.User32.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/PInvoke.Windows.Core@0.7.124.52293?package-id=b5c64e8bb7c22edc",
+      "type": "library",
+      "name": "PInvoke.Windows.Core",
+      "version": "0.7.124.52293",
+      "cpe": "cpe:2.3:a:PInvoke.Windows.Core:PInvoke.Windows.Core:0.7.124.52293:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/PInvoke.Windows.Core@0.7.124.52293",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\PInvoke.Windows.Core.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/PInvoke.Windows.ShellScalingApi@0.7.124.52293?package-id=4bfef07c71fb8355",
+      "type": "library",
+      "name": "PInvoke.Windows.ShellScalingApi",
+      "version": "0.7.124.52293",
+      "cpe": "cpe:2.3:a:PInvoke.Windows.ShellScalingApi:PInvoke.Windows.ShellScalingApi:0.7.124.52293:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/PInvoke.Windows.ShellScalingApi@0.7.124.52293",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\PInvoke.Windows.ShellScalingApi.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/SQLitePCLRaw.batteries_v2@2.1.8.2226?package-id=9671836de02639ee",
+      "type": "library",
+      "name": "SQLitePCLRaw.batteries_v2",
+      "version": "2.1.8.2226",
+      "cpe": "cpe:2.3:a:SQLitePCLRaw.batteries-v2:SQLitePCLRaw.batteries-v2:2.1.8.2226:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/SQLitePCLRaw.batteries_v2@2.1.8.2226",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:SQLitePCLRaw.batteries-v2:SQLitePCLRaw.batteries_v2:2.1.8.2226:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:SQLitePCLRaw.batteries_v2:SQLitePCLRaw.batteries-v2:2.1.8.2226:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:SQLitePCLRaw.batteries_v2:SQLitePCLRaw.batteries_v2:2.1.8.2226:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:SQLitePCLRaw.batteries:SQLitePCLRaw.batteries-v2:2.1.8.2226:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:SQLitePCLRaw.batteries:SQLitePCLRaw.batteries_v2:2.1.8.2226:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\SQLitePCLRaw.batteries_v2.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/SQLitePCLRaw.core@2.1.8.2226?package-id=10b539b888f3c5de",
+      "type": "library",
+      "name": "SQLitePCLRaw.core",
+      "version": "2.1.8.2226",
+      "cpe": "cpe:2.3:a:SQLitePCLRaw.core:SQLitePCLRaw.core:2.1.8.2226:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/SQLitePCLRaw.core@2.1.8.2226",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\SQLitePCLRaw.core.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/SQLitePCLRaw.provider.dynamic_cdecl@2.1.8.2226?package-id=3679124e0770f3a6",
+      "type": "library",
+      "name": "SQLitePCLRaw.provider.dynamic_cdecl",
+      "version": "2.1.8.2226",
+      "cpe": "cpe:2.3:a:SQLitePCLRaw.provider.dynamic-cdecl:SQLitePCLRaw.provider.dynamic-cdecl:2.1.8.2226:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/SQLitePCLRaw.provider.dynamic_cdecl@2.1.8.2226",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:SQLitePCLRaw.provider.dynamic-cdecl:SQLitePCLRaw.provider.dynamic_cdecl:2.1.8.2226:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:SQLitePCLRaw.provider.dynamic_cdecl:SQLitePCLRaw.provider.dynamic-cdecl:2.1.8.2226:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:SQLitePCLRaw.provider.dynamic_cdecl:SQLitePCLRaw.provider.dynamic_cdecl:2.1.8.2226:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:SQLitePCLRaw.provider.dynamic:SQLitePCLRaw.provider.dynamic-cdecl:2.1.8.2226:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:SQLitePCLRaw.provider.dynamic:SQLitePCLRaw.provider.dynamic_cdecl:2.1.8.2226:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\SQLitePCLRaw.provider.dynamic_cdecl.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/System.Buffers@4.6.28619.01?package-id=3fe1fb2249bf2f8b",
+      "type": "library",
+      "name": "System.Buffers",
+      "version": "4.6.28619.01",
+      "cpe": "cpe:2.3:a:System.Buffers:System.Buffers:4.6.28619.01:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/System.Buffers@4.6.28619.01",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\System.Buffers.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/System.Collections.Immutable@5.0.20.51904?package-id=fe883ffcea76075f",
+      "type": "library",
+      "name": "System.Collections.Immutable",
+      "version": "5.0.20.51904",
+      "cpe": "cpe:2.3:a:System.Collections.Immutable:System.Collections.Immutable:5.0.20.51904:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/System.Collections.Immutable@5.0.20.51904",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\System.Collections.Immutable.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/System.IO.Abstractions@19.2.91.7527?package-id=e38a724dcba6fcaa",
+      "type": "library",
+      "name": "System.IO.Abstractions",
+      "version": "19.2.91.7527",
+      "cpe": "cpe:2.3:a:System.IO.Abstractions:System.IO.Abstractions:19.2.91.7527:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/System.IO.Abstractions@19.2.91.7527",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\System.IO.Abstractions.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/System.IO.Abstractions@19.2.91.7527?package-id=eeee560664b09324",
+      "type": "library",
+      "name": "System.IO.Abstractions",
+      "version": "19.2.91.7527",
+      "cpe": "cpe:2.3:a:System.IO.Abstractions:System.IO.Abstractions:19.2.91.7527:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/System.IO.Abstractions@19.2.91.7527",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\TestableIO.System.IO.Abstractions.Wrappers.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/System.IO.Abstractions@19.2.91.7527?package-id=5fe7a29fdd07c3a3",
+      "type": "library",
+      "name": "System.IO.Abstractions",
+      "version": "19.2.91.7527",
+      "cpe": "cpe:2.3:a:System.IO.Abstractions:System.IO.Abstractions:19.2.91.7527:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/System.IO.Abstractions@19.2.91.7527",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\TestableIO.System.IO.Abstractions.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/System.Memory@4.6.31308.01?package-id=a8c80e22b484d72b",
+      "type": "library",
+      "name": "System.Memory",
+      "version": "4.6.31308.01",
+      "cpe": "cpe:2.3:a:System.Memory:System.Memory:4.6.31308.01:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/System.Memory@4.6.31308.01",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\System.Memory.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/System.Numerics.Vectors@4.6.26515.06?package-id=3f618650dafe6593",
+      "type": "library",
+      "name": "System.Numerics.Vectors",
+      "version": "4.6.26515.06",
+      "cpe": "cpe:2.3:a:System.Numerics.Vectors:System.Numerics.Vectors:4.6.26515.06:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/System.Numerics.Vectors@4.6.26515.06",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\System.Numerics.Vectors.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/System.Reactive%20%28net472%29@6.0.1.7420?package-id=f0f511953c559481",
+      "type": "library",
+      "name": "System.Reactive (net472)",
+      "version": "6.0.1.7420",
+      "cpe": "cpe:2.3:a:System.Reactive_\\(net472\\):System.Reactive_\\(net472\\):6.0.1.7420:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/System.Reactive%20%28net472%29@6.0.1.7420",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\System.Reactive.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/System.Reactive.Core@2.2.5.40722?package-id=4c1a89d4201033ac",
+      "type": "library",
+      "name": "System.Reactive.Core",
+      "version": "2.2.5.40722",
+      "cpe": "cpe:2.3:a:System.Reactive.Core:System.Reactive.Core:2.2.5.40722:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/System.Reactive.Core@2.2.5.40722",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\System.Reactive.Core.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/System.Reactive.Interfaces@2.2.5.40722?package-id=3344dac09c8cbdb9",
+      "type": "library",
+      "name": "System.Reactive.Interfaces",
+      "version": "2.2.5.40722",
+      "cpe": "cpe:2.3:a:System.Reactive.Interfaces:System.Reactive.Interfaces:2.2.5.40722:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/System.Reactive.Interfaces@2.2.5.40722",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\System.Reactive.Interfaces.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/System.Reactive.Linq@2.2.5.40722?package-id=5beac32cc8937edc",
+      "type": "library",
+      "name": "System.Reactive.Linq",
+      "version": "2.2.5.40722",
+      "cpe": "cpe:2.3:a:System.Reactive.Linq:System.Reactive.Linq:2.2.5.40722:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/System.Reactive.Linq@2.2.5.40722",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\System.Reactive.Linq.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/System.Resources.Extensions@6.0.21.52210?package-id=4056927afa11467f",
+      "type": "library",
+      "name": "System.Resources.Extensions",
+      "version": "6.0.21.52210",
+      "cpe": "cpe:2.3:a:System.Resources.Extensions:System.Resources.Extensions:6.0.21.52210:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/System.Resources.Extensions@6.0.21.52210",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\System.Resources.Extensions.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/System.Runtime.CompilerServices.Unsafe@6.0.21.52210?package-id=f7a3ac0fc9bd6321",
+      "type": "library",
+      "name": "System.Runtime.CompilerServices.Unsafe",
+      "version": "6.0.21.52210",
+      "cpe": "cpe:2.3:a:System.Runtime.CompilerServices.Unsafe:System.Runtime.CompilerServices.Unsafe:6.0.21.52210:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/System.Runtime.CompilerServices.Unsafe@6.0.21.52210",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\System.Runtime.CompilerServices.Unsafe.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/System.Text.Encodings.Web@8.0.23.53103?package-id=a46b9c69013fe84c",
+      "type": "library",
+      "name": "System.Text.Encodings.Web",
+      "version": "8.0.23.53103",
+      "cpe": "cpe:2.3:a:System.Text.Encodings.Web:System.Text.Encodings.Web:8.0.23.53103:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/System.Text.Encodings.Web@8.0.23.53103",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\System.Text.Encodings.Web.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/System.Text.Json@8.0.724.31311?package-id=98f36c29321ee4e3",
+      "type": "library",
+      "name": "System.Text.Json",
+      "version": "8.0.724.31311",
+      "cpe": "cpe:2.3:a:System.Text.Json:System.Text.Json:8.0.724.31311:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/System.Text.Json@8.0.724.31311",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\System.Text.Json.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/System.Threading.Tasks.Extensions@4.6.28619.01?package-id=f1b5e436a841c4ab",
+      "type": "library",
+      "name": "System.Threading.Tasks.Extensions",
+      "version": "4.6.28619.01",
+      "cpe": "cpe:2.3:a:System.Threading.Tasks.Extensions:System.Threading.Tasks.Extensions:4.6.28619.01:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/System.Threading.Tasks.Extensions@4.6.28619.01",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\System.Threading.Tasks.Extensions.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/System.ValueTuple@4.6.26515.06?package-id=4e596a94117efa2d",
+      "type": "library",
+      "name": "System.ValueTuple",
+      "version": "4.6.26515.06",
+      "cpe": "cpe:2.3:a:System.ValueTuple:System.ValueTuple:4.6.26515.06:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/System.ValueTuple@4.6.26515.06",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\System.ValueTuple.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Validation@2.5.51.3930?package-id=ffcf337d4ec587e6",
+      "type": "library",
+      "name": "Validation",
+      "version": "2.5.51.3930",
+      "cpe": "cpe:2.3:a:Validation:Validation:2.5.51.3930:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Validation@2.5.51.3930",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Validation.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/Windows%20Community%20Toolkit@7.1.3.1?package-id=aceb5c088d3d7f09",
+      "type": "library",
+      "name": "Windows Community Toolkit",
+      "version": "7.1.3.1",
+      "cpe": "cpe:2.3:a:Windows_Community_Toolkit:Windows_Community_Toolkit:7.1.3.1:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/Windows%20Community%20Toolkit@7.1.3.1",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\Microsoft.Toolkit.Uwp.Notifications.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    },
+    {
+      "bom-ref": "pkg:nuget/websocket-sharp@2.2.1?package-id=5273822616ca8277",
+      "type": "library",
+      "name": "websocket-sharp",
+      "version": "2.2.1",
+      "cpe": "cpe:2.3:a:websocket-sharp:websocket-sharp:2.2.1:*:*:*:*:*:*:*",
+      "purl": "pkg:nuget/websocket-sharp@2.2.1",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "dotnet-portable-executable-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "dotnet"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "dotnet-portable-executable-entry"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:websocket-sharp:websocket_sharp:2.2.1:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:websocket_sharp:websocket-sharp:2.2.1:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:websocket_sharp:websocket_sharp:2.2.1:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:websocket:websocket-sharp:2.2.1:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:websocket:websocket_sharp:2.2.1:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "\\$LOCALAPPDATA\\Grammarly\\DesktopIntegrationsUpdate\\websocket-sharp.dll"
+        }
+      ],
+      "supplier": {
+        "name": "Unknown Vendor"
+      },
+      "publisher": "Unknown Manufacturer"
+    }
+  ],
+  "Software Name": "GrammarlyInstaller.cXJXqP58qwhg98v8mqf604o0.exe",
+  "Vendor": "Unknown",
+  "Version": "Unknown",
+  "Description": "SBOM for GrammarlyInstaller.cXJXqP58qwhg98v8mqf604o0.exe",
+  "File Hash": "8669a42ee9f5338ca630cc1f8dbeef28e04de8d4b907768f31c6b1ad2136d407",
+  "Format": "CycloneDX",
+  "Digital Signature": "Not Signed",
+  "OS Compatibility": "Windows",
+  "Binary Architecture": "AMD64",
+  "Compiler": "Unknown"
+}
