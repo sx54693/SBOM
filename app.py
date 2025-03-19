@@ -142,7 +142,7 @@ def display_sbom_data(sbom_data, file_path):
     """Extract and display SBOM metadata & components."""
 
     """Extract and display SBOM metadata & components in Streamlit."""
- 72b1042e9665dae37c6c8ee540d4e8ead30edb15
+
     if not sbom_data:
         st.warning("⚠️ No SBOM data available.")
         return
@@ -242,7 +242,7 @@ def display_sbom_data(sbom_data, file_path):
 # ✅ RUN SBOM GENERATION
 if generate_button and file1:
     file1_path = save_uploaded_file(file1)
-<<<<<<< HEAD
+
     sbom_output = generate_sbom(file1_path)
     
     if sbom_output:
