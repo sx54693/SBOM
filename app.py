@@ -106,13 +106,12 @@ def extract_file_metadata(file_path):
 def check_digital_signature(file_path):
     """Checks if an EXE file is digitally signed using signtool.exe"""
 
-<<<<<<< HEAD
-=======
+
     # Check if running on Windows
     if platform.system() != "Windows":
         return "⚠️ Signature Check Not Supported on Non-Windows Platforms"
 
->>>>>>> 72b1042e9665dae37c6c8ee540d4e8ead30edb15
+
     # ✅ Use Correct signtool.exe Path
     signtool_path = "C:\\Users\\cyria\\signtool.exe"
 
@@ -139,27 +138,27 @@ def check_digital_signature(file_path):
 
 # Display SBOM Data
 def display_sbom_data(sbom_data, file_path):
-<<<<<<< HEAD
+
     """Extract and display SBOM metadata & components."""
-=======
+
     """Extract and display SBOM metadata & components in Streamlit."""
->>>>>>> 72b1042e9665dae37c6c8ee540d4e8ead30edb15
+ 72b1042e9665dae37c6c8ee540d4e8ead30edb15
     if not sbom_data:
         st.warning("⚠️ No SBOM data available.")
         return
 
-<<<<<<< HEAD
+
     # Extract Metadata
     metadata = sbom_data.get("metadata", {})
     tools = metadata.get("tools", [])
 
     # ✅ Extract Tool Information
-=======
+
     # ✅ Extract Metadata
     metadata = sbom_data.get("metadata", {})
     tools = metadata.get("tools", [])
     
->>>>>>> 72b1042e9665dae37c6c8ee540d4e8ead30edb15
+
     tool_used = "Unknown"
     tool_version = "Unknown"
 
@@ -169,7 +168,7 @@ def display_sbom_data(sbom_data, file_path):
                 tool_used = tool.get("name", "Unknown")
                 tool_version = tool.get("version", "Unknown")
 
-<<<<<<< HEAD
+
     # Default to Syft if Tool Used is Unknown
     if tool_used == "Unknown":
         tool_used = "Syft"
@@ -182,15 +181,15 @@ def display_sbom_data(sbom_data, file_path):
     vendor = file_metadata["Vendor"]
     if vendor == "Unknown" and "metadata" in sbom_data:
         vendor = sbom_data["metadata"].get("supplier", {}).get("name", "Unknown")
-=======
+
     # ✅ Extract Vendor (From SBOM or EXE)
     vendor = sbom_data.get("metadata", {}).get("supplier", {}).get("name", "Unknown")
->>>>>>> 72b1042e9665dae37c6c8ee540d4e8ead30edb15
+
 
     # ✅ Extract Software Name
     software_name = sbom_data.get("metadata", {}).get("component", {}).get("name", "Unknown")
 
-<<<<<<< HEAD
+
     # ✅ Extract Digital Signature
     digital_signature = file_metadata["Digital Signature"]
 
@@ -198,7 +197,7 @@ def display_sbom_data(sbom_data, file_path):
     sbom_summary = {
         "Software Name": software_name,
         "Format": sbom_data.get("bomFormat", "Unknown"),
-=======
+
     # ✅ Extract Digital Signature (Check If File Is Signed)
     digital_signature = sbom_data.get("Digital Signature", "Not Available")
 
@@ -206,35 +205,34 @@ def display_sbom_data(sbom_data, file_path):
     sbom_summary = {
         "Software Name": software_name,
         "Format": sbom_data.get("bomFormat", "CycloneDX"),
->>>>>>> 72b1042e9665dae37c6c8ee540d4e8ead30edb15
+
         "Version": sbom_data.get("specVersion", "Unknown"),
         "Generated On": metadata.get("timestamp", "Unknown"),
         "Tool Used": tool_used,
         "Tool Version": tool_version,
         "Vendor": vendor,
-<<<<<<< HEAD
+
         "Compiler": file_metadata["Compiler"],
         "Platform": file_metadata["Platform"],
         "Digital Signature": digital_signature
     }
 
-=======
+
         "Compiler": sbom_data.get("Compiler", "Unknown"),
         "Platform": sbom_data.get("Platform", "Unknown"),
         "Digital Signature": digital_signature
     }
 
     # ✅ Display SBOM Metadata as a Table
->>>>>>> 72b1042e9665dae37c6c8ee540d4e8ead30edb15
     st.subheader("📄 SBOM Metadata")
     st.table(pd.DataFrame(sbom_summary.items(), columns=["Attribute", "Value"]))
 
     # ✅ Display Components
-<<<<<<< HEAD
+
     if "components" in sbom_data and isinstance(sbom_data["components"], list):
-=======
+
     if "components" in sbom_data and isinstance(sbom_data["components"], list) and sbom_data["components"]:
->>>>>>> 72b1042e9665dae37c6c8ee540d4e8ead30edb15
+
         st.subheader("🛠️ SBOM Components")
         components_df = pd.DataFrame(sbom_data["components"])
         st.dataframe(components_df)
@@ -251,7 +249,7 @@ if generate_button and file1:
         with open(sbom_output, "r", encoding="utf-8") as f:
             sbom_data = json.load(f)
         display_sbom_data(sbom_data, file1_path)
-=======
+
     sbom_output = generate_sbom(file1_path)  # Corrected line
 
     if sbom_output:
@@ -259,4 +257,3 @@ if generate_button and file1:
             sbom_data = json.load(f)  # ✅ Load JSON Data
         display_sbom_data(sbom_data, file1_path)  # ✅ Pass SBOM Data to Function
 
->>>>>>> 72b1042e9665dae37c6c8ee540d4e8ead30edb15
