@@ -214,7 +214,15 @@ def display_sbom_data(sbom_data, file_path):
 if generate_button and file1:
     file1_path = save_uploaded_file(file1)
     sbom_output = generate_sbom(file1_path)
-    st.write("🔍 SBOM Output File Path:", sbom_output)
+
+if not sbom_output:
+    st.error("❌ Error: SBOM generation failed. No output file created.")
+else:
+    st.write("✅ SBOM Output File:", sbom_output)  # Debugging
+    with open(sbom_output, "r", encoding="utf-8") as f:
+        sbom_data = json.load(f)
+    display_sbom_data(sbom_data, file1_path)
+
 
     
     if sbom_output:
