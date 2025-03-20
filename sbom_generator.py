@@ -187,3 +187,26 @@ def generate_sbom(file_path):
     except Exception as e:
         print(f"❌ Exception in generate_sbom: {e}")
         return None
+import os
+import json
+
+def generate_sbom(file_path):
+    """Generates a dummy SBOM file and returns the file path."""
+    sbom_file_path = f"sbom_outputs/{os.path.basename(file_path)}.json"
+
+    try:
+        # Simulate SBOM generation
+        sbom_data = {
+            "metadata": {"name": os.path.basename(file_path), "format": "CycloneDX"},
+            "components": []
+        }
+
+        os.makedirs("sbom_outputs", exist_ok=True)  # Ensure folder exists
+        with open(sbom_file_path, "w", encoding="utf-8") as f:
+            json.dump(sbom_data, f, indent=4)
+
+        return sbom_file_path  # ✅ Return valid SBOM file path
+
+    except Exception as e:
+        print(f"❌ Error generating SBOM: {str(e)}")
+        return None  # Return None if SBOM fails
