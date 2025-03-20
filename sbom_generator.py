@@ -113,3 +113,35 @@ async def generate_sbom(file: UploadFile = File(...)):
         json.dump(sbom_data, f, indent=4)
 
     return {"filename": file.filename, "sbom_file": sbom_output_path, "sbom_data": sbom_data}
+     import json
+import os
+
+def generate_sbom(file_path):
+    """Generates a valid SBOM JSON file and returns the file path."""
+    output_dir = "sbom_outputs"
+    os.makedirs(output_dir, exist_ok=True)  # ✅ Ensure directory exists
+    sbom_file_path = os.path.join(output_dir, f"{os.path.basename(file_path)}.json")
+
+    try:
+        print(f"🚀 Generating SBOM for: {file_path}")  # ✅ Debugging
+
+        if not os.path.exists(file_path):
+            print(f"❌ Error: File {file_path} does not exist!")
+            return None  # ❌ File doesn't exist
+
+        sbom_data = {
+            "metadata": {"name": os.path.basename(file_path), "format": "CycloneDX"},
+            "components": []
+        }
+
+        # ✅ Write SBOM JSON to file
+        with open(sbom_file_path, "w", encoding="utf-8") as f:
+            json.dump(sbom_data, f, indent=4)
+
+        print(f"✅ SBOM successfully created: {sbom_file_path}")  # ✅ Debugging
+        return sbom_file_path  # ✅ Return file path instead of JSON data
+
+    except Exception as e:
+        print(f"❌ Error generating SBOM: {str(e)}")
+        return None  # Return None if SBOM fails
+
