@@ -181,27 +181,21 @@ def display_sbom_data(sbom_data, file_path):
         st.warning("⚠️ No components found.")
 
 # ✅ RUN SBOM GENERATION
+
+
 if generate_button and file1:
     file1_path = save_uploaded_file(file1)
-    
-    # Remove 'await' if 'generate_sbom' is a normal function
-    sbom_output = generate_sbom(file1_path)  
 
-    if sbom_output:
+    sbom_output = generate_sbom(file1_path)
+
+    # ✅ Check if sbom_output is a file path (string)
+    if sbom_output and isinstance(sbom_output, str) and os.path.exists(sbom_output):
         with open(sbom_output, "r", encoding="utf-8") as f:
             sbom_data = json.load(f)
         display_sbom_data(sbom_data, file1_path)
-
-if compare_button and file1 and file2:
-    file1_path = save_uploaded_file(file1)
-    file2_path = save_uploaded_file(file2)
-    added, removed, error = compare_sboms(file1_path, file2_path)
-    
-    if error:
-        st.error(f"❌ {error}")
     else:
-        st.write("### ✅ Added Components", added)
-        st.write("### ❌ Removed Components", removed)
+        st.error("❌ SBOM generation failed or invalid output received.")
+
 
         import requests
 
