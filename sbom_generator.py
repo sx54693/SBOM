@@ -4,15 +4,19 @@ import pefile
 import subprocess
 import platform
 import hashlib
+import requests  # Ensure requests is installed if calling the API
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# API URL for SBOM generation on Render
+API_URL = "https://sbom.onrender.com"
 
 def secure_filename(filename):
     """Sanitize filename to prevent issues."""
     return os.path.basename(filename).replace(" ", "_")
 
 def extract_metadata(file_path):
-    """Extract vendor, compiler, platform, digital signature from an EXE file"""
+    """Extract vendor, compiler, platform, and digital signature from an EXE file"""
     metadata = {
         "Software Name": os.path.basename(file_path),
         "Format": "CycloneDX",
@@ -54,7 +58,7 @@ def extract_metadata(file_path):
     return metadata
 
 def check_digital_signature(file_path):
-    """Checks if an EXE file has a digital signature."""
+    """Checks if an EXE file has a digital signature using signtool.exe."""
     try:
         result = subprocess.run(["signtool", "verify", "/pa", file_path], capture_output=True, text=True)
         if "Successfully verified" in result.stdout:
@@ -80,6 +84,7 @@ def generate_sbom(file_path):
         os.makedirs(output_dir, exist_ok=True)
         output_sbom = os.path.join(output_dir, secure_filename(file_path) + ".json")
 
+        # Save the SBOM JSON file
         with open(output_sbom, "w", encoding="utf-8") as f:
             json.dump(sbom_data, f, indent=2)
 
@@ -89,34 +94,30 @@ def generate_sbom(file_path):
     except Exception as e:
         print(f"❌ Exception in generate_sbom: {e}")
         return None
-  API_URL = "https://sbom.onrender.com"
-def generate_sbom(file):
-    """Calls the FastAPI backend to generate SBOM."""
-    try:
-        response = requests.post(f"{API_URL}/generate-sbom", files={"file": file})
-        response_json = response.json()
 
-        if "metadata" not in response_json:
-            st.error("⚠️ SBOM API returned invalid response.")
+
+# ✅ **Connecting SBOM Generator to Render API**
+def generate_sbom_api(file_path):
+    """Calls the FastAPI backend on Render to generate SBOM."""
+    try:
+        with open(file_path, "rb") as file:
+            response = requests.post(f"{API_URL}/generate-sbom", files={"file": file})
+        
+        if response.status_code != 200:
+            print(f"❌ SBOM API Error: {response.text}")
             return None
 
-        return response_json
+        response_json = response.json()
+        if "metadata" not in response_json:
+            print("⚠️ SBOM API returned invalid response.")
+            return None
+
+        return response_json  # Return JSON response
+
     except Exception as e:
-        st.error(f"❌ Error calling API: {str(e)}")
+        print(f"❌ Error calling SBOM API: {str(e)}")
         return None
 
-
-        # ✅ Write SBOM JSON to file
-        with open(sbom_file_path, "w", encoding="utf-8") as f:
-            json.dump(sbom_data, f, indent=4)
-
-        print(f"✅ SBOM successfully created: {sbom_file_path}")  # ✅ Debugging
-        return sbom_file_path  # ✅ Return file path instead of JSON data
-
-    except Exception as e:
-        print(f"❌ Error generating SBOM: {str(e)}")
-        return None  # Return None if SBOM fails
-        API_URL = "https://sbom.onrender.com"
 
 
 
