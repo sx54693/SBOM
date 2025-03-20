@@ -5,9 +5,35 @@ import hashlib
 import subprocess
 import pefile
 from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File
+import os
+import json
 
-# ✅ Create FastAPI App Instance
-app = FastAPI()
+app = FastAPI()  # ✅ Define FastAPI instance
+
+UPLOAD_DIR = "uploaded_files"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+@app.post("/generate-sbom")
+async def generate_sbom(file: UploadFile = File(...)):
+    """Endpoint to generate SBOM from an uploaded file."""
+    file_path = os.path.join(UPLOAD_DIR, file.filename)
+
+    # Save uploaded file
+    with open(file_path, "wb") as f:
+        f.write(await file.read())
+
+    # Simulate SBOM generation (Replace with actual logic)
+    sbom_data = {
+        "filename": file.filename,
+        "sbom_components": ["Component1", "Component2", "Component3"]
+    }
+    
+    sbom_path = f"{UPLOAD_DIR}/{file.filename}.json"
+    with open(sbom_path, "w", encoding="utf-8") as f:
+        json.dump(sbom_data, f, indent=4)
+
+    return {"message": "SBOM generated successfully", "sbom_path": sbom_path, "sbom_data": sbom_data}
 
 # ✅ Base Directory
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
