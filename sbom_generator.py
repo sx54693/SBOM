@@ -7,6 +7,7 @@ import pefile
 from fastapi import FastAPI, UploadFile, File
 from typing import Dict
 
+# ✅ Create FastAPI App
 app = FastAPI()
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -81,3 +82,4 @@ async def generate_sbom(file: UploadFile = File(...)):
         json.dump(sbom_data, f, indent=4)
 
     return {"filename": file.filename, "sbom_file": sbom_output_path, "sbom_data": sbom_data}
+
