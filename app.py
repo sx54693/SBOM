@@ -1,74 +1,100 @@
 import streamlit as st
+import os
+import json
 import requests
 import pandas as pd
-import json
-import os
+import subprocess
+import platform
+import pefile
+from sbom_compare import compare_sboms
+from sbom_parser import parse_sbom
+from sbom_search import search_sbom
 
 # Page Configuration
 st.set_page_config(page_title="SBOM Analyzer", page_icon="🔍", layout="wide")
 
-# API Backend URL
-API_URL = "https://sbom.onrender.com"
-
-# UI Styling
+# UI Enhancement
 st.markdown("""
     <style>
     .stApp { background: linear-gradient(135deg, #1f4037, #99f2c8); color: white; }
     [data-testid="stSidebar"] { background: #1f2833; color: white; }
-    .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 { color: #ffcc00; }
     div.stButton > button { background-color: #008CBA; color: white; border-radius: 8px; }
     div.stButton > button:hover { background-color: #005f73; }
     </style>
 """, unsafe_allow_html=True)
 
-# Title
-st.title("🔍 SBOM Analyzer - Generator, Parser & Comparator")
+st.title("🔍 SBOM Analyzer")
 
 # Sidebar
-st.sidebar.header("📂 Upload Software Application")
-uploaded_file = st.sidebar.file_uploader("🆕 Upload File", type=["exe", "json", "spdx", "csv", "xml"])
+st.sidebar.header("📂 File Operations")
+file1 = st.sidebar.file_uploader("🆕 Upload First File", type=["exe", "json", "spdx", "csv", "xml"])
+file2 = st.sidebar.file_uploader("📑 Upload Second File for Comparison", type=["exe", "json", "spdx", "csv", "xml"])
+
 generate_button = st.sidebar.button("🔄 Generate SBOM")
+compare_button = st.sidebar.button("🔍 Compare SBOMs")
+search_button = st.sidebar.button("🔎 Search SBOM Components")
+parse_button = st.sidebar.button("📜 Parse SBOM")
 
-# Generate SBOM from backend
-if generate_button and uploaded_file:
-    with st.spinner("⏳ Generating SBOM..."):
-        try:
-            # Make API call
-            response = requests.post(
-                f"{API_URL}/generate-sbom",
-                files={"file": (uploaded_file.name, uploaded_file.getvalue(), uploaded_file.type)}
-            )
+API_URL = "https://sbom.onrender.com"
 
-            if response.status_code == 200:
-                sbom_data = response.json()
-                
-                # SBOM Metadata Display
-                st.subheader(f"📄 SBOM Report for {sbom_data.get('filename', 'N/A')}")
+# Save uploaded files
+def save_uploaded_file(uploaded_file, folder="uploaded_apps"):
+    os.makedirs(folder, exist_ok=True)
+    file_path = os.path.join(folder, uploaded_file.name)
+    with open(file_path, "wb") as f:
+        f.write(uploaded_file.getbuffer())
+    return file_path
 
-                # Extract SBOM components from response
-                components = sbom_data.get("sbom_components", [])
+# Display SBOM Data
+def display_sbom_data(sbom_data):
+    st.subheader("📄 SBOM Data")
+    st.json(sbom_data, expanded=False)
 
-                if components:
-                    st.subheader("🛠️ SBOM Components")
-                    components_df = pd.DataFrame(components, columns=["Components"])
-                    st.dataframe(components_df)
+# Backend API Call
+def generate_sbom_backend(file_path):
+    with open(file_path, "rb") as file:
+        response = requests.post(f"{API_URL}/generate-sbom", files={"file": file})
+        return response.json() if response.ok else None
 
-                    # Download SBOM
-                    sbom_json = json.dumps(sbom_data, indent=4)
-                    st.download_button(
-                        label="📥 Download SBOM Report",
-                        data=sbom_json,
-                        file_name=f"{os.path.splitext(uploaded_file.name)[0]}_sbom.json",
-                        mime="application/json"
-                    )
-                else:
-                    st.warning("⚠️ No SBOM components found.")
+# SBOM Generation
+if generate_button and file1:
+    path = save_uploaded_file(file1)
+    sbom_data = generate_sbom_backend(path)
+    if sbom_data:
+        display_sbom_data(sbom_data)
+    else:
+        st.error("❌ SBOM Generation Failed.")
 
-            else:
-                st.error(f"❌ API Error: {response.status_code} - {response.text}")
+# SBOM Comparison
+if compare_button and file1 and file2:
+    path1 = save_uploaded_file(file1)
+    path2 = save_uploaded_file(file2)
+    added, removed, error = compare_sboms(path1, path2)
 
-        except Exception as e:
-            st.error(f"❌ Error generating SBOM: {str(e)}")
+    if error:
+        st.error(error)
+    else:
+        st.subheader("🟢 Added Components")
+        st.write(added or "None")
+        st.subheader("🔴 Removed Components")
+        st.write(removed or "None")
 
-elif generate_button and not uploaded_file:
-    st.error("❌ Please upload a file to generate SBOM.")
+# SBOM Component Search
+if search_button and file1:
+    path = save_uploaded_file(file1)
+    query = st.text_input("Enter component name to search:")
+    if query:
+        results = search_sbom(path, query)
+        st.subheader("🔎 Search Results")
+        st.write(results or "No matching components found.")
+
+# SBOM Parsing
+if parse_button and file1:
+    path = save_uploaded_file(file1)
+    parsed_data, error = parse_sbom(path)
+
+    if error:
+        st.error(error)
+    else:
+        st.subheader("📜 Parsed SBOM Data")
+        st.write(parsed_data)
