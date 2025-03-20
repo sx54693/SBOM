@@ -51,14 +51,15 @@ def save_uploaded_file(uploaded_file, folder="uploaded_apps"):
         st.error(f"❌ Permission denied: {file_path}. Try running as administrator.")
         return None
 
-# ✅ Extract EXE Metadata
+# ✅ Extract EXE Metadata (Fixes Vendor & Compiler)
 def extract_file_metadata(file_path):
-    compiler, vendor, digital_signature = "Unknown", "Unknown", "Not Available"
+    compiler, vendor, digital_signature = "Not Available", "Not Available", "Not Signed"
+    
     if file_path.endswith(".exe"):
         try:
             pe = pefile.PE(file_path)
-            if hasattr(pe, "OPTIONAL_HEADER"):
-                compiler = f"Linker {pe.OPTIONAL_HEADER.MajorLinkerVersion}.{pe.OPTIONAL_HEADER.MinorLinkerVersion}"
+            compiler = f"Linker {pe.OPTIONAL_HEADER.MajorLinkerVersion}.{pe.OPTIONAL_HEADER.MinorLinkerVersion}" if hasattr(pe, "OPTIONAL_HEADER") else "Unknown"
+            
             if hasattr(pe, "FileInfo"):
                 for file_info in pe.FileInfo:
                     if hasattr(file_info, "StringTable"):
@@ -71,7 +72,10 @@ def extract_file_metadata(file_path):
             digital_signature = check_digital_signature(file_path)
         except Exception:
             pass
-    return {"Compiler": compiler, "Platform": platform.architecture()[0], "Vendor": vendor, "Digital Signature": digital_signature}
+    return {
+        "Compiler": compiler, "Platform": platform.architecture()[0], 
+        "Vendor": vendor, "Digital Signature": digital_signature
+    }
 
 # ✅ Check Digital Signature
 def check_digital_signature(file_path):
@@ -82,9 +86,7 @@ def check_digital_signature(file_path):
         result = subprocess.run([signtool_path, "verify", "/pa", file_path], capture_output=True, text=True, check=False)
         if "Successfully verified" in result.stdout:
             return "✅ Signed"
-        elif "No signature" in result.stdout or "is not signed" in result.stdout:
-            return "❌ Not Signed"
-        return "⚠️ Unknown Signature Status"
+        return "❌ Not Signed"
     except Exception:
         return "❌ Error Checking Signature"
 
@@ -93,20 +95,20 @@ def download_sbom_report(sbom_data, file_name="sbom_report.json"):
     sbom_json = json.dumps(sbom_data, indent=4)
     st.download_button("📥 Download SBOM Report", data=sbom_json, file_name=file_name, mime="application/json")
 
-# ✅ Display SBOM Metadata
+# ✅ Display SBOM Metadata (Fixes Tool, Vendor, Components)
 def display_sbom_data(sbom_data, file_path):
     if not sbom_data:
         st.warning("⚠️ No SBOM data available.")
         return
+    
     metadata = sbom_data.get("metadata", {})
     tools = metadata.get("tools", [])
-    tool_used, tool_version = "Unknown", "Unknown"
-    if isinstance(tools, list) and tools:
-        for tool in tools:
-            if isinstance(tool, dict):
-                tool_used, tool_version = tool.get("name", "Unknown"), tool.get("version", "Unknown")
+    
+    tool_used = tools[0]["name"] if tools and isinstance(tools, list) and "name" in tools[0] else "Syft"
+    tool_version = tools[0]["version"] if tools and isinstance(tools, list) and "version" in tools[0] else sbom_data.get("specVersion", "Unknown")
+    
     file_metadata = extract_file_metadata(file_path)
-    vendor = file_metadata["Vendor"] if file_metadata["Vendor"] != "Unknown" else sbom_data.get("metadata", {}).get("supplier", {}).get("name", "Unknown")
+    vendor = file_metadata["Vendor"] if file_metadata["Vendor"] != "Not Available" else sbom_data.get("metadata", {}).get("supplier", {}).get("name", "Unknown")
     software_name = sbom_data.get("metadata", {}).get("component", {}).get("name", "Unknown")
     digital_signature = file_metadata["Digital Signature"]
 
@@ -130,7 +132,7 @@ def display_sbom_data(sbom_data, file_path):
     download_sbom_report(sbom_data, file_name=f"{software_name}_SBOM.json")
 
     # ✅ Display Components
-    if "components" in sbom_data and isinstance(sbom_data["components"], list):
+    if "components" in sbom_data and isinstance(sbom_data["components"], list) and sbom_data["components"]:
         st.subheader("🛠️ SBOM Components")
         st.dataframe(pd.DataFrame(sbom_data["components"]))
     else:
