@@ -4,11 +4,14 @@ import pefile
 import subprocess
 import platform
 import hashlib
-import requests  # Ensure requests is installed if calling the API
+import requests
+from fastapi import FastAPI, UploadFile, File
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# API URL for SBOM generation on Render
+# Initialize FastAPI app
+app = FastAPI()
+
 API_URL = "https://sbom.onrender.com"
 
 def secure_filename(filename):
@@ -58,7 +61,7 @@ def extract_metadata(file_path):
     return metadata
 
 def check_digital_signature(file_path):
-    """Checks if an EXE file has a digital signature using signtool.exe."""
+    """Checks if an EXE file has a digital signature."""
     try:
         result = subprocess.run(["signtool", "verify", "/pa", file_path], capture_output=True, text=True)
         if "Successfully verified" in result.stdout:
@@ -96,28 +99,25 @@ def generate_sbom(file_path):
         return None
 
 
-# ✅ **Connecting SBOM Generator to Render API**
-def generate_sbom_api(file_path):
-    """Calls the FastAPI backend on Render to generate SBOM."""
-    try:
-        with open(file_path, "rb") as file:
-            response = requests.post(f"{API_URL}/generate-sbom", files={"file": file})
-        
-        if response.status_code != 200:
-            print(f"❌ SBOM API Error: {response.text}")
-            return None
+# ✅ **FastAPI Endpoint for SBOM Generation**
+@app.post("/generate-sbom/")
+async def generate_sbom_api(file: UploadFile = File(...)):
+    """API Endpoint: Receives a file, generates SBOM, and returns the metadata."""
+    file_location = f"uploaded_apps/{secure_filename(file.filename)}"
+    
+    # Save the uploaded file
+    os.makedirs("uploaded_apps", exist_ok=True)
+    with open(file_location, "wb") as buffer:
+        buffer.write(await file.read())
 
-        response_json = response.json()
-        if "metadata" not in response_json:
-            print("⚠️ SBOM API returned invalid response.")
-            return None
+    # Generate SBOM
+    sbom_output = generate_sbom(file_location)
 
-        return response_json  # Return JSON response
+    if not sbom_output:
+        return {"error": "SBOM generation failed"}
 
-    except Exception as e:
-        print(f"❌ Error calling SBOM API: {str(e)}")
-        return None
+    # Read generated SBOM and return JSON response
+    with open(sbom_output, "r", encoding="utf-8") as sbom_file:
+        sbom_json = json.load(sbom_file)
 
-
-
-
+    return sbom_json
