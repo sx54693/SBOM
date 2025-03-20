@@ -213,19 +213,16 @@ def display_sbom_data(sbom_data, file_path):
 # ✅ RUN SBOM GENERATION
 if generate_button and file1:
     file1_path = save_uploaded_file(file1)
-   sbom_output = generate_sbom(file1_path)
-
-st.write("🔍 Debug: SBOM Output Path:", sbom_output)  # Debugging print
-
-if sbom_output is None:
-    st.error("❌ Error: SBOM generation failed. No output file was created.")
-else:
-    with open(sbom_output, "r", encoding="utf-8") as f:
-        sbom_data = json.load(f)
-    display_sbom_data(sbom_data, file1_path)
-     if sbom_output:
-        with open(sbom_output, "r", encoding="utf-8") as f:
-            import requests
+    
+    if file1_path:
+        sbom_output = generate_sbom(file1_path)  # ✅ Make sure this is indented correctly
+        
+        if sbom_output:
+            with open(sbom_output, "r", encoding="utf-8") as f:
+                sbom_data = json.load(f)
+            display_sbom_data(sbom_data, file1_path)
+        else:
+            st.error("❌ Error: SBOM generation failed. No output file created.")
 import streamlit as st
 
 API_URL = "https://sbom.onrender.com"
