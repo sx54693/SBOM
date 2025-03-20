@@ -219,4 +219,5 @@ if generate_button and file1:
         with open(sbom_output, "r", encoding="utf-8") as f:
             sbom_data = json.load(f)
         display_sbom_data(sbom_data, file1_path)
+API_URL = "https://sbom.onrender.com"
 
