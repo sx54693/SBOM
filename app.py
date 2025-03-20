@@ -200,20 +200,18 @@ if generate_button and file1:
 
         import requests
 
-API_URL = "https://sbom-api.onrender.com"
+API_URL = "https://your-sbom-api.onrender.com"
 
-def generate_sbom_via_api(file_path):
-    """Calls the deployed FastAPI backend to generate SBOM."""
-    try:
-        with open(file_path, "rb") as file:
-            response = requests.post(f"{API_URL}/generate-sbom", files={"file": file})
+def generate_sbom(file_path):
+    """Calls the deployed SBOM API"""
+    with open(file_path, "rb") as f:
+        files = {"file": f}
+        response = requests.post(f"{API_URL}/generate-sbom/", files=files)
         
-        if response.status_code == 200:
-            return response.json()  # ✅ Returns SBOM JSON from API
-        else:
-            st.error(f"❌ API Error: {response.status_code} - {response.text}")
-            return None
-    except Exception as e:
-        st.error(f"❌ Error calling API: {str(e)}")
+    if response.status_code == 200:
+        return response.json()
+    else:
+        st.error(f"❌ SBOM API Error: {response.text}")
         return None
+
 
