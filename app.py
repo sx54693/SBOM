@@ -215,19 +215,22 @@ if generate_button and file1:
     file1_path = save_uploaded_file(file1)
 
     if file1_path:
-        sbom_output = generate_sbom(file1_path)
+        sbom_output = generate_sbom(file1_path)  # Generate SBOM ✅
 
-        if not sbom_output or not os.path.exists(sbom_output):  # Ensure SBOM file exists
-            st.error("❌ Error: SBOM generation failed. No output file was created.")
-        else:
-            st.write(f"🔍 Debug: SBOM Output Path: {sbom_output}")  # Debugging print
-
+        if sbom_output:  # Ensure SBOM file is generated ✅
             try:
                 with open(sbom_output, "r", encoding="utf-8") as f:
-                    sbom_data = json.load(f)
-                display_sbom_data(sbom_data, file1_path)
+                    sbom_data = json.load(f)  # Read SBOM Data ✅
+                
+                display_sbom_data(sbom_data, file1_path)  # Show SBOM ✅
+            
             except Exception as e:
-                st.error(f"❌ Error loading SBOM: {str(e)}")
+                st.error(f"❌ Error opening SBOM file: {str(e)}")
+        else:
+            st.error("❌ SBOM file was not generated.")
+    else:
+        st.error("❌ No file uploaded or processed.")
+
 
 
 import streamlit as st
