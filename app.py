@@ -183,17 +183,20 @@ def display_sbom_data(sbom_data, file_path):
 # ✅ RUN SBOM GENERATION
 if generate_button and file1:
     file1_path = save_uploaded_file(file1)
-
     sbom_output = generate_sbom(file1_path)
 
-    if sbom_output and isinstance(sbom_output, str) and os.path.exists(sbom_output):
-        with open(sbom_output, "r", encoding="utf-8") as f:
-            sbom_data = json.load(f)
-        display_sbom_data(sbom_data, file1_path)
-    else:
-        st.error(f"❌ SBOM generation failed. Check console logs for details.")
+    if sbom_output:
+        try:
+            with open(sbom_output, "r", encoding="utf-8") as f:
+                sbom_data = json.load(f)
 
+            if "metadata" not in sbom_data:
+                st.error("⚠️ SBOM Metadata missing from output file.")
+            else:
+                display_sbom_data(sbom_data, file1_path)
 
+        except Exception as e:
+            st.error(f"❌ Error reading SBOM file: {e}")
 
         import requests
 
