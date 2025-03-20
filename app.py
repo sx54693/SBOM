@@ -223,10 +223,7 @@ else:
     with open(sbom_output, "r", encoding="utf-8") as f:
         sbom_data = json.load(f)
     display_sbom_data(sbom_data, file1_path)
-
-
-    
-    if sbom_output:
+     if sbom_output:
         with open(sbom_output, "r", encoding="utf-8") as f:
             import requests
 import streamlit as st
