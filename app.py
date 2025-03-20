@@ -231,6 +231,19 @@ if generate_button and file1:
     else:
         st.error("❌ No file uploaded or processed.")
 
+def generate_sbom(file_path):
+    output_path = f"sbom_outputs/{os.path.basename(file_path)}.json"
+    
+    # Simulate SBOM file creation
+    sbom_data = {"software": os.path.basename(file_path), "components": []}
+    
+    try:
+        with open(output_path, "w", encoding="utf-8") as f:
+            json.dump(sbom_data, f, indent=4)
+        return output_path  # ✅ Return valid path
+    except Exception as e:
+        print(f"❌ SBOM Generation Failed: {str(e)}")
+        return None
 
 
 import streamlit as st
