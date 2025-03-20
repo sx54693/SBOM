@@ -200,3 +200,22 @@ if compare_button and file1 and file2:
     else:
         st.write("### ✅ Added Components", added)
         st.write("### ❌ Removed Components", removed)
+        import requests
+
+API_URL = "https://sbom-api.onrender.com"
+
+def generate_sbom_via_api(file_path):
+    """Calls the deployed FastAPI backend to generate SBOM."""
+    try:
+        with open(file_path, "rb") as file:
+            response = requests.post(f"{API_URL}/generate-sbom", files={"file": file})
+        
+        if response.status_code == 200:
+            return response.json()  # ✅ Returns SBOM JSON from API
+        else:
+            st.error(f"❌ API Error: {response.status_code} - {response.text}")
+            return None
+    except Exception as e:
+        st.error(f"❌ Error calling API: {str(e)}")
+        return None
+
