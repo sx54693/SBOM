@@ -217,6 +217,24 @@ if generate_button and file1:
     
     if sbom_output:
         with open(sbom_output, "r", encoding="utf-8") as f:
+            import requests
+import streamlit as st
+
+API_URL = "https://sbom.onrender.com"
+
+def generate_sbom(file):
+    """Calls the FastAPI backend to generate SBOM."""
+    try:
+        response = requests.post(f"{API_URL}/generate-sbom", files={"file": file})
+        
+        # Debugging: Print API response
+        st.write("🔹 API Response Code:", response.status_code)
+        st.write("🔹 API Response:", response.text)  # Print full API response
+        
+        return response.json()
+    except Exception as e:
+        st.error(f"❌ Error calling API: {str(e)}")
+
             sbom_data = json.load(f)
         display_sbom_data(sbom_data, file1_path)
 API_URL = "https://sbom.onrender.com"
