@@ -216,17 +216,19 @@ if generate_button and file1:
 
     if file1_path:
         sbom_output = generate_sbom(file1_path)
-        st.write(f"🔍 Debug: SBOM Output Path: {sbom_output}")  # Debugging print
 
-        if not sbom_output:
+        if not sbom_output or not os.path.exists(sbom_output):  # Ensure SBOM file exists
             st.error("❌ Error: SBOM generation failed. No output file was created.")
         else:
+            st.write(f"🔍 Debug: SBOM Output Path: {sbom_output}")  # Debugging print
+
             try:
                 with open(sbom_output, "r", encoding="utf-8") as f:
                     sbom_data = json.load(f)
                 display_sbom_data(sbom_data, file1_path)
             except Exception as e:
                 st.error(f"❌ Error loading SBOM: {str(e)}")
+
 
 import streamlit as st
 
