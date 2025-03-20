@@ -1,6 +1,7 @@
+
 import os
-import py7zr  # ensure py7zr is installed in requirements.txt
 import json
+import py7zr  # Ensure py7zr is installed in requirements.txt
 import pefile
 import hashlib
 import platform
@@ -127,9 +128,8 @@ def generate_sbom(file_path):
             print(f"❌ Error: File {file_path} not found.")
             return None
 
-        original_file_path = file_path
-        file_name = os.path.basename(original_file_path)
-        file_hash = calculate_file_hash(original_file_path)
+        file_name = os.path.basename(file_path)
+        file_hash = calculate_file_hash(file_path)
         digital_signature = get_pe_signature(file_path) if file_path.endswith(".exe") else "Not Available"
 
         vendor, version, compiler = "Unknown", "Unknown", "Unknown"
@@ -187,26 +187,4 @@ def generate_sbom(file_path):
     except Exception as e:
         print(f"❌ Exception in generate_sbom: {e}")
         return None
-import os
-import json
 
-def generate_sbom(file_path):
-    """Generates a dummy SBOM file and returns the file path."""
-    sbom_file_path = f"sbom_outputs/{os.path.basename(file_path)}.json"
-
-    try:
-        # Simulate SBOM generation
-        sbom_data = {
-            "metadata": {"name": os.path.basename(file_path), "format": "CycloneDX"},
-            "components": []
-        }
-
-        os.makedirs("sbom_outputs", exist_ok=True)  # Ensure folder exists
-        with open(sbom_file_path, "w", encoding="utf-8") as f:
-            json.dump(sbom_data, f, indent=4)
-
-        return sbom_file_path  # ✅ Return valid SBOM file path
-
-    except Exception as e:
-        print(f"❌ Error generating SBOM: {str(e)}")
-        return None  # Return None if SBOM fails
