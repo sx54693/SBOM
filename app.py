@@ -2,12 +2,10 @@ import streamlit as st
 import os
 import json
 import pandas as pd
-import hashlib
-import subprocess
-import shutil
 import platform
 import pefile
 import requests
+import subprocess
 from sbom_compare import compare_sboms
 from sbom_generator import generate_sbom
 from sbom_parser import parse_sbom
@@ -28,7 +26,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Title
-st.title("🔍 SBOM Analyzer - Generator, Parser & Comparator")
+st.title("🔍 SBOM Analyzer - Generator, Parser, Comparator & Search")
 
 # Sidebar with Upload Option
 st.sidebar.header("📂 Upload Software Application or SBOM File")
@@ -86,7 +84,7 @@ def extract_file_metadata(file_path):
                                     if key_decoded == "CompanyName" and value_decoded:
                                         vendor = value_decoded
                                 except AttributeError:
-                                    continue  # Ignore decoding errors
+                                    continue
 
             # ✅ Extract Digital Signature
             digital_signature = check_digital_signature(file_path)
@@ -103,7 +101,7 @@ def extract_file_metadata(file_path):
         "Digital Signature": digital_signature
     }
 
-# Check Digital Signature using signtool.exe
+# Check Digital Signature
 def check_digital_signature(file_path):
     """Checks if an EXE file is digitally signed using signtool.exe"""
     signtool_path = "C:\\Users\\cyria\\signtool.exe"
@@ -127,6 +125,18 @@ def check_digital_signature(file_path):
     except Exception as e:
         return f"❌ Error Checking Signature: {str(e)}"
 
+# Function to Provide SBOM Report Download
+def download_sbom_report(sbom_data, file_name="sbom_report.json"):
+    """Allows users to download SBOM report in JSON format"""
+    sbom_json = json.dumps(sbom_data, indent=4)
+    
+    st.download_button(
+        label="📥 Download SBOM Report",
+        data=sbom_json,
+        file_name=file_name,
+        mime="application/json"
+    )
+
 # Display SBOM Data
 def display_sbom_data(sbom_data, file_path):
     """Extract and display SBOM metadata & components."""
@@ -134,8 +144,7 @@ def display_sbom_data(sbom_data, file_path):
         st.warning("⚠️ No SBOM data available.")
         return
 
-    st.write("🔍 Raw SBOM Data:", sbom_data)  # ✅ Debugging step
-
+    # Extract Metadata
     metadata = sbom_data.get("metadata", {})
     tools = metadata.get("tools", [])
 
@@ -184,7 +193,6 @@ if generate_button and file1:
 if compare_button and file1 and file2:
     file1_path = save_uploaded_file(file1)
     file2_path = save_uploaded_file(file2)
-
     added, removed, error = compare_sboms(file1_path, file2_path)
     
     if error:
