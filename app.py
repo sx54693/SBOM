@@ -2,64 +2,73 @@ import streamlit as st
 import requests
 import pandas as pd
 import json
+import os
 
-# API URL (Ensure FastAPI is running)
-API_URL = "https://sbom.onrender.com"
-
-# Page Config
+# Page Configuration
 st.set_page_config(page_title="SBOM Analyzer", page_icon="🔍", layout="wide")
 
-# Title
-st.title("🔍 SBOM Analyzer - Generator & Viewer")
+# API Backend URL
+API_URL = "https://sbom.onrender.com"
 
-# Sidebar with Upload Option
-file1 = st.sidebar.file_uploader("🆕 Upload Software File", type=["exe", "json", "spdx", "csv", "xml"])
+# UI Styling
+st.markdown("""
+    <style>
+    .stApp { background: linear-gradient(135deg, #1f4037, #99f2c8); color: white; }
+    [data-testid="stSidebar"] { background: #1f2833; color: white; }
+    .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 { color: #ffcc00; }
+    div.stButton > button { background-color: #008CBA; color: white; border-radius: 8px; }
+    div.stButton > button:hover { background-color: #005f73; }
+    </style>
+""", unsafe_allow_html=True)
+
+# Title
+st.title("🔍 SBOM Analyzer - Generator, Parser & Comparator")
+
+# Sidebar
+st.sidebar.header("📂 Upload Software Application")
+uploaded_file = st.sidebar.file_uploader("🆕 Upload File", type=["exe", "json", "spdx", "csv", "xml"])
 generate_button = st.sidebar.button("🔄 Generate SBOM")
 
-# ✅ Function to Call API for SBOM Generation
-def generate_sbom(file):
-    """Calls FastAPI backend to generate SBOM."""
-    try:
-        response = requests.post(f"{API_URL}/generate-sbom", files={"file": file})
-
-        # Debugging: Show API response
-        st.write("🔹 API Response Code:", response.status_code)
-        st.write("🔹 API Response:", response.json())  
-
-        if response.status_code == 200:
-            return response.json()  # ✅ Return full response as a dictionary
-        else:
-            st.error(f"❌ API Error: {response.text}")
-            return None
-    except Exception as e:
-        st.error(f"❌ Error calling API: {str(e)}")
-        return None
-
-# ✅ Function to Display SBOM Data
-def display_sbom_data(sbom_data):
-    """Extract and display SBOM components."""
-    if not sbom_data:
-        st.warning("⚠️ No SBOM data available.")
-        return
-
-    # ✅ Display Metadata
-    software_name = sbom_data.get("filename", "Unknown Software")
-    st.subheader(f"📄 SBOM Report for {software_name}")
-
-    # ✅ Display Components
-    components = sbom_data.get("sbom_components", [])
-    if components:
-        components_df = pd.DataFrame(components, columns=["Component Name"])
-        st.dataframe(components_df)
-    else:
-        st.warning("⚠️ No components found.")
-
-# ✅ SBOM GENERATION & DISPLAY
-if generate_button and file1:
+# Generate SBOM from backend
+if generate_button and uploaded_file:
     with st.spinner("⏳ Generating SBOM..."):
-        sbom_response = generate_sbom(file1)  # ✅ API Call
+        try:
+            # Make API call
+            response = requests.post(
+                f"{API_URL}/generate-sbom",
+                files={"file": (uploaded_file.name, uploaded_file.getvalue(), uploaded_file.type)}
+            )
 
-    if sbom_response:
-        display_sbom_data(sbom_response)  # ✅ Display Components
-    else:
-        st.error("❌ SBOM data could not be retrieved.")
+            if response.status_code == 200:
+                sbom_data = response.json()
+                
+                # SBOM Metadata Display
+                st.subheader(f"📄 SBOM Report for {sbom_data.get('filename', 'N/A')}")
+
+                # Extract SBOM components from response
+                components = sbom_data.get("sbom_components", [])
+
+                if components:
+                    st.subheader("🛠️ SBOM Components")
+                    components_df = pd.DataFrame(components, columns=["Components"])
+                    st.dataframe(components_df)
+
+                    # Download SBOM
+                    sbom_json = json.dumps(sbom_data, indent=4)
+                    st.download_button(
+                        label="📥 Download SBOM Report",
+                        data=sbom_json,
+                        file_name=f"{os.path.splitext(uploaded_file.name)[0]}_sbom.json",
+                        mime="application/json"
+                    )
+                else:
+                    st.warning("⚠️ No SBOM components found.")
+
+            else:
+                st.error(f"❌ API Error: {response.status_code} - {response.text}")
+
+        except Exception as e:
+            st.error(f"❌ Error generating SBOM: {str(e)}")
+
+elif generate_button and not uploaded_file:
+    st.error("❌ Please upload a file to generate SBOM.")
