@@ -234,8 +234,8 @@ def generate_sbom(file):
         return response.json()
     except Exception as e:
         st.error(f"❌ Error calling API: {str(e)}")
-
-            sbom_data = json.load(f)
+with open(sbom_output, "r", encoding="utf-8") as f:
+    sbom_data = json.load(f)  # Ensure proper indentation
         display_sbom_data(sbom_data, file1_path)
 API_URL = "https://sbom.onrender.com"
 
