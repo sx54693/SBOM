@@ -5,11 +5,11 @@ import hashlib
 import subprocess
 import pefile
 from fastapi import FastAPI, UploadFile, File
-from typing import Dict
 
-# ✅ Create FastAPI App
+# ✅ Create FastAPI App Instance
 app = FastAPI()
 
+# ✅ Base Directory
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def secure_filename(filename: str) -> str:
@@ -28,7 +28,7 @@ def calculate_file_hash(file_path: str) -> str:
         print(f"❌ Error: {e}")
         return "Unknown"
 
-def extract_metadata_from_exe(file_path: str) -> Dict:
+def extract_metadata_from_exe(file_path: str) -> dict:
     """Extracts metadata from an EXE file."""
     metadata = {
         "Vendor": "Unknown",
@@ -52,6 +52,11 @@ def extract_metadata_from_exe(file_path: str) -> Dict:
     except Exception as e:
         print(f"⚠️ Error reading PE metadata: {e}")
         return metadata
+
+@app.get("/")
+def home():
+    """Root endpoint to check if API is running"""
+    return {"message": "SBOM Generator API is running!"}
 
 @app.post("/generate-sbom/")
 async def generate_sbom(file: UploadFile = File(...)):
@@ -82,4 +87,3 @@ async def generate_sbom(file: UploadFile = File(...)):
         json.dump(sbom_data, f, indent=4)
 
     return {"filename": file.filename, "sbom_file": sbom_output_path, "sbom_data": sbom_data}
-
