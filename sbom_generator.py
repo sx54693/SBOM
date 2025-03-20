@@ -119,4 +119,21 @@ def generate_sbom(file_path):
     except Exception as e:
         print(f"❌ Error generating SBOM: {str(e)}")
         return None  # Return None if SBOM fails
+        API_URL = "https://sbom.onrender.com"
+
+def generate_sbom(file):
+    """Calls the FastAPI backend to generate SBOM."""
+    try:
+        response = requests.post(f"{API_URL}/generate-sbom", files={"file": file})
+        response_json = response.json()
+
+        if "metadata" not in response_json:
+            st.error("⚠️ SBOM API returned invalid response.")
+            return None
+
+        return response_json
+    except Exception as e:
+        st.error(f"❌ Error calling API: {str(e)}")
+        return None
+
 
