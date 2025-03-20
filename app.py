@@ -183,7 +183,8 @@ def display_sbom_data(sbom_data, file_path):
 # ✅ RUN SBOM GENERATION
 if generate_button and file1:
     file1_path = save_uploaded_file(file1)
-    sbom_output = generate_sbom(file1_path)
+    sbom_output = await generate_sbom(file1_path)
+
 
     if sbom_output:
         with open(sbom_output, "r", encoding="utf-8") as f:
