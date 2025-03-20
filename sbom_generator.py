@@ -113,8 +113,6 @@ async def generate_sbom(file: UploadFile = File(...)):
         json.dump(sbom_data, f, indent=4)
 
     return {"filename": file.filename, "sbom_file": sbom_output_path, "sbom_data": sbom_data}
-     import json
-import os
 
 def generate_sbom(file_path):
     """Generates a valid SBOM JSON file and returns the file path."""
