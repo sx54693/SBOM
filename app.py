@@ -139,46 +139,53 @@ def download_sbom_report(sbom_data, file_name="sbom_report.json"):
 
 # Display SBOM Data
 def display_sbom_data(sbom_data, file_path):
-    """Extract and display SBOM metadata & components."""
-    if not sbom_data:
-        st.warning("⚠️ No SBOM data available.")
-        return
-
-    # Extract Metadata
     metadata = sbom_data.get("metadata", {})
     tools = metadata.get("tools", [])
+    tool = tools[0] if tools and isinstance(tools, list) else {}
 
-    tool_used = tools[0]["name"] if tools and isinstance(tools, list) and tools[0].get("name") else "Syft"
-    tool_version = tools[0]["version"] if tools and isinstance(tools, list) and tools[0].get("version") else sbom_data.get("specVersion", "Unknown")
+    # Extract tool details
+    tool_used = tool.get("name", "Syft")
+    tool_version = tool.get("version", sbom_data.get("specVersion", "Unknown"))
 
+    # Fallbacks for missing metadata
+    software_name = metadata.get("component", {}).get("name") or os.path.basename(file_path)
     vendor = metadata.get("supplier", {}).get("name", "Unknown")
-    software_name = metadata.get("component", {}).get("name", "Unknown")
 
+    # Extract EXE metadata
     file_metadata = extract_file_metadata(file_path)
-    digital_signature = file_metadata["Digital Signature"]
 
     sbom_summary = {
         "Software Name": software_name,
-        "Format": sbom_data.get("bomFormat", "SPDX"),
+        "Format": sbom_data.get("bomFormat", "CycloneDX"),
         "Version": sbom_data.get("specVersion", "Unknown"),
-        "Generated On": metadata.get("timestamp", "Unknown"),
+        "Generated On": metadata.get("timestamp", "N/A"),
         "Tool Used": tool_used,
         "Tool Version": tool_version,
         "Vendor": vendor if vendor != "Unknown" else file_metadata["Vendor"],
         "Compiler": file_metadata["Compiler"],
         "Platform": file_metadata["Platform"],
-        "Digital Signature": digital_signature
+        "Digital Signature": file_metadata["Digital Signature"]
     }
 
     st.subheader("📄 SBOM Metadata")
     st.table(pd.DataFrame(sbom_summary.items(), columns=["Attribute", "Value"]))
 
-    if "components" in sbom_data and isinstance(sbom_data["components"], list):
+    # Download SBOM Report
+    st.download_button(
+        "📥 Download SBOM Report",
+        data=json.dumps(sbom_data, indent=2),
+        file_name=f"{software_name}_SBOM.json",
+        mime="application/json"
+    )
+
+    # Components Display
+    components = sbom_data.get("components", [])
+    if components:
         st.subheader("🛠️ SBOM Components")
-        components_df = pd.DataFrame(sbom_data["components"])
-        st.dataframe(components_df)
+        st.dataframe(pd.DataFrame(components))
     else:
         st.warning("⚠️ No components found.")
+
 
 # ✅ RUN SBOM GENERATION
 if generate_button and file1:
