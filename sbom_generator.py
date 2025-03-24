@@ -62,6 +62,8 @@ def extract_metadata(file_path):
 
 def check_digital_signature(file_path):
     """Checks if an EXE file has a digital signature."""
+    if platform.system() != "Windows":
+        return "⚠️ Signature Check Not Available on Cloud"
     try:
         result = subprocess.run(["signtool", "verify", "/pa", file_path], capture_output=True, text=True)
         if "Successfully verified" in result.stdout:
@@ -69,6 +71,7 @@ def check_digital_signature(file_path):
         return "❌ Not Signed"
     except Exception:
         return "⚠️ Signature Check Tool Not Found"
+
 
 def generate_sbom(file_path):
     """Generates an SBOM for the given file"""
