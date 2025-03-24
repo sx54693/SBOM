@@ -4,19 +4,19 @@ import pefile
 import platform
 import hashlib
 import subprocess
-
+import tempfile
 
 def secure_filename(filename):
+    """Sanitize filename to prevent issues."""
     return os.path.basename(filename).replace(" ", "_")
 
-
 def calculate_sha256(file_path):
+    """Calculate SHA-256 hash of the file."""
     sha256 = hashlib.sha256()
     with open(file_path, "rb") as f:
         for chunk in iter(lambda: f.read(4096), b""):
             sha256.update(chunk)
     return sha256.hexdigest()
-
 
 def extract_metadata(file_path):
     metadata = {
@@ -25,7 +25,7 @@ def extract_metadata(file_path):
         "Version": "Unknown",
         "Generated On": "N/A",
         "Tool Used": "Syft",
-        "Tool Version": "1.0",
+        "Tool Version": "1.6",
         "Vendor": "Unknown",
         "Compiler": "Unknown",
         "Platform": platform.architecture()[0],
@@ -48,12 +48,10 @@ def extract_metadata(file_path):
                                 value_decoded = value.decode(errors="ignore").strip()
                                 if key_decoded == "CompanyName":
                                     metadata["Vendor"] = value_decoded
-
         except Exception as e:
             print(f"⚠️ Metadata extraction failed: {e}")
 
     return metadata
-
 
 def generate_sbom(file_path):
     try:
@@ -63,49 +61,38 @@ def generate_sbom(file_path):
 
         metadata = extract_metadata(file_path)
 
-        # Run Syft to generate real SBOM components
-        syft_cmd = ["syft", file_path, "-o", "cyclonedx-json"]
-        syft_result = subprocess.run(syft_cmd, capture_output=True, text=True)
+        # Run Syft and capture real component data
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".json") as temp_sbom:
+            result = subprocess.run(["syft", file_path, "-o", "cyclonedx-json"], capture_output=True, text=True)
+            if result.returncode != 0:
+                print(f"❌ Syft error: {result.stderr}")
+                return None
+            temp_sbom.write(result.stdout.encode())
 
-        if syft_result.returncode != 0:
-            print(f"❌ Syft failed: {syft_result.stderr}")
-            return None
+        with open(temp_sbom.name, "r", encoding="utf-8") as f:
+            sbom_json = json.load(f)
 
-        sbom_data = json.loads(syft_result.stdout)
+        sbom_json["metadata"]["component"]["name"] = metadata["Software Name"]
+        sbom_json["metadata"]["timestamp"] = metadata["Generated On"]
+        sbom_json["metadata"]["tools"] = [{"name": metadata["Tool Used"], "version": metadata["Tool Version"]}]
+        sbom_json["metadata"]["supplier"] = {"name": metadata["Vendor"]}
 
-        # Update metadata accurately
-        sbom_data["metadata"] = {
-            "timestamp": metadata["Generated On"],
-            "component": {
-                "name": metadata["Software Name"],
-                "type": "application"
-            },
-            "tools": [{
-                "name": metadata["Tool Used"],
-                "version": metadata["Tool Version"]
-            }],
-            "supplier": {
-                "name": metadata["Vendor"]
-            }
-        }
-
-        # Include additional properties
-        sbom_data["additionalProperties"] = {
+        sbom_json["additionalProperties"] = {
             "Compiler": metadata["Compiler"],
             "Platform": metadata["Platform"],
             "Digital Signature": metadata["Digital Signature"],
             "SHA256": calculate_sha256(file_path)
         }
 
-        # Save SBOM JSON file
         output_dir = "sbom_outputs"
         os.makedirs(output_dir, exist_ok=True)
         output_path = os.path.join(output_dir, secure_filename(file_path) + "_sbom.json")
 
         with open(output_path, "w", encoding="utf-8") as f:
-            json.dump(sbom_data, f, indent=2)
+            json.dump(sbom_json, f, indent=2)
 
-        print(f"✅ SBOM generated successfully: {output_path}")
+        os.unlink(temp_sbom.name)  # Cleanup temporary file
+
         return output_path
 
     except Exception as e:
