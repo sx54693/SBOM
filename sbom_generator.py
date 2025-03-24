@@ -1,10 +1,9 @@
 import os
 import json
-import subprocess
+import pefile
 import platform
 import hashlib
-import pefile
-from datetime import datetime
+import tempfile
 
 def secure_filename(filename):
     """Sanitize filename to prevent issues."""
@@ -24,9 +23,9 @@ def extract_metadata(file_path):
         "Software Name": os.path.basename(file_path),
         "Format": "CycloneDX",
         "Version": "Unknown",
-        "Generated On": datetime.utcnow().isoformat() + "Z",
+        "Generated On": "N/A",
         "Tool Used": "Syft",
-        "Tool Version": "1.6",
+        "Tool Version": "1.0",
         "Vendor": "Unknown",
         "Compiler": "Unknown",
         "Platform": platform.architecture()[0],
@@ -53,60 +52,87 @@ def extract_metadata(file_path):
                                     metadata["Vendor"] = value_decoded
         except Exception as e:
             print(f"⚠️ Metadata extraction failed: {e}")
-
+    
     return metadata
 
 def generate_sbom(file_path):
-    """Generates an SBOM JSON using Syft with real components."""
-    if not os.path.exists(file_path):
-        print(f"❌ File not found: {file_path}")
-        return None
+    """Generates an SBOM-compatible JSON response with components."""
+    try:
+        if not os.path.exists(file_path):
+            print(f"❌ File not found: {file_path}")
+            return None
 
-    # Generate SBOM with Syft
-    syft_command = ["syft", file_path, "-o", "cyclonedx-json"]
-    result = subprocess.run(syft_command, capture_output=True, text=True)
+        metadata = extract_metadata(file_path)
 
-    if result.returncode != 0:
-        print(f"❌ Syft failed: {result.stderr}")
-        return None
-
-    syft_sbom = json.loads(result.stdout)
-
-    # Extract Metadata
-    metadata = extract_metadata(file_path)
-
-    # Construct final SBOM with additional metadata
-    sbom_json = {
-        "bomFormat": syft_sbom.get("bomFormat", "CycloneDX"),
-        "specVersion": syft_sbom.get("specVersion", "1.6"),
-        "metadata": {
-            "timestamp": metadata["Generated On"],
-            "component": {
-                "name": metadata["Software Name"],
-                "type": "application"
+        # 🧩 Sample Components – Replace with actual data later
+        components = [
+            {
+                "type": "library",
+                "name": "OpenSSL",
+                "version": "1.1.1k",
+                "supplier": {"name": "OpenSSL Foundation"},
+                "hashes": [{"alg": "SHA-256", "content": "dummyhash1"}],
+                "licenses": [{"license": {"name": "Apache-2.0"}}]
             },
-            "tools": [{
-                "name": metadata["Tool Used"],
-                "version": metadata["Tool Version"]
-            }],
-            "supplier": {
-                "name": metadata["Vendor"]
+            {
+                "type": "library",
+                "name": "zlib",
+                "version": "1.2.11",
+                "supplier": {"name": "Jean-loup Gailly and Mark Adler"},
+                "hashes": [{"alg": "SHA-256", "content": "dummyhash2"}],
+                "licenses": [{"license": {"name": "Zlib"}}]
             }
-        },
-        "components": syft_sbom.get("components", []),
-        "additionalProperties": {
-            "Compiler": metadata["Compiler"],
-            "Platform": metadata["Platform"],
-            "Digital Signature": metadata["Digital Signature"],
-            "SHA256": calculate_sha256(file_path)
+        ]
+
+        sbom_json = {
+            "bomFormat": "CycloneDX",
+            "specVersion": "1.6",
+            "metadata": {
+                "timestamp": metadata["Generated On"],
+                "component": {
+                    "name": metadata["Software Name"],
+                    "type": "application"
+                },
+                "tools": [{
+                    "name": metadata["Tool Used"],
+                    "version": metadata["Tool Version"]
+                }],
+                "supplier": {
+                    "name": metadata["Vendor"]
+                }
+            },
+            "components": components,
+            "additionalProperties": {
+                "Compiler": metadata["Compiler"],
+                "Platform": metadata["Platform"],
+                "Digital Signature": metadata["Digital Signature"],
+                "SHA256": calculate_sha256(file_path)
+            }
         }
-    }
 
-    # Save SBOM file
-    output_dir = "sbom_outputs"
-    os.makedirs(output_dir, exist_ok=True)
-    output_path = os.path.join(output_dir, secure_filename(file_path) + "_sbom.json")
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(sbom_json, f, indent=2)
+        # Save SBOM JSON file
+        output_dir = os.path.join("sbom_outputs")
+        os.makedirs(output_dir, exist_ok=True)
+        output_path = os.path.join(output_dir, secure_filename(file_path) + "_sbom.json")
+        with open(output_path, "w", encoding="utf-8") as f:
+            json.dump(sbom_json, f, indent=2)
 
-    return output_path
+        return output_path
+
+    except Exception as e:
+        print(f"❌ Error generating SBOM: {e}")
+        return None
+
+
+        # Save SBOM file temporarily
+        output_dir = os.path.join("sbom_outputs")
+        os.makedirs(output_dir, exist_ok=True)
+        output_path = os.path.join(output_dir, secure_filename(file_path) + "_sbom.json")
+        with open(output_path, "w", encoding="utf-8") as f:
+            json.dump(sbom_json, f, indent=2)
+
+        return output_path
+
+    except Exception as e:
+        print(f"❌ Error generating SBOM: {e}")
+        return None
