@@ -103,11 +103,11 @@ def extract_file_metadata(file_path):
 
 # Check Digital Signature
 def check_digital_signature(file_path):
-    """Checks if an EXE file is digitally signed using signtool.exe"""
-    signtool_path = "C:\\Users\\cyria\\signtool.exe"
+    # Skip on platforms that don't support signtool
+    if not os.path.exists("C:\\Users\\cyria\\signtool.exe"):
+        return "⚠️ Signature Check Not Available on Cloud"
 
-    if not os.path.exists(signtool_path):
-        return "⚠️ Signature Check Tool Not Found"
+
 
     try:
         result = subprocess.run(
@@ -144,12 +144,38 @@ def display_sbom_data(sbom_data, file_path):
     tool = tools[0] if tools and isinstance(tools, list) else {}
 
     # Extract tool details
-    tool_used = tool.get("name", "Syft")
-    tool_version = tool.get("version", sbom_data.get("specVersion", "Unknown"))
+    # Fix tool extraction with proper fallback
+tools = metadata.get("tools", [])
+tool_used = "Syft"
+tool_version = "Unknown"
+
+if tools and isinstance(tools, list):
+    tool_info = tools[0]
+    if isinstance(tool_info, dict):
+        tool_used = tool_info.get("name", "Syft")
+        tool_version = tool_info.get("version", "Unknown")
+
+generated_on = metadata.get("timestamp", "N/A")
+
 
     # Fallbacks for missing metadata
-    software_name = metadata.get("component", {}).get("name") or os.path.basename(file_path)
-    vendor = metadata.get("supplier", {}).get("name", "Unknown")
+    
+vendor = metadata.get("supplier", {}).get("name")
+software_name = metadata.get("component", {}).get("name")
+# If still unknown, try fallback from file metadata
+if not vendor or vendor == "Unknown":
+    vendor = file_metadata.get("Vendor", "Unknown")
+
+if not software_name or software_name == "Unknown":
+    software_name = os.path.basename(file_path)
+
+# If still unknown, try fallback from file metadata
+if not vendor or vendor == "Unknown":
+    vendor = file_metadata.get("Vendor", "Unknown")
+
+if not software_name or software_name == "Unknown":
+    software_name = os.path.basename(file_path)
+
 
     # Extract EXE metadata
     file_metadata = extract_file_metadata(file_path)
