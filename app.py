@@ -195,12 +195,13 @@ def display_sbom_data(sbom_data, file_path):
         st.warning("⚠️ No components found.")
 
     # Download SBOM Report
-    st.download_button(
-        "📥 Download SBOM Report",
-        data=json.dumps(sbom_data, indent=2),
-        file_name=f"{software_name}_SBOM.json",
-        mime="application/json"
-    )
+  st.download_button(
+    label="📥 Download SBOM Report",
+    data=sbom_json,
+    file_name=file_name,
+    mime="application/json",
+    key=f"download-{file_name}"
+)
 
     # Components Display
     components = sbom_data.get("components", [])
