@@ -255,3 +255,26 @@ def generate_sbom(file_path):
     else:
         st.error(f"❌ SBOM API Error: {response.text}")
         return None
+import requests
+import streamlit as st
+
+API_URL = "https://your-render-api.onrender.com/generate-sbom/"
+
+def generate_sbom_via_api(file_path):
+    with open(file_path, "rb") as f:
+        files = {"file": f}
+        response = requests.post(API_URL, files=files)
+        
+    if response.status_code == 200:
+        return response.json()
+    else:
+        st.error(f"❌ SBOM API Error: {response.status_code} - {response.text}")
+        return None
+
+# Call this function from your Streamlit button handler:
+if generate_button and file1:
+    file_path = save_uploaded_file(file1)
+    sbom_data = generate_sbom_via_api(file_path)
+
+    if sbom_data:
+        display_sbom_data(sbom_data, file_path)
