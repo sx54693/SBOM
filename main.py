@@ -21,4 +21,3 @@ async def generate_sbom_api(file: UploadFile = File(...)):
         sbom_json = json.load(sbom_file)
 
     return sbom_json
-
