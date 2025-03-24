@@ -4,6 +4,7 @@ import pefile
 import platform
 import hashlib
 from fastapi import FastAPI, UploadFile, File
+from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
@@ -13,7 +14,7 @@ def secure_filename(filename):
 def calculate_sha256(file_path):
     sha256 = hashlib.sha256()
     with open(file_path, "rb") as f:
-        while chunk := f.read(4096):
+        for chunk in iter(lambda: f.read(4096), b""):
             sha256.update(chunk)
     return sha256.hexdigest()
 
@@ -35,27 +36,23 @@ def extract_metadata(file_path):
         try:
             pe = pefile.PE(file_path)
 
-            # Compiler extraction
             if hasattr(pe, "OPTIONAL_HEADER"):
-                major = pe.OPTIONAL_HEADER.MajorLinkerVersion
-                minor = pe.OPTIONAL_HEADER.MinorLinkerVersion
-                metadata["Compiler"] = f"Linker {major}.{minor}"
+                metadata["Compiler"] = f"Linker {pe.OPTIONAL_HEADER.MajorLinkerVersion}.{pe.OPTIONAL_HEADER.MinorLinkerVersion}"
 
-            # Vendor and version extraction
             if hasattr(pe, "FileInfo"):
                 for file_info in pe.FileInfo:
                     if hasattr(file_info, "StringTable"):
                         for entry in file_info.StringTable:
                             for key, value in entry.entries.items():
-                                k = key.decode(errors="ignore").strip()
-                                v = value.decode(errors="ignore").strip()
-                                if k == "CompanyName":
-                                    metadata["Vendor"] = v or "N/A"
-                                elif k == "ProductVersion":
-                                    metadata["Version"] = v or "N/A"
+                                key_decoded = key.decode(errors="ignore").strip()
+                                value_decoded = value.decode(errors="ignore").strip()
+                                if key_decoded == "CompanyName":
+                                    metadata["Vendor"] = value_decoded
+                                elif key_decoded == "ProductVersion":
+                                    metadata["Version"] = value_decoded
 
         except Exception as e:
-            print(f"⚠️ Metadata extraction issue: {e}")
+            print(f"Metadata extraction failed: {e}")
 
     return metadata
 
@@ -63,48 +60,43 @@ def extract_metadata(file_path):
 async def generate_sbom(file: UploadFile = File(...)):
     file_location = f"uploaded_apps/{secure_filename(file.filename)}"
     os.makedirs("uploaded_apps", exist_ok=True)
-    
-    with open(file_location, "wb") as buffer:
-        buffer.write(await file.read())
 
-    metadata = extract_metadata(file_location)
+    try:
+        with open(file_location, "wb") as buffer:
+            buffer.write(await file.read())
 
-    components = [{
-        "type": "application",
-        "name": metadata["Software Name"],
-        "version": metadata["Version"],
-        "supplier": {"name": metadata["Vendor"]},
-        "hashes": [{"alg": "SHA-256", "content": calculate_sha256(file_location)}],
-        "licenses": [{"license": {"name": "Proprietary"}}]
-    }]
-
-    sbom_json = {
-        "bomFormat": "CycloneDX",
-        "specVersion": "1.6",
-        "metadata": {
-            "timestamp": metadata["Generated On"],
-            "component": {
+        metadata = extract_metadata(file_location)
+        
+        sbom_json = {
+            "bomFormat": metadata["Format"],
+            "specVersion": "1.6",
+            "metadata": {
+                "timestamp": metadata["Generated On"],
+                "component": {
+                    "name": metadata["Software Name"],
+                    "version": metadata["Version"],
+                    "type": "application"
+                },
+                "tools": [{"name": metadata["Tool Used"], "version": metadata["Tool Version"]}],
+                "supplier": {"name": metadata["Vendor"]}
+            },
+            "components": [{
+                "type": "application",
                 "name": metadata["Software Name"],
                 "version": metadata["Version"],
-                "type": "application"
-            },
-            "tools": [{"name": metadata["Tool Used"], "version": metadata["Tool Version"]}],
-            "supplier": {"name": metadata["Vendor"]},
-        },
-        "components": components,
-        "additionalProperties": {
-            "Compiler": metadata["Compiler"],
-            "Platform": metadata["Platform"],
-            "Digital Signature": metadata["Digital Signature"]
+                "supplier": {"name": metadata["Vendor"]},
+                "hashes": [{"alg": "SHA-256", "content": calculate_sha256(file_location)}],
+                "licenses": [{"license": {"name": "Proprietary"}}]
+            }],
+            "additionalProperties": {
+                "Compiler": metadata["Compiler"],
+                "Platform": metadata["Platform"],
+                "Digital Signature": metadata["Digital Signature"]
+            }
         }
-    }
 
-    output_dir = "sbom_outputs"
-    os.makedirs(output_dir, exist_ok=True)
-    output_path = os.path.join(output_dir, secure_filename(file.filename) + "_sbom.json")
+        return JSONResponse(status_code=200, content=sbom_json)
 
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(sbom_json, f, indent=4)
-
-    return sbom_json
-
+    except Exception as e:
+        error_msg = {"error": f"Internal Server Error: {str(e)}"}
+        return JSONResponse(status_code=500, content=error_msg)
