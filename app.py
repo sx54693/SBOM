@@ -223,29 +223,47 @@ def download_sbom_report(sbom_data, file_name="sbom_report.json"):
 
 
 # ✅ RUN SBOM GENERATION
+import streamlit as st
 import requests
+import os
+import json
 
 API_URL = "https://sbom.onrender.com/generate-sbom/"
 
 def generate_sbom(file_path):
     with open(file_path, "rb") as f:
-        files = {'file': f}
+        files = {"file": f}
         response = requests.post(API_URL, files=files)
 
     if response.status_code == 200:
         sbom_data = response.json()
-        
+
         # Save SBOM JSON locally
         output_dir = "sbom_outputs"
         os.makedirs(output_dir, exist_ok=True)
         output_path = os.path.join(output_dir, os.path.basename(file_path) + "_sbom.json")
-        
+
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(sbom_data, f, indent=4)
-        
+
         return output_path
     else:
-        st.error(f"SBOM API Error: {response.text}")
+        st.error(f"❌ SBOM API Error: {response.status_code} - {response.text}")
         return None
+
+# ✅ SBOM Generation action:
+if generate_button and file1:
+    file1_path = save_uploaded_file(file1)
+    if file1_path:
+        sbom_output_path = generate_sbom(file1_path)
+
+        if sbom_output_path and os.path.exists(sbom_output_path):
+            with open(sbom_output_path, "r", encoding="utf-8") as f:
+                sbom_data = json.load(f)
+            
+            display_sbom_data(sbom_data, file1_path)
+        else:
+            st.error("❌ Failed to generate or retrieve SBOM output.")
+
 
 
