@@ -81,14 +81,28 @@ def generate_sbom(file_path):
             return None
 
         metadata = extract_metadata(file_path)
-        sbom_data = {
-            "metadata": metadata,
-            "components": []
+       sbom_data = {
+    "metadata": metadata,
+    "components": [
+        {
+            "name": metadata["Software Name"],
+            "type": "application",
+            "version": metadata["Version"],
+            "supplier": {"name": metadata["Vendor"]},
+            "properties": [
+                {"name": "Compiler", "value": metadata["Compiler"]},
+                {"name": "Platform", "value": metadata["Platform"]},
+                {"name": "Signature", "value": metadata["Digital Signature"]}
+            ]
         }
+    ]
+}
+
 
         output_dir = os.path.join(BASE_DIR, "sbom_outputs")
         os.makedirs(output_dir, exist_ok=True)
-        output_sbom = os.path.join(output_dir, secure_filename(file_path) + ".json")
+     output_sbom = os.path.join(output_dir, secure_filename(file.filename) + ".json")
+
 
         # Save the SBOM JSON file
         with open(output_sbom, "w", encoding="utf-8") as f:
