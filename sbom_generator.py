@@ -3,20 +3,24 @@ import json
 import pefile
 import platform
 import hashlib
-import subprocess
 import tempfile
+import subprocess
+from fastapi import FastAPI, UploadFile, File
+
+app = FastAPI()
+
 
 def secure_filename(filename):
-    """Sanitize filename to prevent issues."""
     return os.path.basename(filename).replace(" ", "_")
 
+
 def calculate_sha256(file_path):
-    """Calculate SHA-256 hash of the file."""
     sha256 = hashlib.sha256()
     with open(file_path, "rb") as f:
         for chunk in iter(lambda: f.read(4096), b""):
             sha256.update(chunk)
     return sha256.hexdigest()
+
 
 def extract_metadata(file_path):
     metadata = {
@@ -35,7 +39,6 @@ def extract_metadata(file_path):
     if file_path.endswith(".exe"):
         try:
             pe = pefile.PE(file_path)
-
             if hasattr(pe, "OPTIONAL_HEADER"):
                 metadata["Compiler"] = f"Linker {pe.OPTIONAL_HEADER.MajorLinkerVersion}.{pe.OPTIONAL_HEADER.MinorLinkerVersion}"
 
@@ -49,52 +52,55 @@ def extract_metadata(file_path):
                                 if key_decoded == "CompanyName":
                                     metadata["Vendor"] = value_decoded
         except Exception as e:
-            print(f"⚠️ Metadata extraction failed: {e}")
+            metadata["error"] = str(e)
 
     return metadata
 
-def generate_sbom(file_path):
+
+def run_syft(file_path):
     try:
-        if not os.path.exists(file_path):
-            print(f"❌ File not found: {file_path}")
-            return None
+        result = subprocess.run(
+            ["syft", f"dir:{file_path}", "-o", "cyclonedx-json"],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        return json.loads(result.stdout)
+    except subprocess.CalledProcessError as e:
+        return {"error": e.stderr}
 
-        metadata = extract_metadata(file_path)
 
-        # Run Syft and capture real component data
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".json") as temp_sbom:
-            result = subprocess.run(["syft", file_path, "-o", "cyclonedx-json"], capture_output=True, text=True)
-            if result.returncode != 0:
-                print(f"❌ Syft error: {result.stderr}")
-                return None
-            temp_sbom.write(result.stdout.encode())
+@app.post("/generate-sbom/")
+async def generate_sbom(file: UploadFile = File(...)):
+    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+        content = await file.read()
+        tmp_file.write(content)
+        tmp_file_path = tmp_file.name
 
-        with open(temp_sbom.name, "r", encoding="utf-8") as f:
-            sbom_json = json.load(f)
+    metadata = extract_metadata(tmp_file_path)
+    components_sbom = run_syft(tmp_file_path)
 
-        sbom_json["metadata"]["component"]["name"] = metadata["Software Name"]
-        sbom_json["metadata"]["timestamp"] = metadata["Generated On"]
-        sbom_json["metadata"]["tools"] = [{"name": metadata["Tool Used"], "version": metadata["Tool Version"]}]
-        sbom_json["metadata"]["supplier"] = {"name": metadata["Vendor"]}
+    if "error" in components_sbom:
+        os.unlink(tmp_file_path)
+        return {"error": components_sbom["error"]}
 
-        sbom_json["additionalProperties"] = {
+    sbom_json = {
+        "bomFormat": "CycloneDX",
+        "specVersion": "1.6",
+        "metadata": {
+            "timestamp": metadata["Generated On"],
+            "component": {"name": metadata["Software Name"], "type": "application"},
+            "tools": [{"name": metadata["Tool Used"], "version": metadata["Tool Version"]}],
+            "supplier": {"name": metadata["Vendor"]}
+        },
+        "components": components_sbom.get("components", []),
+        "additionalProperties": {
             "Compiler": metadata["Compiler"],
             "Platform": metadata["Platform"],
             "Digital Signature": metadata["Digital Signature"],
-            "SHA256": calculate_sha256(file_path)
+            "SHA256": calculate_sha256(tmp_file_path)
         }
+    }
 
-        output_dir = "sbom_outputs"
-        os.makedirs(output_dir, exist_ok=True)
-        output_path = os.path.join(output_dir, secure_filename(file_path) + "_sbom.json")
-
-        with open(output_path, "w", encoding="utf-8") as f:
-            json.dump(sbom_json, f, indent=2)
-
-        os.unlink(temp_sbom.name)  # Cleanup temporary file
-
-        return output_path
-
-    except Exception as e:
-        print(f"❌ Error generating SBOM: {e}")
-        return None
+    os.unlink(tmp_file_path)
+    return sbom_json
