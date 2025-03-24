@@ -213,4 +213,3 @@ def generate_sbom(file_path):
     else:
         st.error(f"❌ SBOM API Error: {response.text}")
         return None
-
