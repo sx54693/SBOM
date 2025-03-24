@@ -1,35 +1,24 @@
 from fastapi import FastAPI, UploadFile, File
-import json
-import os
+from sbom_generator import generate_sbom
+import json, os
 
 app = FastAPI()
 
-UPLOAD_FOLDER = "uploads"
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+@app.post("/generate-sbom/")
+async def generate_sbom_api(file: UploadFile = File(...)):
+    file_location = f"uploaded_apps/{file.filename}"
+    os.makedirs("uploaded_apps", exist_ok=True)
 
-@app.get("/")
-def home():
-    return {"message": "FastAPI Backend is Running!"}
+    with open(file_location, "wb") as buffer:
+        buffer.write(await file.read())
 
-# ✅ SBOM Generation Endpoint
-@app.post("/generate-sbom")
-async def generate_sbom(file: UploadFile = File(...)):
-    file_path = os.path.join(UPLOAD_FOLDER, file.filename)
+    sbom_output_path = generate_sbom(file_location)
 
-    # Save the uploaded file
-    with open(file_path, "wb") as f:
-        f.write(await file.read())
+    if not sbom_output_path:
+        return {"error": "SBOM generation failed"}
 
-    # ✅ Simulated SBOM output (Replace this with actual SBOM generation logic)
-    sbom_data = {
-        "filename": file.filename,
-        "sbom_components": ["Component1", "Component2", "Component3"]
-    }
+    with open(sbom_output_path, "r", encoding="utf-8") as sbom_file:
+        sbom_json = json.load(sbom_file)
 
-    return sbom_data
+    return sbom_json
 
-# ✅ SBOM Comparison Endpoint
-@app.post("/compare-sbom")
-async def compare_sbom(file1: UploadFile = File(...), file2: UploadFile = File(...)):
-    return {"message": "SBOM comparison logic will go here"}
- 
