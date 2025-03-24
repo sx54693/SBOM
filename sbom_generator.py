@@ -56,14 +56,33 @@ def extract_metadata(file_path):
     return metadata
 
 def generate_sbom(file_path):
-    """Generates an SBOM-compatible JSON response."""
+    """Generates an SBOM-compatible JSON response with components."""
     try:
         if not os.path.exists(file_path):
             print(f"❌ File not found: {file_path}")
             return None
 
         metadata = extract_metadata(file_path)
-        components = []  # You can enhance this to include libraries in future
+
+        # 🧩 Sample Components – Replace with actual data later
+        components = [
+            {
+                "type": "library",
+                "name": "OpenSSL",
+                "version": "1.1.1k",
+                "supplier": {"name": "OpenSSL Foundation"},
+                "hashes": [{"alg": "SHA-256", "content": "dummyhash1"}],
+                "licenses": [{"license": {"name": "Apache-2.0"}}]
+            },
+            {
+                "type": "library",
+                "name": "zlib",
+                "version": "1.2.11",
+                "supplier": {"name": "Jean-loup Gailly and Mark Adler"},
+                "hashes": [{"alg": "SHA-256", "content": "dummyhash2"}],
+                "licenses": [{"license": {"name": "Zlib"}}]
+            }
+        ]
 
         sbom_json = {
             "bomFormat": "CycloneDX",
@@ -91,7 +110,7 @@ def generate_sbom(file_path):
             }
         }
 
-        # Save SBOM file temporarily
+        # Save SBOM JSON file
         output_dir = os.path.join("sbom_outputs")
         os.makedirs(output_dir, exist_ok=True)
         output_path = os.path.join(output_dir, secure_filename(file_path) + "_sbom.json")
@@ -103,4 +122,3 @@ def generate_sbom(file_path):
     except Exception as e:
         print(f"❌ Error generating SBOM: {e}")
         return None
-
