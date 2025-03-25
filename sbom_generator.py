@@ -3,9 +3,12 @@ import json
 import pefile
 import platform
 import hashlib
-import subprocess
+import requests
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Replace with your actual Render API URL
+API_URL = "https://your-render-api.onrender.com/generate-sbom/"
 
 def secure_filename(filename):
     return os.path.basename(filename).replace(" ", "_")
@@ -28,7 +31,7 @@ def extract_metadata(file_path):
         "Vendor": "Unknown",
         "Compiler": "Unknown",
         "Platform": platform.architecture()[0],
-        "Digital Signature": "Not Available on Cloud"
+        "Digital Signature": "⚠️ Signature Check Not Available on Cloud"
     }
 
     if file_path.endswith(".exe"):
@@ -48,53 +51,52 @@ def extract_metadata(file_path):
                                 if key_decoded == "CompanyName":
                                     metadata["Vendor"] = value_decoded
         except Exception as e:
-            metadata["Vendor"] = f"Error: {e}"
+            print(f"⚠️ Metadata extraction failed: {e}")
 
     return metadata
+
+def enrich_sbom(sbom_json, metadata, file_path):
+    sbom_json["metadata"]["component"]["name"] = metadata["Software Name"]
+    sbom_json["metadata"]["supplier"] = {"name": metadata["Vendor"]}
+    sbom_json["metadata"]["tools"] = [{"name": metadata["Tool Used"], "version": metadata["Tool Version"]}]
+    sbom_json["additionalProperties"] = {
+        "Compiler": metadata["Compiler"],
+        "Platform": metadata["Platform"],
+        "Digital Signature": metadata["Digital Signature"],
+        "SHA256": calculate_sha256(file_path)
+    }
+
+    return sbom_json
 
 def generate_sbom(file_path):
     try:
         if not os.path.exists(file_path):
-            return {"error": f"File not found: {file_path}"}
+            print(f"❌ File not found: {file_path}")
+            return None
 
         metadata = extract_metadata(file_path)
 
-        command = ["syft", file_path, "-o", "cyclonedx-json"]
-        result = subprocess.run(command, capture_output=True, text=True)
+        with open(file_path, "rb") as file_to_upload:
+            files = {"file": file_to_upload}
+            response = requests.post(API_URL, files=files)
 
-        if result.returncode != 0:
-            return {"error": f"Syft Error: {result.stderr}"}
+        if response.status_code != 200:
+            print(f"❌ Render API Error: {response.status_code} - {response.text}")
+            return None
 
-        sbom_json = json.loads(result.stdout)
+        sbom_json = response.json()
+        enriched_sbom = enrich_sbom(sbom_json, metadata, file_path)
 
-        # Enrich SBOM with additional metadata
-        sbom_json.update({
-            "metadata": {
-                "timestamp": metadata["Generated On"],
-                "component": {
-                    "name": metadata["Software Name"],
-                    "type": "application"
-                },
-                "tools": [{"name": metadata["Tool Used"], "version": metadata["Tool Version"]}],
-                "supplier": {"name": metadata["Vendor"]}
-            },
-            "additionalProperties": {
-                "Compiler": metadata["Compiler"],
-                "Platform": metadata["Platform"],
-                "Digital Signature": metadata["Digital Signature"],
-                "SHA256": calculate_sha256(file_path)
-            }
-        })
-
-        # Save the enriched SBOM JSON
         output_dir = os.path.join(BASE_DIR, "sbom_outputs")
         os.makedirs(output_dir, exist_ok=True)
         output_path = os.path.join(output_dir, secure_filename(file_path) + "_sbom.json")
 
         with open(output_path, "w", encoding="utf-8") as f:
-            json.dump(sbom_json, f, indent=2)
+            json.dump(enriched_sbom, f, indent=2)
 
-        return sbom_json  # Direct JSON output for Render API response
+        print(f"✅ SBOM generated successfully: {output_path}")
+        return output_path
 
     except Exception as e:
-        return {"error": f"Error generating SBOM: {e}"}
+        print(f"❌ Error generating SBOM: {e}")
+        return None
