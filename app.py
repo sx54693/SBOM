@@ -244,12 +244,10 @@ API_URL = "https://your-sbom-api.onrender.com/generate-sbom/"
 
 def generate_sbom(file_path):
     with open(file_path, "rb") as f:
-        files = {"file": f}
-        response = requests.post(API_URL, files=files)
-    
+        response = requests.post(API_URL, files={"file": f})
     if response.status_code == 200:
-        # Directly return parsed JSON dict
         return response.json()
     else:
-        st.error(f"❌ SBOM API Error: {response.status_code} - {response.text}")
+        st.error(f"❌ SBOM API Error: {response.text}")
         return None
+
