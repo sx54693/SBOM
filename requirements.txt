@@ -6,6 +6,8 @@ jsonschema
 requests
 datasets
 fastapi
+uvicorn[standard]
+pefile
 numpy
 scipy
 scikit-learn
