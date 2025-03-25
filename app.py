@@ -1,3 +1,11 @@
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/")
+def read_root():
+    return {"message": "SBOM API is working!"}
+
 import streamlit as st
 import os
 import json
