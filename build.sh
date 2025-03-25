@@ -1,12 +1,10 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-set -e  # Exit on error
+# Create a writable bin directory
+mkdir -p ./bin
 
-# 🛠️ Install Syft CLI to /usr/local/bin
-curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
+# Install Syft into ./bin (inside your project)
+curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b ./bin
 
-# 🐍 Install Python dependencies
-pip install --upgrade pip
-pip install -r requirements.txt
-
-
+# Make sure ./bin is in the PATH
+echo 'export PATH=$PATH:./bin' >> ~/.profile
