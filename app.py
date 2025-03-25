@@ -221,24 +221,21 @@ def download_sbom_report(sbom_data, file_name="sbom_report.json"):
     else:
         st.warning("⚠️ No components found.")
 
+import requests
+import streamlit as st
 
 API_URL = "https://your-sbom-api.onrender.com/generate-sbom/"
 
-
 def generate_sbom(file_path):
-    """Calls the deployed SBOM API and returns SBOM JSON."""
-    try:
-        with open(file_path, "rb") as f:
-            files = {"file": f}
-            response = requests.post(API_URL, files=files)
+    """Calls the deployed SBOM API and returns JSON directly"""
+    with open(file_path, "rb") as f:
+        files = {"file": f}
+        response = requests.post(API_URL, files=files)
 
-        if response.status_code == 200:
-            return response.json()
-        else:
-            st.error(f"❌ SBOM API Error [{response.status_code}]: {response.text}")
-            return None
-    except Exception as e:
-        st.error(f"❌ Error calling SBOM API: {e}")
+    if response.status_code == 200:
+        return response.json()
+    else:
+        st.error(f"❌ SBOM API Error [{response.status_code}]: {response.text}")
         return None
 
 # ✅ RUN SBOM GENERATION
@@ -246,8 +243,8 @@ if generate_button and file1:
     file1_path = save_uploaded_file(file1)
     sbom_data = generate_sbom(file1_path)
 
-    if sbom_data and isinstance(sbom_data, dict):
+    if sbom_data:
+        # Directly use the returned JSON data from Render API
         display_sbom_data(sbom_data, file1_path)
     else:
-        st.error("❌ Failed to retrieve valid SBOM data.")
-
+        st.error("❌ Failed to generate SBOM.")
