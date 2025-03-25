@@ -1,23 +1,21 @@
-
-    import os
+import os
 import json
 import pefile
 import platform
 import hashlib
 import subprocess
-from fastapi import FastAPI, UploadFile, File
 
-app = FastAPI()
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def secure_filename(filename):
     return os.path.basename(filename).replace(" ", "_")
 
 def calculate_sha256(file_path):
-    sha256_hash = hashlib.sha256()
+    sha256 = hashlib.sha256()
     with open(file_path, "rb") as f:
-        for byte_block in iter(lambda: f.read(4096), b""):
-            sha256_hash.update(byte_block)
-    return sha256_hash.hexdigest()
+        for chunk in iter(lambda: f.read(4096), b""):
+            sha256.update(chunk)
+    return sha256.hexdigest()
 
 def extract_metadata(file_path):
     metadata = {
@@ -30,14 +28,16 @@ def extract_metadata(file_path):
         "Vendor": "Unknown",
         "Compiler": "Unknown",
         "Platform": platform.architecture()[0],
-        "Digital Signature": "⚠️ Signature Check Not Available on Cloud"
+        "Digital Signature": "Not Available on Cloud"
     }
 
     if file_path.endswith(".exe"):
         try:
             pe = pefile.PE(file_path)
+
             if hasattr(pe, "OPTIONAL_HEADER"):
                 metadata["Compiler"] = f"Linker {pe.OPTIONAL_HEADER.MajorLinkerVersion}.{pe.OPTIONAL_HEADER.MinorLinkerVersion}"
+
             if hasattr(pe, "FileInfo"):
                 for file_info in pe.FileInfo:
                     if hasattr(file_info, "StringTable"):
@@ -47,41 +47,54 @@ def extract_metadata(file_path):
                                 value_decoded = value.decode(errors="ignore").strip()
                                 if key_decoded == "CompanyName":
                                     metadata["Vendor"] = value_decoded
-        except:
-            pass
+        except Exception as e:
+            metadata["Vendor"] = f"Error: {e}"
 
     return metadata
 
-@app.post("/generate-sbom/")
-async def generate_sbom(file: UploadFile = File(...)):
-    file_path = f"/tmp/{secure_filename(file.filename)}"
-    with open(file_path, "wb") as buffer:
-        buffer.write(await file.read())
-
+def generate_sbom(file_path):
     try:
-        syft_command = ["syft", file_path, "-o", "cyclonedx-json"]
-        result = subprocess.run(syft_command, capture_output=True, text=True)
+        if not os.path.exists(file_path):
+            return {"error": f"File not found: {file_path}"}
 
-        if result.returncode != 0:
-            return {"error": f"Syft failed: {result.stderr}"}
-
-        sbom_json = json.loads(result.stdout)
         metadata = extract_metadata(file_path)
 
-        # Add your custom metadata
-        sbom_json["metadata"]["component"]["name"] = metadata["Software Name"]
-        sbom_json["metadata"]["supplier"] = {"name": metadata["Vendor"]}
-        sbom_json["metadata"]["tools"] = [{"name": "Syft", "version": "1.0"}]
+        command = ["syft", file_path, "-o", "cyclonedx-json"]
+        result = subprocess.run(command, capture_output=True, text=True)
 
-        # Additional properties
-        sbom_json["additionalProperties"] = {
-            "Compiler": metadata["Compiler"],
-            "Platform": metadata["Platform"],
-            "Digital Signature": metadata["Digital Signature"],
-            "SHA256": calculate_sha256(file_path)
-        }
+        if result.returncode != 0:
+            return {"error": f"Syft Error: {result.stderr}"}
 
-        return sbom_json
+        sbom_json = json.loads(result.stdout)
+
+        # Enrich SBOM with additional metadata
+        sbom_json.update({
+            "metadata": {
+                "timestamp": metadata["Generated On"],
+                "component": {
+                    "name": metadata["Software Name"],
+                    "type": "application"
+                },
+                "tools": [{"name": metadata["Tool Used"], "version": metadata["Tool Version"]}],
+                "supplier": {"name": metadata["Vendor"]}
+            },
+            "additionalProperties": {
+                "Compiler": metadata["Compiler"],
+                "Platform": metadata["Platform"],
+                "Digital Signature": metadata["Digital Signature"],
+                "SHA256": calculate_sha256(file_path)
+            }
+        })
+
+        # Save the enriched SBOM JSON
+        output_dir = os.path.join(BASE_DIR, "sbom_outputs")
+        os.makedirs(output_dir, exist_ok=True)
+        output_path = os.path.join(output_dir, secure_filename(file_path) + "_sbom.json")
+
+        with open(output_path, "w", encoding="utf-8") as f:
+            json.dump(sbom_json, f, indent=2)
+
+        return sbom_json  # Direct JSON output for Render API response
 
     except Exception as e:
-        return {"error": str(e)}
+        return {"error": f"Error generating SBOM: {e}"}
