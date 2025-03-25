@@ -46,8 +46,8 @@ def extract_metadata(file_path):
                                 value_decoded = value.decode(errors="ignore").strip()
                                 if key_decoded == "CompanyName":
                                     metadata["Vendor"] = value_decoded
-        except:
-            pass
+        except Exception as e:
+            metadata["Compiler"] = f"Error: {str(e)}"
 
     return metadata
 
@@ -62,17 +62,17 @@ async def generate_sbom(file: UploadFile = File(...)):
         result = subprocess.run(syft_command, capture_output=True, text=True)
 
         if result.returncode != 0:
-            return {"error": f"Syft failed: {result.stderr}"}
+            return {"error": f"Syft failed: {result.stderr.strip()}"}
 
         sbom_json = json.loads(result.stdout)
         metadata = extract_metadata(file_path)
 
-        # Add your custom metadata
-        sbom_json["metadata"]["component"]["name"] = metadata["Software Name"]
-        sbom_json["metadata"]["supplier"] = {"name": metadata["Vendor"]}
-        sbom_json["metadata"]["tools"] = [{"name": "Syft", "version": "1.0"}]
+        sbom_json.setdefault("metadata", {}).update({
+            "component": {"name": metadata["Software Name"]},
+            "supplier": {"name": metadata["Vendor"]},
+            "tools": [{"name": metadata["Tool Used"], "version": metadata["Tool Version"]}]
+        })
 
-        # Additional properties
         sbom_json["additionalProperties"] = {
             "Compiler": metadata["Compiler"],
             "Platform": metadata["Platform"],
