@@ -222,33 +222,39 @@ def download_sbom_report(sbom_data, file_name="sbom_report.json"):
         st.warning("⚠️ No components found.")
 
 
-# ✅ RUN SBOM GENERATION
-# Corrected SBOM generation call
-if generate_button and file1:
-    file1_path = save_uploaded_file(file1)
-    
-    # Call your Render API function
-    sbom_data = generate_sbom(file1_path)
-
-    if sbom_data:
-        # Directly display sbom_data, no file reading needed
-        display_sbom_data(sbom_data, file1_path)
-    else:
-        st.error("❌ Failed to generate SBOM.")
 import requests
-import streamlit as st
 
 API_URL = "https://your-sbom-api.onrender.com/generate-sbom/"
 
 def generate_sbom(file_path):
-    with open(file_path, "rb") as f:
-        files = {"file": f}
-        response = requests.post(API_URL, files=files)
-    
-    if response.status_code == 200:
-        # Directly return parsed JSON dict
-        return response.json()
-    else:
-        st.error(f"❌ SBOM API Error: {response.status_code} - {response.text}")
+    """Calls the deployed SBOM API"""
+    try:
+        with open(file_path, "rb") as f:
+            files = {"file": f}
+            response = requests.post(API_URL, files=files, timeout=120)  # timeout added for stability
+        
+        if response.status_code == 200:
+            response_json = response.json()
+            if "error" in response_json:
+                st.error(f"❌ SBOM Generation Error: {response_json['error']}")
+                return None
+            return response_json
+        else:
+            st.error(f"❌ SBOM API Error [{response.status_code}]: {response.text}")
+            return None
+    except requests.exceptions.RequestException as e:
+        st.error(f"❌ Request Error: {str(e)}")
         return None
 
+# ✅ Corrected and Robust SBOM generation call
+if generate_button and file1:
+    file1_path = save_uploaded_file(file1)
+
+    # Call your Render API function
+    sbom_data = generate_sbom(file1_path)
+
+    if sbom_data and isinstance(sbom_data, dict) and "metadata" in sbom_data:
+        # Only display if valid JSON with metadata
+        display_sbom_data(sbom_data, file1_path)
+    else:
+        st.error("❌ Failed to generate or retrieve valid SBOM data.")
