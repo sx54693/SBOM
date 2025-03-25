@@ -239,15 +239,30 @@ if generate_button and file1:
 
         import requests
 import streamlit as st
-
 API_URL = "https://your-sbom-api.onrender.com/generate-sbom/"
 
 def generate_sbom(file_path):
+    """Calls the backend API to generate SBOM."""
     with open(file_path, "rb") as f:
-        response = requests.post(API_URL, files={"file": f})
+        files = {"file": f}
+        response = requests.post(API_URL, files=files)
+        
     if response.status_code == 200:
         return response.json()
     else:
-        st.error(f"❌ SBOM API Error: {response.text}")
+        st.error(f"❌ SBOM API Error: {response.status_code} - {response.text}")
         return None
+
+# ✅ RUN SBOM GENERATION
+if generate_button and file1:
+    file1_path = save_uploaded_file(file1)
+    sbom_data = generate_sbom(file1_path)
+
+    if sbom_data:
+        if "error" in sbom_data:
+            st.error(f"❌ Backend Error: {sbom_data['error']}")
+        elif "metadata" in sbom_data:
+            display_sbom_data(sbom_data, file1_path)
+        else:
+            st.error("❌ Unexpected response format from backend.")
 
