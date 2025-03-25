@@ -1,14 +1,12 @@
+
 import os
 import json
 import pefile
 import platform
 import hashlib
-import requests
+import subprocess
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# Replace with your actual Render API URL
-API_URL = "https://your-render-api.onrender.com/generate-sbom/"
 
 def secure_filename(filename):
     return os.path.basename(filename).replace(" ", "_")
@@ -37,7 +35,6 @@ def extract_metadata(file_path):
     if file_path.endswith(".exe"):
         try:
             pe = pefile.PE(file_path)
-
             if hasattr(pe, "OPTIONAL_HEADER"):
                 metadata["Compiler"] = f"Linker {pe.OPTIONAL_HEADER.MajorLinkerVersion}.{pe.OPTIONAL_HEADER.MinorLinkerVersion}"
 
@@ -55,15 +52,16 @@ def extract_metadata(file_path):
 
     return metadata
 
-def enrich_sbom(sbom_json, metadata, file_path):
+def enrich_sbom(sbom_json, metadata, file_hash):
     sbom_json["metadata"]["component"]["name"] = metadata["Software Name"]
     sbom_json["metadata"]["supplier"] = {"name": metadata["Vendor"]}
     sbom_json["metadata"]["tools"] = [{"name": metadata["Tool Used"], "version": metadata["Tool Version"]}]
+
     sbom_json["additionalProperties"] = {
         "Compiler": metadata["Compiler"],
         "Platform": metadata["Platform"],
         "Digital Signature": metadata["Digital Signature"],
-        "SHA256": calculate_sha256(file_path)
+        "SHA256": file_hash
     }
 
     return sbom_json
@@ -75,22 +73,22 @@ def generate_sbom(file_path):
             return None
 
         metadata = extract_metadata(file_path)
+        file_hash = calculate_sha256(file_path)
 
-        with open(file_path, "rb") as file_to_upload:
-            files = {"file": file_to_upload}
-            response = requests.post(API_URL, files=files)
+        syft_command = ["syft", file_path, "-o", "cyclonedx-json"]
+        result = subprocess.run(syft_command, capture_output=True, text=True)
 
-        if response.status_code != 200:
-            print(f"❌ Render API Error: {response.status_code} - {response.text}")
+        if result.returncode != 0:
+            print(f"❌ Syft Error: {result.stderr}")
             return None
 
-        sbom_json = response.json()
-        enriched_sbom = enrich_sbom(sbom_json, metadata, file_path)
+        sbom_json = json.loads(result.stdout)
+        enriched_sbom = enrich_sbom(sbom_json, metadata, file_hash)
 
         output_dir = os.path.join(BASE_DIR, "sbom_outputs")
         os.makedirs(output_dir, exist_ok=True)
-        output_path = os.path.join(output_dir, secure_filename(file_path) + "_sbom.json")
 
+        output_path = os.path.join(output_dir, secure_filename(file_path) + "_sbom.json")
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(enriched_sbom, f, indent=2)
 
