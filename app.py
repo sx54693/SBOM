@@ -236,16 +236,23 @@ if generate_button and file1:
     else:
         st.error("❌ Unexpected response from SBOM API.")
 
+import requests
+
 API_URL = "https://your-sbom-api.onrender.com/generate-sbom/"
 
 def generate_sbom(file_path):
     with open(file_path, "rb") as f:
         files = {"file": f}
-        response = requests.post(API_URL, files=files)
-    
-    if response.status_code == 200:
-        # Directly return parsed JSON dict
-        return response.json()
-    else:
-        st.error(f"❌ SBOM API Error: {response.status_code} - {response.text}")
-        return None
+        try:
+            response = requests.post(API_URL, files=files)
+            response.raise_for_status()
+            # Safely parse JSON
+            try:
+                return response.json()
+            except json.JSONDecodeError:
+                st.error(f"❌ SBOM API returned non-JSON response:\n{response.text[:500]}")
+                return None
+        except requests.RequestException as e:
+            st.error(f"❌ Request error: {e}")
+            return None
+
