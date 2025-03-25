@@ -241,17 +241,18 @@ if generate_button and file1:
             st.error(f"❌ Error reading SBOM file: {e}")
 
         import requests
+import streamlit as st
 
-API_URL = "https://your-sbom-api.onrender.com"
+API_URL = "https://your-sbom-api.onrender.com/generate-sbom/"
 
 def generate_sbom(file_path):
-    """Calls the deployed SBOM API"""
     with open(file_path, "rb") as f:
         files = {"file": f}
-        response = requests.post(f"{API_URL}/generate-sbom/", files=files)
-        
+        response = requests.post(API_URL, files=files)
+    
     if response.status_code == 200:
+        # Directly return parsed JSON dict
         return response.json()
     else:
-        st.error(f"❌ SBOM API Error: {response.text}")
+        st.error(f"❌ SBOM API Error: {response.status_code} - {response.text}")
         return None
