@@ -223,22 +223,19 @@ def download_sbom_report(sbom_data, file_name="sbom_report.json"):
 
 
 # ✅ RUN SBOM GENERATION
+# Corrected SBOM generation call
 if generate_button and file1:
     file1_path = save_uploaded_file(file1)
-    sbom_output = generate_sbom(file1_path)
+    
+    # Call your Render API function
+    sbom_data = generate_sbom(file1_path)
 
-    if sbom_output:
-        try:
-            with open(sbom_output, "r", encoding="utf-8") as f:
-                sbom_data = json.load(f)
+    if sbom_data:
+        # Directly display sbom_data, no file reading needed
+        display_sbom_data(sbom_data, file1_path)
+    else:
+        st.error("❌ Failed to generate SBOM.")
 
-            if "metadata" not in sbom_data:
-                st.error("⚠️ SBOM Metadata missing from output file.")
-            else:
-                display_sbom_data(sbom_data, file1_path)
-
-        except Exception as e:
-            st.error(f"❌ Error reading SBOM file: {e}")
 
         import requests
 import streamlit as st
