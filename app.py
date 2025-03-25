@@ -223,19 +223,18 @@ def download_sbom_report(sbom_data, file_name="sbom_report.json"):
 
 
 # ✅ RUN SBOM GENERATION
-# Corrected SBOM generation call
 if generate_button and file1:
     file1_path = save_uploaded_file(file1)
     
-    # Call your Render API function
     sbom_data = generate_sbom(file1_path)
-
-    if sbom_data:
-        # Directly display sbom_data, no file reading needed
-        display_sbom_data(sbom_data, file1_path)
+    
+    if sbom_data and isinstance(sbom_data, dict):
+        if "error" in sbom_data:
+            st.error(f"❌ SBOM Generation Error: {sbom_data['error']}")
+        else:
+            display_sbom_data(sbom_data, file1_path)
     else:
-        st.error("❌ Failed to generate SBOM.")
-
+        st.error("❌ Unexpected response from SBOM API.")
 
 API_URL = "https://your-sbom-api.onrender.com/generate-sbom/"
 
