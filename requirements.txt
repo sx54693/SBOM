@@ -30,4 +30,7 @@ uvicorn
 requests
 pydantic
 python-multipart
+fastapi
+uvicorn[standard]
+pefile
 
