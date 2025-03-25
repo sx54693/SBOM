@@ -1,33 +1,18 @@
-# Core Web Framework
 fastapi
 uvicorn[standard]
 streamlit==1.32.2
-
-# SBOM-related + file processing
-pefile==2024.8.26
-py7zr==0.20.8
-
-# Data Handling
 pandas==2.2.1
 numpy==1.26.4
-scikit-learn
-scipy
-pydantic
-python-multipart
-PyYAML
-
-# NLP & Fuzzy Matching
+pefile==2024.8.26
+GitPython==3.1.42
+requests==2.31.0
 fuzzywuzzy==0.18.0
 python-Levenshtein==0.27.1
-
-# Requests and APIs
-requests==2.31.0
+py7zr==0.20.8
+scikit-learn
+scipy
 jsonschema
-GitPython==3.1.42
 datasets
-
-# Extra utilities
+PyYAML
 pygments
-pycryptodome
-
-
+python-multipart
