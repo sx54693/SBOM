@@ -236,8 +236,6 @@ if generate_button and file1:
     else:
         st.error("❌ Failed to generate SBOM.")
 
-     import requests
-import streamlit as st
 
 API_URL = "https://your-sbom-api.onrender.com/generate-sbom/"
 
