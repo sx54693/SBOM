@@ -225,34 +225,33 @@ def download_sbom_report(sbom_data, file_name="sbom_report.json"):
 # ✅ RUN SBOM GENERATION
 if generate_button and file1:
     file1_path = save_uploaded_file(file1)
-    
-    sbom_data = generate_sbom(file1_path)
-    
-    if sbom_data and isinstance(sbom_data, dict):
-        if "error" in sbom_data:
-            st.error(f"❌ SBOM Generation Error: {sbom_data['error']}")
-        else:
-            display_sbom_data(sbom_data, file1_path)
-    else:
-        st.error("❌ Unexpected response from SBOM API.")
+    sbom_output = generate_sbom(file1_path)
 
-import requests
+    if sbom_output:
+        try:
+            with open(sbom_output, "r", encoding="utf-8") as f:
+                sbom_data = json.load(f)
 
-API_URL = "https://your-sbom-api.onrender.com/generate-sbom/"
+            if "metadata" not in sbom_data:
+                st.error("⚠️ SBOM Metadata missing from output file.")
+            else:
+                display_sbom_data(sbom_data, file1_path)
+
+        except Exception as e:
+            st.error(f"❌ Error reading SBOM file: {e}")
+
+        import requests
+
+API_URL = "https://your-sbom-api.onrender.com"
 
 def generate_sbom(file_path):
+    """Calls the deployed SBOM API"""
     with open(file_path, "rb") as f:
         files = {"file": f}
-        try:
-            response = requests.post(API_URL, files=files)
-            response.raise_for_status()
-            # Safely parse JSON
-            try:
-                return response.json()
-            except json.JSONDecodeError:
-                st.error(f"❌ SBOM API returned non-JSON response:\n{response.text[:500]}")
-                return None
-        except requests.RequestException as e:
-            st.error(f"❌ Request error: {e}")
-            return None
-
+        response = requests.post(f"{API_URL}/generate-sbom/", files=files)
+        
+    if response.status_code == 200:
+        return response.json()
+    else:
+        st.error(f"❌ SBOM API Error: {response.text}")
+        return None
