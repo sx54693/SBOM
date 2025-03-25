@@ -222,21 +222,8 @@ def download_sbom_report(sbom_data, file_name="sbom_report.json"):
         st.warning("⚠️ No components found.")
 
 
-# ✅ RUN SBOM GENERATION
-# Corrected SBOM generation call
-if generate_button and file1:
-    file1_path = save_uploaded_file(file1)
-    
-    # Call your Render API function
-    sbom_data = generate_sbom(file1_path)
-
-    if sbom_data:
-        # Directly display sbom_data, no file reading needed
-        display_sbom_data(sbom_data, file1_path)
-    else:
-        st.error("❌ Failed to generate SBOM.")
-
 API_URL = "https://your-sbom-api.onrender.com/generate-sbom/"
+
 
 def generate_sbom(file_path):
     """Calls the deployed SBOM API and returns SBOM JSON."""
