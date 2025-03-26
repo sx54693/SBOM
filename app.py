@@ -195,8 +195,9 @@ def display_sbom_data(sbom_data, file_path):
     if tools and isinstance(tools, list):
         first_tool = tools[0]
         # fallback if key not found
-        tool_used = first_tool.get("name", tool_used)
-        tool_version = first_tool.get("version", tool_version)
+      if tool_used == "Unknown":
+    tool_used = "Syft"
+    tool_version = sbom_data.get("specVersion", "Unknown")
 
     # Software name
     software_name = metadata.get("component", {}).get("name", None)
@@ -219,9 +220,8 @@ def display_sbom_data(sbom_data, file_path):
         "Format": sbom_data.get("bomFormat", "CycloneDX"),
         "Version": sbom_data.get("specVersion", "Unknown"),
         "Generated On": metadata.get("timestamp", "N/A"),
-        tool_used == "Unknown":
-    tool_used = "Syft"
-    tool_version = sbom_data.get("specVersion", "Unknown")
+         "Tool Used": tool_used,
+        "Tool Version": tool_version,
         "Vendor": vendor,
         "Compiler": file_metadata["Compiler"],
         "Platform": file_metadata["Platform"],
