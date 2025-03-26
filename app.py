@@ -238,7 +238,7 @@ if generate_button and file1:
 import requests
 import streamlit as st
 
-API_URL = "https://your-sbom-api.onrender.com/generate-sbom/"
+API_URL = "https://sbom.onrender.com/generate-sbom/"
 
 def generate_sbom(file_path):
     with open(file_path, "rb") as f:
