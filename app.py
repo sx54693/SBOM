@@ -7,43 +7,44 @@ import pefile
 import subprocess
 import requests
 
-# If you have these local modules, keep these imports:
+# If you still use these local modules, keep these:
 from sbom_compare import compare_sboms
-from sbom_parser import parse_sbom
-from sbom_search import search_sbom
+# from sbom_parser import parse_sbom  # If you actually use parse_sbom somewhere
+# from sbom_search import search_sbom # If you use search_sbom
 
-# ========== CONFIGURATIONS ==========
+# ======================
+#  CONFIGURATION
+# ======================
 
-# Render API endpoint for SBOM generation
-API_URL = "https://sbom.onrender.com/generate-sbom/"
+# Remote API endpoint for generating the SBOM
+REMOTE_SBOM_API = "https://sbom.onrender.com/generate-sbom/"
 
-# If you do have signtool.exe locally on Windows, update this path accordingly:
-signtool_path = "C:\\Users\\cyria\\signtool.exe"
+# Path to your signtool.exe if available (Windows)
+SIGNSTOOL_PATH = r"C:\Users\cyria\signtool.exe"
 
-# Page Config (Streamlit)
+# Streamlit Page Config
 st.set_page_config(page_title="SBOM Analyzer", page_icon="🔍", layout="wide")
 
-# UI Custom CSS
-st.markdown(
-    """
+# UI CSS Enhancements
+st.markdown("""
     <style>
     .stApp { background: linear-gradient(135deg, #1f4037, #99f2c8); color: white; }
     [data-testid="stSidebar"] { background: #1f2833; color: white; }
     .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 { color: #ffcc00; }
-    div.stButton > button {
-        background-color: #008CBA; color: white; border-radius: 8px;
-    }
+    div.stButton > button { background-color: #008CBA; color: white; border-radius: 8px; }
     div.stButton > button:hover { background-color: #005f73; }
     </style>
-    """,
-    unsafe_allow_html=True
-)
+""", unsafe_allow_html=True)
 
-# ========== TITLE ==========
+# ======================
+#  TITLE
+# ======================
 
-st.title("🔍 SBOM Analyzer - Generator, Parser, Comparator & Search")
+st.title("🔍 SBOM Analyzer - Generator, Parser & Comparator")
 
-# ========== SIDEBAR FILE UPLOAD & BUTTONS ==========
+# ======================
+#  SIDEBAR
+# ======================
 
 st.sidebar.header("📂 Upload Software Application or SBOM File")
 file1 = st.sidebar.file_uploader("🆕 Upload First File", type=["exe", "json", "spdx", "csv", "xml"])
@@ -51,16 +52,18 @@ file2 = st.sidebar.file_uploader("📑 Upload Second File (Optional for Comparis
 
 generate_button = st.sidebar.button("🔄 Generate SBOM")
 compare_button = st.sidebar.button("🔍 Compare SBOMs")
-search_button = st.sidebar.button("🔎 Search SBOM Components")
-parse_button = st.sidebar.button("📜 Parse SBOM Data")
+# If you want to enable these later, uncomment:
+# search_button = st.sidebar.button("🔎 Search SBOM Components")
+# parse_button = st.sidebar.button("📜 Parse SBOM Data")
 
-
-# ========== FUNCTION: SAVE UPLOADED FILE ==========
+# ======================
+#  HELPER FUNCTIONS
+# ======================
 
 def save_uploaded_file(uploaded_file, folder="uploaded_apps"):
     """
-    Saves the uploaded file to a local 'uploaded_apps' folder (or custom folder),
-    ensuring 777 permissions on Unix-like systems.
+    Save the uploaded file to a local folder, ensuring correct permissions.
+    Returns the full path to the saved file or None on error.
     """
     if not os.path.exists(folder):
         os.makedirs(folder)
@@ -75,22 +78,17 @@ def save_uploaded_file(uploaded_file, folder="uploaded_apps"):
         st.error(f"❌ Permission denied: {file_path}. Try running as administrator.")
         return None
 
-
-# ========== FUNCTION: CHECK DIGITAL SIGNATURE ==========
-
 def check_digital_signature(file_path):
     """
-    Attempts to verify a Windows EXE's digital signature using signtool.exe.
-    Returns a short descriptor of the signature status, or a warning if unavailable.
+    Checks if an EXE is signed using signtool.exe (if present).
+    Returns a short descriptor or warning.
     """
-    # If the signtool path doesn't exist (e.g. on cloud or non-Windows),
-    # skip the signature check:
-    if not os.path.exists(signtool_path):
-        return "⚠️ Signature Check Not Available"
+    if not os.path.exists(SIGNSTOOL_PATH):
+        return "⚠️ Signature Check Tool Not Found"
 
     try:
         result = subprocess.run(
-            [signtool_path, "verify", "/pa", file_path],
+            [SIGNSTOOL_PATH, "verify", "/pa", file_path],
             capture_output=True, text=True, check=False
         )
 
@@ -100,35 +98,31 @@ def check_digital_signature(file_path):
             return "❌ Not Signed"
         else:
             return f"⚠️ Unknown Signature Status: {result.stdout.strip()}"
-
     except Exception as e:
-        return f"❌ Error Checking Signature: {str(e)}"
-
-
-# ========== FUNCTION: EXTRACT FILE METADATA (EXE) ==========
+        return f"❌ Error Checking Signature: {e}"
 
 def extract_file_metadata(file_path):
     """
-    Safely extracts EXE-specific metadata: compiler, platform, vendor, and digital signature.
-    Returns defaults for non-EXE files or on errors.
+    Extracts EXE-specific metadata (compiler, platform, vendor, signature).
+    If it's not an EXE, returns defaults.
     """
     compiler = "Unknown"
     arch = platform.architecture()[0]
     vendor = "Unknown"
     digital_signature = "Not Available"
 
-    # Only attempt if it's an EXE on Windows
+    # If it's an EXE, try parsing with pefile
     if file_path.lower().endswith(".exe"):
         try:
             pe = pefile.PE(file_path)
 
-            # Extract Compiler Version (from PE OPTIONAL_HEADER)
+            # Compiler version
             if hasattr(pe, "OPTIONAL_HEADER"):
                 major = pe.OPTIONAL_HEADER.MajorLinkerVersion
                 minor = pe.OPTIONAL_HEADER.MinorLinkerVersion
                 compiler = f"Linker {major}.{minor}"
 
-            # Extract Vendor (CompanyName) if present
+            # Vendor from FileInfo
             if hasattr(pe, "FileInfo"):
                 for file_info in pe.FileInfo:
                     if hasattr(file_info, "StringTable"):
@@ -136,18 +130,18 @@ def extract_file_metadata(file_path):
                             for key, value in entry.entries.items():
                                 try:
                                     key_decoded = key.decode(errors="ignore").strip()
-                                    value_decoded = value.decode(errors="ignore").strip()
-                                    if key_decoded == "CompanyName" and value_decoded:
-                                        vendor = value_decoded
+                                    val_decoded = value.decode(errors="ignore").strip()
+                                    if key_decoded == "CompanyName" and val_decoded:
+                                        vendor = val_decoded
                                 except AttributeError:
                                     continue
 
-            # Digital Signature
+            # Digital signature
             digital_signature = check_digital_signature(file_path)
 
         except Exception as e:
             compiler = "Error Extracting Compiler"
-            vendor = f"Error Extracting Vendor: {str(e)}"
+            vendor = f"Error Extracting Vendor: {e}"
             digital_signature = "Error Extracting Digital Signature"
 
     return {
@@ -157,99 +151,93 @@ def extract_file_metadata(file_path):
         "Digital Signature": digital_signature
     }
 
-
-# ========== FUNCTION: DOWNLOAD SBOM REPORT ==========
-
 def download_sbom_report(sbom_data, file_name="sbom_report.json"):
     """
-    Presents a download button for the SBOM JSON to the user.
+    Provide a Streamlit download button for the SBOM JSON.
     """
     sbom_json = json.dumps(sbom_data, indent=4)
     st.download_button(
         label="📥 Download SBOM Report",
         data=sbom_json,
         file_name=file_name,
-        mime="application/json",
-        key=f"download-{file_name}"  # Unique key to avoid repeated widget ID conflicts
+        mime="application/json"
     )
-
-
-# ========== FUNCTION: DISPLAY SBOM DATA ==========
 
 def display_sbom_data(sbom_data, file_path):
     """
-    Takes the SBOM data (as a Python dict) and the file path for local metadata.
-    Displays summary info, metadata, and components in the Streamlit UI.
+    Display SBOM metadata & components in the Streamlit app.
     """
     if not sbom_data:
         st.warning("⚠️ No SBOM data available.")
         return
 
-    # 1) Extract relevant SBOM metadata
     metadata = sbom_data.get("metadata", {})
     tools = metadata.get("tools", [])
 
-    # Tool info (defaults to Syft + specVersion)
-    tool_used = "Syft"
-    tool_version = sbom_data.get("specVersion", "Unknown")
-    if tools and isinstance(tools, list):
+    # Extract tool info
+    tool_used = "Unknown"
+    tool_version = "Unknown"
+    if isinstance(tools, list) and tools:
+        # Just use the first tool in the list
         first_tool = tools[0]
-        # fallback if key not found
-        tool_used = first_tool.get("name", tool_used)
-        tool_version = first_tool.get("version", tool_version)
+        tool_used = first_tool.get("name", "Unknown")
+        tool_version = first_tool.get("version", "Unknown")
 
-    # Software name
-    software_name = metadata.get("component", {}).get("name", None)
-    if not software_name:
-        software_name = os.path.basename(file_path)  # fallback: the filename
+    # If still unknown, fallback to Syft or use the 'specVersion'
+    if tool_used == "Unknown":
+        tool_used = "Syft"
+        tool_version = sbom_data.get("specVersion", "Unknown")
 
-    # Vendor (from SBOM metadata supplier, else fallback after local extraction)
-    vendor = metadata.get("supplier", {}).get("name", "Unknown")
+    # Local file metadata (EXE)
+    file_meta = extract_file_metadata(file_path)
 
-    # 2) Extract local EXE metadata (if applicable)
-    file_metadata = extract_file_metadata(file_path)
-
-    # If SBOM has no vendor, fallback to local vendor from EXE
+    # Vendor priority: SBOM metadata -> EXE info
+    vendor = file_meta["Vendor"]
     if vendor == "Unknown":
-        vendor = file_metadata["Vendor"]
+        vendor = metadata.get("supplier", {}).get("name", "Unknown")
 
-    # 3) Compose a summary dictionary
+    # Software name from SBOM, fallback "Unknown"
+    software_name = metadata.get("component", {}).get("name", "Unknown")
+
+    # Compile a summary
     sbom_summary = {
         "Software Name": software_name,
-        "Format": sbom_data.get("bomFormat", "CycloneDX"),
+        "Format": sbom_data.get("bomFormat", "Unknown"),
         "Version": sbom_data.get("specVersion", "Unknown"),
-        "Generated On": metadata.get("timestamp", "N/A"),
+        "Generated On": metadata.get("timestamp", "Unknown"),
         "Tool Used": tool_used,
         "Tool Version": tool_version,
         "Vendor": vendor,
-        "Compiler": file_metadata["Compiler"],
-        "Platform": file_metadata["Platform"],
-        "Digital Signature": file_metadata["Digital Signature"]
+        "Compiler": file_meta["Compiler"],
+        "Platform": file_meta["Platform"],
+        "Digital Signature": file_meta["Digital Signature"]
     }
 
-    # 4) Display metadata as a table
     st.subheader("📄 SBOM Metadata")
     st.table(pd.DataFrame(sbom_summary.items(), columns=["Attribute", "Value"]))
 
-    # 5) Download button for the SBOM data
+    # Download the SBOM as JSON
     download_sbom_report(sbom_data, file_name=f"{software_name}_SBOM.json")
 
-    # 6) If components exist, show them in a DataFrame
-    components = sbom_data.get("components", [])
-    if components and isinstance(components, list):
+    # Display components, if any
+    if "components" in sbom_data and isinstance(sbom_data["components"], list):
         st.subheader("🛠️ SBOM Components")
-        st.dataframe(pd.DataFrame(components))
+        st.dataframe(pd.DataFrame(sbom_data["components"]))
     else:
         st.warning("⚠️ No components found.")
 
+# ======================
+#  REMOTE API SBOM GENERATION
+# ======================
 
-# ========== FUNCTION: GENERATE SBOM (CALL RENDER API) ==========
+def generate_sbom(file_path, output_folder="generated_sboms"):
+    """
+    Calls the remote SBOM generation API at REMOTE_SBOM_API.
+    Writes the returned JSON to a local file, and returns the path to that file.
+    """
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
 
-def generate_sbom(file_path):
-    """
-    Calls your Render API endpoint to generate an SBOM from an uploaded file.
-    Returns the SBOM as a Python dict, or None on error.
-    """
     if not os.path.isfile(file_path):
         st.error(f"File not found: {file_path}")
         return None
@@ -257,64 +245,84 @@ def generate_sbom(file_path):
     with open(file_path, "rb") as f:
         files = {"file": f}
         try:
-            response = requests.post(API_URL, files=files)
+            response = requests.post(REMOTE_SBOM_API, files=files)
         except Exception as exc:
             st.error(f"❌ Error reaching SBOM generation API: {exc}")
             return None
 
     if response.status_code == 200:
-        return response.json()  # parsed JSON
+        # Parse JSON
+        sbom_data = response.json()
+        # Write to local file
+        base_name = os.path.basename(file_path) + "_sbom.json"
+        sbom_path = os.path.join(output_folder, base_name)
+        with open(sbom_path, "w", encoding="utf-8") as out_f:
+            json.dump(sbom_data, out_f, indent=4)
+        return sbom_path
     else:
-        st.error(f"❌ Failed to generate SBOM. API responded with {response.status_code}.")
+        st.error(f"❌ Failed to generate SBOM (Status Code: {response.status_code})")
         return None
 
+# ======================
+#  MAIN LOGIC
+# ======================
 
-# ========== MAIN LOGIC: BUTTON HANDLERS ==========
-
-# --- 1) Generate SBOM ---
+# --- (1) Generate SBOM ---
 if generate_button and file1:
     file1_path = save_uploaded_file(file1)
     if file1_path:
-        sbom_data = generate_sbom(file1_path)
-        if sbom_data:
+        sbom_path = generate_sbom(file1_path)
+        if sbom_path and os.path.isfile(sbom_path):
+            # Now read & display
+            with open(sbom_path, "r", encoding="utf-8") as f:
+                sbom_data = json.load(f)
             display_sbom_data(sbom_data, file1_path)
         else:
-            st.error("❌ SBOM generation returned no data.")
+            st.error("❌ SBOM generation returned no file.")
 
-# --- 2) Compare SBOMs ---
+# --- (2) Compare SBOMs ---
 if compare_button and file1 and file2:
-    # Example usage - you’d adjust to your local logic
-    # 1) Save both files
+    st.subheader("📊 SBOM Comparison Results")
+
     file1_path = save_uploaded_file(file1)
     file2_path = save_uploaded_file(file2)
+    if not file1_path or not file2_path:
+        st.error("❌ One or both files could not be saved.")
+    else:
+        # If not JSON, generate SBOM first
+        if not file1_path.endswith(".json"):
+            file1_path = generate_sbom(file1_path)  # returns JSON path
+        if not file2_path.endswith(".json"):
+            file2_path = generate_sbom(file2_path)  # returns JSON path
 
-    # 2) If they are both SBOMs, parse them and compare
-    if file1_path and file2_path:
-        sbom_data_1 = parse_sbom(file1_path)
-        sbom_data_2 = parse_sbom(file2_path)
-        comparison_result = compare_sboms(sbom_data_1, sbom_data_2)
-        st.write("Comparison Results:", comparison_result)
+        if file1_path and file2_path and os.path.isfile(file1_path) and os.path.isfile(file2_path):
+            # Compare
+            added, removed, error = compare_sboms(file1_path, file2_path)
 
-# --- 3) Search SBOM Components ---
-if search_button and file1:
-    # Save file & parse SBOM
-    file1_path = save_uploaded_file(file1)
-    if file1_path:
-        sbom_data = parse_sbom(file1_path)  # must be implemented in sbom_parser.py
-        if sbom_data:
-            search_term = st.text_input("Enter component name or keyword to search")
-            if search_term:
-                results = search_sbom(sbom_data, search_term)
-                st.write("Search Results:", results)
+            if error:
+                st.error(f"❌ {error}")
+            else:
+                col1, col2 = st.columns(2)
+
+                with col1:
+                    st.write("### ✅ Added Components")
+                    if added:
+                        st.dataframe(pd.DataFrame(list(added), columns=["Added Components"]))
+                    else:
+                        st.info("No new components added.")
+
+                with col2:
+                    st.write("### ❌ Removed Components")
+                    if removed:
+                        st.dataframe(pd.DataFrame(list(removed), columns=["Removed Components"]))
+                    else:
+                        st.info("No components removed.")
         else:
-            st.error("❌ Parsing SBOM failed.")
+            st.error("❌ Could not generate SBOM for one or both files.")
 
-# --- 4) Parse SBOM Data ---
-if parse_button and file1:
-    file1_path = save_uploaded_file(file1)
-    if file1_path:
-        sbom_data = parse_sbom(file1_path)
-        if sbom_data:
-            display_sbom_data(sbom_data, file1_path)
-        else:
-            st.error("❌ Parsing SBOM returned no data.")
+# --- (3) (Optional) Search SBOM, Parse SBOM, etc. ---
+# if search_button and file1:
+#     st.write("Search logic goes here...")
+
+# if parse_button and file1:
+#     st.write("Parsing logic goes here...")
