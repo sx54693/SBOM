@@ -11,6 +11,7 @@ from sbom_compare import compare_sboms
 from sbom_generator import generate_sbom
 from sbom_parser import parse_sbom
 from sbom_search import search_sbom
+API_URL = "https://sbom.onrender.com/generate-sbom/"
 
 # Page Config
 st.set_page_config(page_title="SBOM Analyzer", page_icon="🔍", layout="wide")
