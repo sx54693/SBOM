@@ -68,13 +68,11 @@ async def generate_sbom(file: UploadFile = File(...)):
         sbom_json = json.loads(result.stdout)
         metadata = extract_metadata(file_path)
 
-        # Enrich the SBOM JSON directly for the API response
         sbom_json["metadata"]["timestamp"] = metadata["Generated On"]
         sbom_json["metadata"]["component"]["name"] = metadata["Software Name"]
         sbom_json["metadata"]["supplier"] = {"name": metadata["Vendor"]}
         sbom_json["metadata"]["tools"] = [{"name": metadata["Tool Used"], "version": metadata["Tool Version"]}]
 
-        # Include additional properties
         sbom_json["additionalProperties"] = {
             "Compiler": metadata["Compiler"],
             "Platform": metadata["Platform"],
@@ -82,20 +80,11 @@ async def generate_sbom(file: UploadFile = File(...)):
             "SHA256": calculate_sha256(file_path)
         }
 
-        # Return enriched SBOM JSON directly as response
         return sbom_json
 
     except Exception as e:
         return {"error": str(e)}
-        from fastapi import FastAPI
-from sbom_generator import generate_sbom
-
-app = FastAPI()
 
 @app.get("/")
 def root():
     return {"message": "✅ SBOM API is working"}
-
-# This will activate your `/generate-sbom/` endpoint
-app.post("/generate-sbom/")(generate_sbom)
-
