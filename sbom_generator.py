@@ -87,3 +87,15 @@ async def generate_sbom(file: UploadFile = File(...)):
 
     except Exception as e:
         return {"error": str(e)}
+        from fastapi import FastAPI
+from sbom_generator import generate_sbom
+
+app = FastAPI()
+
+@app.get("/")
+def root():
+    return {"message": "✅ SBOM API is working"}
+
+# This will activate your `/generate-sbom/` endpoint
+app.post("/generate-sbom/")(generate_sbom)
+
