@@ -1,4 +1,7 @@
-from sbom_generator import app
+from fastapi import FastAPI
+
+app = FastAPI()
+
 @app.get("/")
 def root():
     return {"message": "✅ SBOM API is working"}
