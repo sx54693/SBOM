@@ -195,9 +195,8 @@ def display_sbom_data(sbom_data, file_path):
     if tools and isinstance(tools, list):
         first_tool = tools[0]
         # fallback if key not found
-      if tool_used == "Unknown"
-    tool_used = "Syft"
-    tool_version = sbom_data.get("specVersion", "Unknown")
+     tool_used = tool.get("name", "Unknown")
+tool_version = tool.get("version", "Unknown")
 
     # Software name
     software_name = metadata.get("component", {}).get("name", None)
