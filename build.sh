@@ -1,10 +1,10 @@
 #!/bin/bash
+set -e
 
-# Create a bin folder if it doesn't exist
+# Create bin directory and install syft into it
 mkdir -p ./bin
-
-# Install Syft into ./bin
 curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b ./bin
 
-# Add it to PATH for runtime
-echo 'export PATH=$PATH:/opt/render/project/src/bin' >> ~/.profile
+# Add it to PATH for Render
+export PATH="$PATH:$(pwd)/bin"
+echo 'export PATH=$PATH:$(pwd)/bin' >> ~/.profile
