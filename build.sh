@@ -1,5 +1,4 @@
 #!/bin/bash
 
-# Ensure pip installs uvicorn
+# Ensure pip installs everything from requirements.txt
 pip install -r requirements.txt
-
