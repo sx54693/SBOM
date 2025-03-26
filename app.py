@@ -226,7 +226,7 @@ def download_sbom_report(sbom_data, file_name="sbom_report.json"):
 
 import requests
 
-API_URL = "https://sbom-generator-service.onrender.com/generate-sbom/"
+API_URL = "https://sbom.onrender.com/generate-sbom/"
 
 def generate_sbom(file_path):
     """Calls the deployed SBOM API"""
