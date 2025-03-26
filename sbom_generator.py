@@ -51,21 +51,26 @@ def extract_metadata(file_path):
             metadata["Vendor"] = f"Error: {e}"
 
     return metadata
+import os
+import json
+import subprocess
 
 def generate_sbom(file_path):
     try:
-        if not os.path.exists(file_path):
-            return {"error": f"File not found: {file_path}"}
-
-        metadata = extract_metadata(file_path)
-syft_command = ["./bin/syft", file_path, "-o", "cyclonedx-json"]
-
-        result = subprocess.run(command, capture_output=True, text=True)
+        syft_command = ["./bin/syft", file_path, "-o", "cyclonedx-json"]
+        result = subprocess.run(syft_command, capture_output=True, text=True)
 
         if result.returncode != 0:
-            return {"error": f"Syft Error: {result.stderr}"}
+            return {"error": f"Syft failed: {result.stderr}"}
 
         sbom_json = json.loads(result.stdout)
+        return sbom_json
+
+    except Exception as e:
+        return {"error": f"Exception occurred: {str(e)}"}
+
+
+    
 
         # Enrich SBOM with additional metadata
         sbom_json.update({
