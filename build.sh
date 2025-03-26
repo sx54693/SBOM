@@ -1,4 +1,5 @@
 #!/bin/bash
 
-# Ensure pip installs everything from requirements.txt
+# Install all Python dependencies from requirements.txt
+pip install --upgrade pip
 pip install -r requirements.txt
