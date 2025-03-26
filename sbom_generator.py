@@ -1,105 +1,144 @@
 import os
 import json
-import pefile
-import platform
 import hashlib
+import platform
 import subprocess
+import pefile
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+
 def secure_filename(filename):
+    """
+    Sanitize filename to prevent issues such as directory traversal.
+    Replaces spaces with underscores and strips out any non-basename paths.
+    """
     return os.path.basename(filename).replace(" ", "_")
 
-def calculate_sha256(file_path):
-    sha256 = hashlib.sha256()
-    with open(file_path, "rb") as f:
-        for chunk in iter(lambda: f.read(4096), b""):
-            sha256.update(chunk)
-    return sha256.hexdigest()
 
-def extract_metadata(file_path):
-    metadata = {
-        "Software Name": os.path.basename(file_path),
-        "Format": "CycloneDX",
-        "Version": "Unknown",
-        "Generated On": "N/A",
-        "Tool Used": "Syft",
-        "Tool Version": "1.0",
-        "Vendor": "Unknown",
-        "Compiler": "Unknown",
-        "Platform": platform.architecture()[0],
-        "Digital Signature": "Not Available on Cloud"
-    }
+def calculate_file_hash(file_path):
+    """
+    Calculates the SHA-256 hash of the specified file in chunks (4096 bytes),
+    to handle large files efficiently.
+    """
+    sha256_hash = hashlib.sha256()
+    try:
+        with open(file_path, "rb") as f:
+            for byte_block in iter(lambda: f.read(4096), b""):
+                sha256_hash.update(byte_block)
+        return sha256_hash.hexdigest()
+    except FileNotFoundError:
+        print(f"❌ Error: File {file_path} not found.")
+        return None
+    except Exception as e:
+        print(f"❌ Exception in calculating hash: {e}")
+        return None
 
-    if file_path.endswith(".exe"):
-        try:
-            pe = pefile.PE(file_path)
 
-            if hasattr(pe, "OPTIONAL_HEADER"):
-                metadata["Compiler"] = f"Linker {pe.OPTIONAL_HEADER.MajorLinkerVersion}.{pe.OPTIONAL_HEADER.MinorLinkerVersion}"
+def extract_metadata_from_exe(file_path):
+    """
+    Extract vendor, version, and compiler details from a Windows EXE using pefile.
+    Looks for 'CompanyName', 'ProductVersion' or 'FileVersion' in FileInfo StringTable.
+    Also includes the linker version as 'compiler' from the OPTIONAL_HEADER.
+    Returns (vendor, version, compiler) as strings.
+    """
+    vendor = "Unknown"
+    version = "Unknown"
+    compiler = "Unknown"
 
-            if hasattr(pe, "FileInfo"):
-                for file_info in pe.FileInfo:
-                    if hasattr(file_info, "StringTable"):
-                        for entry in file_info.StringTable:
-                            for key, value in entry.entries.items():
-                                key_decoded = key.decode(errors="ignore").strip()
-                                value_decoded = value.decode(errors="ignore").strip()
-                                if key_decoded == "CompanyName":
-                                    metadata["Vendor"] = value_decoded
-        except Exception as e:
-            metadata["Vendor"] = f"Error: {e}"
+    try:
+        pe = pefile.PE(file_path)
 
-    return metadata
-import os
-import json
-import subprocess
+        # Look for StringTable info: 'CompanyName', 'ProductVersion', 'FileVersion'
+        if hasattr(pe, "FileInfo") and isinstance(pe.FileInfo, list):
+            for fileinfo in pe.FileInfo:
+                if hasattr(fileinfo, "StringTable"):
+                    for st in fileinfo.StringTable:
+                        for key, value in st.entries.items():
+                            key_str = key.decode(errors='ignore')
+                            value_str = value.decode(errors='ignore').strip()
+                            if key_str == "CompanyName":
+                                vendor = value_str
+                            elif key_str in ["ProductVersion", "FileVersion"]:
+                                # You might decide which one to prioritize if both exist
+                                version = value_str
+
+        # OPTIONAL_HEADER might give us the major/minor linker version
+        if hasattr(pe, "OPTIONAL_HEADER"):
+            linker_major = pe.OPTIONAL_HEADER.MajorLinkerVersion
+            linker_minor = pe.OPTIONAL_HEADER.MinorLinkerVersion
+            compiler = f"Linker {linker_major}.{linker_minor}"
+
+    except Exception as e:
+        print(f"⚠️ Error reading PE metadata: {e}")
+
+    return vendor, version, compiler
+
 
 def generate_sbom(file_path):
+    """
+    Generates an SBOM for a given file, using Syft (by anchore) with CycloneDX JSON output.
+    It:
+     1. Checks file existence
+     2. Calculates a file hash (SHA-256)
+     3. Extracts EXE metadata if applicable (vendor, version, compiler)
+     4. Runs `syft <file_path> -o cyclonedx-json`
+     5. Loads Syft's output (stdout) as JSON
+     6. Appends top-level metadata (vendor, version, compiler, etc.)
+     7. Saves final SBOM to <BASE_DIR>/sbom_outputs/<filename>.json
+     8. Returns the path to that final SBOM file, or None on error
+    """
     try:
-        syft_command = ["./bin/syft", file_path, "-o", "cyclonedx-json"]
-        result = subprocess.run(syft_command, capture_output=True, text=True)
+        if not os.path.exists(file_path):
+            print(f"❌ Error: File {file_path} not found.")
+            return None
 
-        if result.returncode != 0:
-            return {"error": f"Syft failed: {result.stderr}"}
+        file_name = os.path.basename(file_path)
 
-        sbom_json = json.loads(result.stdout)
-        return sbom_json
+        # 1) Calculate file hash
+        file_hash = calculate_file_hash(file_path)
 
-    except Exception as e:
-        return {"error": f"Exception occurred: {str(e)}"}
+        # 2) Extract EXE metadata if file is an .exe
+        vendor, version, compiler = "Unknown", "Unknown", "Unknown"
+        if file_path.lower().endswith(".exe"):
+            vendor, version, compiler = extract_metadata_from_exe(file_path)
 
-
-    
-
-        # Enrich SBOM with additional metadata
-        sbom_json.update({
-            "metadata": {
-                "timestamp": metadata["Generated On"],
-                "component": {
-                    "name": metadata["Software Name"],
-                    "type": "application"
-                },
-                "tools": [{"name": metadata["Tool Used"], "version": metadata["Tool Version"]}],
-                "supplier": {"name": metadata["Vendor"]}
-            },
-            "additionalProperties": {
-                "Compiler": metadata["Compiler"],
-                "Platform": metadata["Platform"],
-                "Digital Signature": metadata["Digital Signature"],
-                "SHA256": calculate_sha256(file_path)
-            }
-        })
-
-        # Save the enriched SBOM JSON
+        # 3) Prepare output path
         output_dir = os.path.join(BASE_DIR, "sbom_outputs")
         os.makedirs(output_dir, exist_ok=True)
-        output_path = os.path.join(output_dir, secure_filename(file_path) + "_sbom.json")
+        output_sbom = os.path.join(output_dir, secure_filename(file_name) + ".json")
 
-        with open(output_path, "w", encoding="utf-8") as f:
+        # 4) Run Syft to generate CycloneDX JSON
+        #    Make sure Syft is installed and available on the PATH
+        command = ["syft", file_path, "-o", "cyclonedx-json"]
+        result = subprocess.run(command, capture_output=True, text=True)
+
+        if result.returncode != 0:
+            print(f"❌ Syft Error: {result.stderr}")
+            return None
+
+        # 5) Parse Syft’s JSON output from stdout
+        sbom_json = json.loads(result.stdout)
+
+        # 6) Append top-level metadata
+        sbom_json.update({
+            "Software Name": file_name,
+            "Vendor": vendor,
+            "Version": version,
+            "File Hash": file_hash,                # SHA-256
+            "Format": "CycloneDX",                 # or 'SPDX', if you prefer
+            "OS Compatibility": platform.system(), # e.g., 'Windows', 'Linux', 'Darwin'
+            "Binary Architecture": platform.machine(),
+            "Compiler": compiler
+        })
+
+        # 7) Save final SBOM JSON
+        with open(output_sbom, "w", encoding="utf-8") as f:
             json.dump(sbom_json, f, indent=2)
 
-        return sbom_json  # Direct JSON output for Render API response
+        print(f"✅ SBOM generated successfully: {output_sbom}")
+        return output_sbom
 
     except Exception as e:
-        return {"error": f"Error generating SBOM: {e}"}
+        print(f"❌ Exception in generate_sbom: {e}")
+        return None
