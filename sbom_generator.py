@@ -58,8 +58,8 @@ def generate_sbom(file_path):
             return {"error": f"File not found: {file_path}"}
 
         metadata = extract_metadata(file_path)
+syft_command = ["./bin/syft", file_path, "-o", "cyclonedx-json"]
 
-        command = ["syft", file_path, "-o", "cyclonedx-json"]
         result = subprocess.run(command, capture_output=True, text=True)
 
         if result.returncode != 0:
