@@ -1,4 +1,4 @@
-# SBOM Finder for Software Applications and Apps
+# SBOM Analyzer for Software Applications and Apps
 
 ## Overview
 The **SBOM Finder** is a **Minimally Viable Product (MVP)** designed to generate, analyze, and validate **Software Bill of Materials (SBOMs)** for software applications and mobile apps. This project is built for sustained production use, ensuring **comprehensive dependency management, security vulnerability detection, and compliance validation**. It meets the requirements of **CycloneDX** and **SPDX** standards and provides features required for real-world application in the market.
