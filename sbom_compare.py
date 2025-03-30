@@ -1,62 +1,102 @@
-import os
 import json
+import os
 
-def compare_sboms(sbom1, sbom2):
+def compare_sboms(sbom1_data, sbom2_data):
     """
-    Compare two SBOMs. Each argument (sbom1, sbom2) can be either:
-      1) A file path (string) to a JSON SBOM, OR
-      2) A dict already loaded in memory (the SBOM contents).
+    Compare two SBOMs in detail, identifying:
+      - Added:   Components in SBOM2 not in SBOM1.
+      - Removed: Components in SBOM1 not in SBOM2.
+      - Changed: Components with the same name in both, but with different metadata
+                (e.g., version, supplier, etc.).
 
-    Returns:
-      (added, removed, error)
-        - added: set of component names present in sbom2 but not in sbom1
-        - removed: set of component names present in sbom1 but not in sbom2
-        - error: string describing an error, or None if no error
+    Each argument (sbom1_data, sbom2_data) is expected to be a Python dict
+    with a "components" list, each component having fields like "name", "version",
+    "supplier", etc. For instance, a typical CycloneDX or Syft output.
+
+    Returns a tuple:
+      (added_list, removed_list, changed_list, error)
+        - added_list:   list of components newly introduced in sbom2
+        - removed_list: list of components that are missing from sbom2
+        - changed_list: list of tuples (component_name, details_of_old, details_of_new)
+        - error:        string if something goes wrong, else None
     """
 
-    def load_sbom(data_or_path):
-        """
-        Load SBOM JSON from a file path or return it if it's already a dict.
-        If invalid or can't be opened, return None.
-        """
-        # If it's already a dict, assume it's valid SBOM data
-        if isinstance(data_or_path, dict):
-            return data_or_path
+    # Sanity check
+    if not sbom1_data or not sbom2_data:
+        return None, None, None, "One or both SBOMs are empty or invalid."
 
-        # If it's a string, check if it points to an existing file
-        if isinstance(data_or_path, str) and os.path.exists(data_or_path):
-            try:
-                with open(data_or_path, "r", encoding="utf-8") as f:
-                    return json.load(f)
-            except Exception as e:
-                print(f"❌ Failed to read SBOM file '{data_or_path}': {e}")
-                return None
+    # Extract components or default to empty
+    components1 = sbom1_data.get("components", [])
+    components2 = sbom2_data.get("components", [])
 
-        # Otherwise, it's not a valid dict or a valid path
-        return None
+    # Convert the list of components to a dict keyed by "name" for easier lookup.
+    # Because multiple fields can define a unique component (purl, name, version),
+    # decide how you want to identify a "component". For simplicity, we use the "name"
+    # as the key. If you want a more robust key, use something like (name, purl).
+    def component_key(comp):
+        # This is the identity used for "which" component
+        return comp.get("name", "")
 
-    # Try to load both SBOMs (from dict or file)
-    sbom_data_1 = load_sbom(sbom1)
-    sbom_data_2 = load_sbom(sbom2)
+    # Create dicts keyed by "name"
+    map1 = {}
+    for c in components1:
+        key = component_key(c)
+        if key:  # Only store if there's a name
+            map1[key] = c
 
-    if sbom_data_1 is None or sbom_data_2 is None:
-        return None, None, "One or both SBOMs could not be loaded."
+    map2 = {}
+    for c in components2:
+        key = component_key(c)
+        if key:
+            map2[key] = c
 
-    # Extract components lists from each SBOM (default to empty list if missing)
-    components_1 = sbom_data_1.get("components", [])
-    components_2 = sbom_data_2.get("components", [])
+    added = []
+    removed = []
+    changed = []
 
-    # Convert each list of components to a set of names
-    def get_component_names(components_list):
-        # Assumes each component is a dict with a 'name' key
-        return {comp.get("name") for comp in components_list if comp.get("name")}
+    # 1) Identify "removed" and "changed"
+    for comp_name, comp1 in map1.items():
+        if comp_name not in map2:
+            # It's in SBOM1 but not in SBOM2 -> removed
+            removed.append(comp1)
+        else:
+            # The same named component is in both SBOMs
+            comp2 = map2[comp_name]
 
-    set_1 = get_component_names(components_1)
-    set_2 = get_component_names(components_2)
+            # Compare the fields that matter
+            # For example, you might compare version, supplier, or other metadata
+            version1 = comp1.get("version", "N/A")
+            version2 = comp2.get("version", "N/A")
 
-    # Determine which components were added vs. removed
-    added = set_2 - set_1
-    removed = set_1 - set_2
+            supplier1 = ""
+            supplier2 = ""
+            # Sometimes supplier info is nested. Adjust as needed:
+            # CycloneDX might store it as comp["supplier"]["name"]
+            # Syft might store it differently. This is an example:
+            if "supplier" in comp1 and isinstance(comp1["supplier"], dict):
+                supplier1 = comp1["supplier"].get("name", "")
+            if "supplier" in comp2 and isinstance(comp2["supplier"], dict):
+                supplier2 = comp2["supplier"].get("name", "")
 
-    # Return the results (no error)
-    return added, removed, None
+            # Compare relevant fields
+            # If they differ, we consider it a "changed" component
+            if (version1 != version2) or (supplier1 != supplier2):
+                changed.append((
+                    comp_name,
+                    {
+                        "version": version1,
+                        "supplier": supplier1,
+                    },
+                    {
+                        "version": version2,
+                        "supplier": supplier2,
+                    }
+                ))
+
+    # 2) Identify "added"
+    for comp_name, comp2 in map2.items():
+        if comp_name not in map1:
+            # It's in SBOM2 but not in SBOM1 -> added
+            added.append(comp2)
+
+    return added, removed, changed, None
