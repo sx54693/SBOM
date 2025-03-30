@@ -35,5 +35,3 @@ def compare_sboms(sbom1_path, sbom2_path):
     removed = sbom1_names - sbom2_names
 
     return added, removed, None
-
-
