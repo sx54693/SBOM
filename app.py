@@ -231,25 +231,98 @@ if compare_button and file1 and file2:
         st.stop()
 
     # 3) Compare them using compare_sboms (which expects two SBOM dicts)
-    added, removed, error = compare_sboms(sbom_data_1, sbom_data_2)
+    # --- 2) Compare SBOMs ---
+if compare_button and file1 and file2:
+    st.subheader("📊 SBOM Comparison Results")
+
+    # 1) Save both files
+    file1_path = save_uploaded_file(file1)
+    file2_path = save_uploaded_file(file2)
+
+    if not file1_path or not file2_path:
+        st.error("❌ Could not save one (or both) uploaded files.")
+        st.stop()
+
+    # 2) If the file is an EXE, generate an SBOM via the API
+    #    Otherwise, parse it as an existing SBOM
+    def get_sbom_data(local_path):
+        if local_path.lower().endswith(".exe"):
+            return generate_sbom(local_path)  # returns dict
+        else:
+            return parse_sbom(local_path)     # also returns dict
+
+    sbom_data_1 = get_sbom_data(file1_path)
+    sbom_data_2 = get_sbom_data(file2_path)
+
+    if not sbom_data_1 or not sbom_data_2:
+        st.error("❌ Could not generate/parse one (or both) SBOMs.")
+        st.stop()
+
+    # 3) Compare them using compare_sboms (which returns 4 items now)
+    # --- 2) Compare SBOMs ---
+if compare_button and file1 and file2:
+    st.subheader("📊 SBOM Comparison Results")
+
+    # 1) Save both files
+    file1_path = save_uploaded_file(file1)
+    file2_path = save_uploaded_file(file2)
+
+    if not file1_path or not file2_path:
+        st.error("❌ Could not save one (or both) uploaded files.")
+        st.stop()
+
+    # 2) If the file is an EXE, generate an SBOM via the API
+    #    Otherwise, parse it as an existing SBOM
+    def get_sbom_data(local_path):
+        if local_path.lower().endswith(".exe"):
+            return generate_sbom(local_path)  # returns dict
+        else:
+            return parse_sbom(local_path)     # also returns dict
+
+    sbom_data_1 = get_sbom_data(file1_path)
+    sbom_data_2 = get_sbom_data(file2_path)
+
+    if not sbom_data_1 or not sbom_data_2:
+        st.error("❌ Could not generate/parse one (or both) SBOMs.")
+        st.stop()
+
+    # 3) Compare them using compare_sboms (which returns 4 items now)
+    added, removed, changed, error = compare_sboms(sbom_data_1, sbom_data_2)
     if error:
         st.error(f"Comparison error: {error}")
     else:
-        col1, col2 = st.columns(2)
+        # 3a) ADDED
+        st.write("### ✅ Added Components")
+        if added:
+            # If 'added' is a list of dicts or strings, adapt as needed
+            st.dataframe(pd.DataFrame(added))
+        else:
+            st.info("No newly added components.")
 
-        with col1:
-            st.write("### ✅ Added Components")
-            if added:
-                st.dataframe(pd.DataFrame(list(added), columns=["Added Components"]))
-            else:
-                st.info("No newly added components.")
+        # 3b) REMOVED
+        st.write("### ❌ Removed Components")
+        if removed:
+            st.dataframe(pd.DataFrame(removed))
+        else:
+            st.info("No components removed.")
 
-        with col2:
-            st.write("### ❌ Removed Components")
-            if removed:
-                st.dataframe(pd.DataFrame(list(removed), columns=["Removed Components"]))
-            else:
-                st.info("No components removed.")
+        # 3c) CHANGED
+        st.write("### 🔄 Changed Components")
+        if changed:
+            # If 'changed' is a list of tuples like: (name, old_info, new_info)
+            # we can convert it to a list of dicts for easier display
+            changed_rows = []
+            for comp_name, old_data, new_data in changed:
+                changed_rows.append({
+                    "Component Name": comp_name,
+                    "Old Version": old_data.get("version", "N/A"),
+                    "New Version": new_data.get("version", "N/A"),
+                    "Old Supplier": old_data.get("supplier", ""),
+                    "New Supplier": new_data.get("supplier", "")
+                })
+            st.dataframe(pd.DataFrame(changed_rows))
+        else:
+            st.info("No components changed.")
 
 
 # --- 3) Search SBOM Components ---
