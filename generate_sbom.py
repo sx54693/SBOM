@@ -92,6 +92,8 @@ def generate_sbom(file_path):
             ["syft", f"dir:{extracted_path}", "-o", "cyclonedx-json"],
             capture_output=True, text=True
         )
+print("📄 Raw SBOM JSON from Syft:")
+print(result.stdout)
 
         if result.returncode != 0:
             print(f"❌ Syft Failed: {result.stderr}")
