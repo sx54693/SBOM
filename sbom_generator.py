@@ -110,4 +110,4 @@ def generate_sbom(file_path):
 
     except Exception as e:
         print(f"❌ Exception in generate_sbom: {e}")
-        return None  updated
+        return None
