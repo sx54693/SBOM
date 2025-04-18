@@ -1,18 +1,16 @@
 import os
-import json
 import subprocess
+import json
 import shutil
 import pefile
 
 def extract_exe_metadata(file_path):
-    """Extracts metadata from an EXE file using pefile."""
     metadata = {
         "Software Name": os.path.basename(file_path),
         "Version": "Unknown",
         "Vendor": "Unknown",
         "File Description": "Unknown"
     }
-
     try:
         pe = pefile.PE(file_path)
         if hasattr(pe, "FileInfo"):
@@ -33,93 +31,103 @@ def extract_exe_metadata(file_path):
                                     elif key.lower() in ["comments", "filedescription"]:
                                         metadata["File Description"] = value
     except Exception as e:
-        print(f"❌ EXE Metadata Extraction Failed: {e}")
-
+        print(f"❌ Metadata extraction failed: {e}")
     return metadata
 
-def extract_exe(file_path, extract_dir):
-    """Extracts EXE file using 7-Zip before SBOM analysis."""
-    if not shutil.which("7z"):
-        print("❌ Error: 7-Zip is not installed or not in PATH.")
-        return None
+def extract_apk(file_path, extract_dir):
     try:
-        print(f"📂 Extracting {file_path} to {extract_dir}...")
-        subprocess.run(["7z", "x", file_path, f"-o{extract_dir}"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        return extract_dir if os.path.exists(extract_dir) else None
+        os.makedirs(extract_dir, exist_ok=True)
+        subprocess.run(["apktool", "d", "-f", file_path, "-o", extract_dir],
+                       check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        return extract_dir
     except Exception as e:
-        print(f"❌ EXE Extraction Failed: {e}")
+        print(f"❌ APKTool extraction failed: {e}")
         return None
 
-def is_valid_sbom(sbom_path):
-    """Check if SBOM JSON contains valid components."""
-    if not os.path.exists(sbom_path):
-        return False
+def extract_exe(file_path, extract_dir):
+    if not shutil.which("7z"):
+        print("❌ 7-Zip not found.")
+        return None
     try:
-        with open(sbom_path, "r", encoding="utf-8") as f:
-            sbom_data = json.load(f)
-        return "components" in sbom_data and bool(sbom_data["components"])
-    except (json.JSONDecodeError, UnicodeDecodeError):
+        subprocess.run(["7z", "x", file_path, f"-o{extract_dir}"],
+                       check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        return extract_dir
+    except Exception as e:
+        print(f"❌ 7-Zip extraction failed: {e}")
+        return None
+
+def is_valid_json(file_path):
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            json.load(f)
+        return True
+    except:
         return False
 
 def generate_sbom(file_path):
-    """Generate SBOM for a software application or app."""
+    if not os.path.exists(file_path):
+        print("❌ File not found.")
+        return None
+
     file_path = os.path.abspath(file_path)
+    file_ext = os.path.splitext(file_path)[1].lower()
     sbom_output_dir = os.path.abspath("sbom_outputs")
     os.makedirs(sbom_output_dir, exist_ok=True)
+    output_sbom = os.path.join(sbom_output_dir, os.path.basename(file_path) + ".json")
 
-    sbom_output = os.path.join(sbom_output_dir, f"{os.path.basename(file_path)}.json")
-    extracted_dir = os.path.join("extracted_apps", os.path.basename(file_path))
+    scan_target = None
+    metadata = {
+        "Software Name": os.path.basename(file_path),
+        "Version": "Unknown",
+        "Vendor": "Unknown",
+        "File Description": "Unknown"
+    }
+
+    if file_ext == ".exe":
+        metadata = extract_exe_metadata(file_path)
+        extracted_dir = os.path.join("extracted_apps", os.path.basename(file_path))
+        scan_target = extract_exe(file_path, extracted_dir)
+        if not scan_target:
+            return None
+        scan_target = f"dir:{scan_target}"
+
+    elif file_ext == ".apk":
+        extracted_dir = os.path.join("decoded_apks", os.path.basename(file_path).replace(".apk", ""))
+        scan_target = extract_apk(file_path, extracted_dir)
+        if not scan_target:
+            return None
+        scan_target = f"dir:{scan_target}"
+
+    else:
+        scan_target = f"file:{file_path}"
 
     try:
-        if file_path.endswith(".exe"):
-            extracted_path = extract_exe(file_path, extracted_dir)
-            metadata = extract_exe_metadata(file_path)
-        else:
-            extracted_path = file_path
-            metadata = {
-                "Software Name": os.path.basename(file_path),
-                "Version": "Unknown",
-                "Vendor": "Unknown",
-                "File Description": "Unknown"
-            }
+        command = ["syft", scan_target, "-o", "cyclonedx-json"]
+        result = subprocess.run(command, capture_output=True, text=True)
 
-        if not extracted_path:
-            print("❌ Extraction failed or file not found.")
+        if result.returncode != 0 or not result.stdout.strip():
+            print("❌ Syft failed or returned no output.")
             return None
 
-        print(f"🔍 Generating SBOM for: {extracted_path}")
-        result = subprocess.run(
-            ["syft", f"dir:{extracted_path}", "-o", "cyclonedx-json"],
-            capture_output=True, text=True
-        )
-print("📄 Raw SBOM JSON from Syft:")
-print(result.stdout)
-
-        if result.returncode != 0:
-            print(f"❌ Syft Failed: {result.stderr}")
-            return None
-
-        with open(sbom_output, "w", encoding="utf-8") as f:
+        with open(output_sbom, "w", encoding="utf-8") as f:
             f.write(result.stdout)
 
-        with open(sbom_output, "r+", encoding="utf-8") as f:
-            sbom_data = json.load(f)
-            sbom_data.setdefault("metadata", {})
-            sbom_data["metadata"]["Software Name"] = metadata["Software Name"]
-            sbom_data["metadata"]["Vendor"] = metadata["Vendor"]
-            sbom_data["metadata"]["Version"] = metadata["Version"]
-            sbom_data["metadata"]["File Description"] = metadata["File Description"]
-            f.seek(0)
-            json.dump(sbom_data, f, indent=4)
-            f.truncate()
-
-        if is_valid_sbom(sbom_output):
-            print(f"✅ SBOM successfully generated: {sbom_output}")
-            return sbom_output
+        if is_valid_json(output_sbom):
+            with open(output_sbom, "r+", encoding="utf-8") as f:
+                sbom_data = json.load(f)
+                sbom_data.setdefault("metadata", {})
+                sbom_data["metadata"]["Software Name"] = metadata["Software Name"]
+                sbom_data["metadata"]["Vendor"] = metadata["Vendor"]
+                sbom_data["metadata"]["Version"] = metadata["Version"]
+                sbom_data["metadata"]["File Description"] = metadata["File Description"]
+                f.seek(0)
+                json.dump(sbom_data, f, indent=4)
+                f.truncate()
+            print(f"✅ SBOM saved: {output_sbom}")
+            return output_sbom
         else:
-            print("⚠️ SBOM generated but has no components.")
-            return sbom_output
-
+            print("❌ Invalid SBOM JSON.")
+            return None
     except Exception as e:
-        print(f"❌ SBOM Generation Failed: {e}")
+        print(f"❌ Unexpected error: {e}")
         return None
