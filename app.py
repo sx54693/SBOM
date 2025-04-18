@@ -10,9 +10,6 @@ from sbom_generator import generate_sbom
 from sbom_parser import parse_sbom
 from sbom_search import search_sbom
 
-API_URL = "https://sbom.onrender.com/generate-sbom/"
-signtool_path = "C:\\Users\\cyria\\signtool.exe"
-
 st.set_page_config(page_title="SBOM Analyzer", page_icon="🔍", layout="wide")
 
 st.markdown("""
@@ -131,12 +128,10 @@ def display_sbom_data(sbom_data, file_path):
 if generate_button and file1:
     file1_path = save_uploaded_file(file1)
     sbom_output = generate_sbom(file1_path)
-if isinstance(sbom_output, str) and os.path.isfile(sbom_output):
-    with open(sbom_output, "r", encoding="utf-8") as f:
-        sbom_data = json.load(f)
-    display_sbom_data(sbom_data, file1_path)
-else:
-    st.error("❌ Failed to generate a valid SBOM file.")
+    if sbom_output:
+        with open(sbom_output, "r", encoding="utf-8") as f:
+            sbom_data = json.load(f)
+        display_sbom_data(sbom_data, file1_path)
 
 if compare_button and file1 and file2:
     file1_path = save_uploaded_file(file1)
