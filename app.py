@@ -131,10 +131,7 @@ def display_sbom_data(sbom_data, file_path):
 if generate_button and file1:
     file1_path = save_uploaded_file(file1)
     sbom_output = generate_sbom(file1_path)
-   if generate_button and file1:
-    file1_path = save_uploaded_file(file1)
-    sbom_output = generate_sbom(file1_path)
-    
+
     if sbom_output and os.path.isfile(sbom_output):
         with open(sbom_output, "r", encoding="utf-8") as f:
             sbom_data = json.load(f)
