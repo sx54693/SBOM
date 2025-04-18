@@ -2,13 +2,11 @@ import streamlit as st
 import os
 import json
 import pandas as pd
+import subprocess
 import platform
 import pefile
-import subprocess
-import requests
-
-# Local modules (assuming they exist)
 from sbom_compare import compare_sboms
+from sbom_generator import generate_sbom
 from sbom_parser import parse_sbom
 from sbom_search import search_sbom
 
@@ -17,334 +15,143 @@ signtool_path = "C:\\Users\\cyria\\signtool.exe"
 
 st.set_page_config(page_title="SBOM Analyzer", page_icon="🔍", layout="wide")
 
-st.markdown(
-    """
+st.markdown("""
     <style>
     .stApp { background: linear-gradient(135deg, #1f4037, #99f2c8); color: white; }
     [data-testid="stSidebar"] { background: #1f2833; color: white; }
     .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 { color: #ffcc00; }
-    div.stButton > button {
-        background-color: #008CBA; color: white; border-radius: 8px;
-    }
+    div.stButton > button { background-color: #008CBA; color: white; border-radius: 8px; }
     div.stButton > button:hover { background-color: #005f73; }
     </style>
-    """,
-    unsafe_allow_html=True
-)
+""", unsafe_allow_html=True)
 
-st.title("🔍 SBOM Analyzer - Generator, Parser, Comparator & Search")
+st.title("🔍 SBOM Analyzer - Generator, Parser & Comparator")
 
-# ======================
-#  SIDEBAR
-# ======================
 st.sidebar.header("📂 Upload Software Application or SBOM File")
-file1 = st.sidebar.file_uploader("🆕 Upload First File", type=["exe", "json", "spdx", "csv", "xml"])
-file2 = st.sidebar.file_uploader("📑 Upload Second File (Optional for Comparison)", type=["exe", "json", "spdx", "csv", "xml"])
+file1 = st.sidebar.file_uploader("🆕 Upload First File", type=["exe", "apk", "json", "spdx", "csv", "xml"])
+file2 = st.sidebar.file_uploader("📑 Upload Second File (Optional for Comparison)", type=["exe", "apk", "json", "spdx", "csv", "xml"])
 
 generate_button = st.sidebar.button("🔄 Generate SBOM")
 compare_button = st.sidebar.button("🔍 Compare SBOMs")
-search_button = st.sidebar.button("🔎 Search SBOM Components")
-parse_button = st.sidebar.button("📜 Parse SBOM Data")
-
 
 def save_uploaded_file(uploaded_file, folder="uploaded_apps"):
     if not os.path.exists(folder):
         os.makedirs(folder)
     file_path = os.path.join(folder, uploaded_file.name)
-    try:
-        with open(file_path, "wb") as f:
-            f.write(uploaded_file.getbuffer())
-        os.chmod(file_path, 0o777)
-        return file_path
-    except PermissionError:
-        st.error(f"❌ Permission denied: {file_path}. Try running as administrator.")
-        return None
+    with open(file_path, "wb") as f:
+        f.write(uploaded_file.getbuffer())
+    os.chmod(file_path, 0o777)
+    return file_path
 
-
-def check_digital_signature(file_path):
-    if not os.path.exists(signtool_path):
-        return "⚠️ Signature Check Not Available"
+def extract_with_7zip(file_path):
     try:
-        result = subprocess.run(
-            [signtool_path, "verify", "/pa", file_path],
-            capture_output=True, text=True, check=False
-        )
-        if "Successfully verified" in result.stdout:
-            return "✅ Signed"
-        elif ("No signature" in result.stdout) or ("is not signed" in result.stdout):
-            return "❌ Not Signed"
-        else:
-            return f"⚠️ Unknown Signature Status: {result.stdout.strip()}"
+        result = subprocess.run(["7z", "l", file_path], capture_output=True, text=True)
+        return result.stdout
     except Exception as e:
-        return f"❌ Error Checking Signature: {str(e)}"
+        return f"❌ 7-Zip Error: {str(e)}"
 
+def extract_exe_libraries(file_path):
+    try:
+        pe = pefile.PE(file_path)
+        imports = []
+        if hasattr(pe, 'DIRECTORY_ENTRY_IMPORT'):
+            for entry in pe.DIRECTORY_ENTRY_IMPORT:
+                for imp in entry.imports:
+                    if imp.name:
+                        imports.append(imp.name.decode('utf-8'))
+        return imports
+    except Exception as e:
+        return [f"❌ Error extracting DLLs: {str(e)}"]
 
-def extract_file_metadata(file_path):
-    compiler = "Unknown"
-    arch = platform.architecture()[0]
-    vendor = "Unknown"
-    digital_signature = "Not Available"
+def parse_apk_with_apktool(file_path):
+    try:
+        out_dir = os.path.join("decoded_apks", os.path.basename(file_path).replace(".apk", ""))
+        os.makedirs("decoded_apks", exist_ok=True)
+        result = subprocess.run(["apktool", "d", "-f", file_path, "-o", out_dir], capture_output=True, text=True)
+        log_output = result.stdout + "\n" + result.stderr
 
-    if file_path.lower().endswith(".exe"):
-        import pefile
-        try:
-            pe = pefile.PE(file_path)
-            if hasattr(pe, "OPTIONAL_HEADER"):
-                major = pe.OPTIONAL_HEADER.MajorLinkerVersion
-                minor = pe.OPTIONAL_HEADER.MinorLinkerVersion
-                compiler = f"Linker {major}.{minor}"
-            if hasattr(pe, "FileInfo"):
-                for file_info in pe.FileInfo:
-                    if hasattr(file_info, "StringTable"):
-                        for entry in file_info.StringTable:
-                            for key, value in entry.entries.items():
-                                try:
-                                    key_decoded = key.decode(errors="ignore").strip()
-                                    value_decoded = value.decode(errors="ignore").strip()
-                                    if key_decoded == "CompanyName" and value_decoded:
-                                        vendor = value_decoded
-                                except AttributeError:
-                                    continue
-            digital_signature = check_digital_signature(file_path)
-        except Exception as e:
-            compiler = "Error Extracting Compiler"
-            vendor = f"Error Extracting Vendor: {str(e)}"
-            digital_signature = "Error Extracting Digital Signature"
+        packages = []
+        smali_dir = os.path.join(out_dir, "smali")
+        if os.path.exists(smali_dir):
+            for root, dirs, files in os.walk(smali_dir):
+                for file in files:
+                    if file.endswith(".smali"):
+                        package_path = os.path.relpath(root, smali_dir).replace(os.sep, ".")
+                        if package_path not in packages:
+                            packages.append(package_path)
 
-    return {
-        "Compiler": compiler,
-        "Platform": arch,
-        "Vendor": vendor,
-        "Digital Signature": digital_signature
-    }
-
-
-def download_sbom_report(sbom_data, file_name="sbom_report.json"):
-    sbom_json = json.dumps(sbom_data, indent=4)
-    st.download_button(
-        label="📥 Download SBOM Report",
-        data=sbom_json,
-        file_name=file_name,
-        mime="application/json",
-        key=f"download-{file_name}"
-    )
-
+        return log_output, packages
+    except Exception as e:
+        return f"❌ APKTool Error: {str(e)}", []
 
 def display_sbom_data(sbom_data, file_path):
-    if not sbom_data:
-        st.warning("⚠️ No SBOM data available.")
-        return
     metadata = sbom_data.get("metadata", {})
-    tools = metadata.get("tools", [])
     tool_used = "Syft"
     tool_version = sbom_data.get("specVersion", "Unknown")
-    if tools and isinstance(tools, list):
-        first_tool = tools[0]
-        tool_used = first_tool.get("name", tool_used)
-        tool_version = first_tool.get("version", tool_version)
-    software_name = metadata.get("component", {}).get("name", None)
-    if not software_name:
-        software_name = os.path.basename(file_path)
     vendor = metadata.get("supplier", {}).get("name", "Unknown")
-    file_metadata = extract_file_metadata(file_path)
-    if vendor == "Unknown":
-        vendor = file_metadata["Vendor"]
+    software_name = metadata.get("component", {}).get("name", os.path.basename(file_path))
+    platform_info = platform.architecture()[0]
+
     sbom_summary = {
         "Software Name": software_name,
-        "Format": sbom_data.get("bomFormat", "CycloneDX"),
+        "Format": sbom_data.get("bomFormat", "Unknown"),
         "Version": sbom_data.get("specVersion", "Unknown"),
-        "Generated On": metadata.get("timestamp", "N/A"),
+        "Generated On": metadata.get("timestamp", "Unknown"),
         "Tool Used": tool_used,
         "Tool Version": tool_version,
         "Vendor": vendor,
-        "Compiler": file_metadata["Compiler"],
-        "Platform": file_metadata["Platform"],
-        "Digital Signature": file_metadata["Digital Signature"]
+        "Platform": platform_info
     }
+
     st.subheader("📄 SBOM Metadata")
     st.table(pd.DataFrame(sbom_summary.items(), columns=["Attribute", "Value"]))
-    download_sbom_report(sbom_data, file_name=f"{software_name}_SBOM.json")
-    components = sbom_data.get("components", [])
-    if components and isinstance(components, list):
+
+    if "components" in sbom_data and isinstance(sbom_data["components"], list):
         st.subheader("🛠️ SBOM Components")
-        st.dataframe(pd.DataFrame(components))
+        components_df = pd.DataFrame(sbom_data["components"])
+        st.dataframe(components_df)
     else:
         st.warning("⚠️ No components found.")
 
+    with st.expander("📦 7-Zip Archive Contents"):
+        st.code(extract_with_7zip(file_path))
 
-def generate_sbom(file_path):
-    if not os.path.isfile(file_path):
-        st.error(f"File not found: {file_path}")
-        return None
-    with open(file_path, "rb") as f:
-        files = {"file": f}
-        try:
-            response = requests.post(API_URL, files=files)
-        except Exception as exc:
-            st.error(f"❌ Error reaching SBOM generation API: {exc}")
-            return None
-    if response.status_code == 200:
-        return response.json()
-    else:
-        st.error(f"❌ Failed to generate SBOM. API responded with {response.status_code}.")
-        return None
+    if file_path.endswith(".exe"):
+        dlls = extract_exe_libraries(file_path)
+        with st.expander("🧩 DLL Imports (.exe)"):
+            st.write(dlls)
 
+    if file_path.endswith(".apk"):
+        log_output, packages = parse_apk_with_apktool(file_path)
+        with st.expander("📦 APKTool Log Output"):
+            st.code(log_output)
+        with st.expander("📦 Smali Packages (.apk)"):
+            st.write(packages)
 
-# ========== MAIN LOGIC: BUTTON HANDLERS ==========
-
-# --- 1) Generate SBOM ---
 if generate_button and file1:
     file1_path = save_uploaded_file(file1)
-    if file1_path:
-        sbom_data = generate_sbom(file1_path)
-        if sbom_data:
-            display_sbom_data(sbom_data, file1_path)
-        else:
-            st.error("❌ SBOM generation returned no data.")
+    sbom_output = generate_sbom(file1_path)
+    if sbom_output:
+        with open(sbom_output, "r", encoding="utf-8") as f:
+            sbom_data = json.load(f)
+        display_sbom_data(sbom_data, file1_path)
 
-# --- 2) Compare SBOMs ---
 if compare_button and file1 and file2:
-    st.subheader("📊 SBOM Comparison Results")
-
-    # 1) Save both files
     file1_path = save_uploaded_file(file1)
     file2_path = save_uploaded_file(file2)
-
-    if not file1_path or not file2_path:
-        st.error("Could not save one of the uploaded files.")
-        st.stop()
-
-    # 2) If the file is an EXE, generate an SBOM via Render API
-    #    Else, parse it as an existing SBOM
-    def get_sbom_data(local_path):
-        if local_path.lower().endswith(".exe"):
-            return generate_sbom(local_path)
+    if not file1_path.endswith(".json"):
+        file1_path = generate_sbom(file1_path)
+    if not file2_path.endswith(".json"):
+        file2_path = generate_sbom(file2_path)
+    if file1_path and file2_path:
+        added, removed, error = compare_sboms(file1_path, file2_path)
+        if error:
+            st.error(f"❌ {error}")
         else:
-            # parse_sbom is presumably your local function that loads JSON, SPDX, etc.
-            return parse_sbom(local_path)
-
-    sbom_data_1 = get_sbom_data(file1_path)
-    sbom_data_2 = get_sbom_data(file2_path)
-
-    if not sbom_data_1 or not sbom_data_2:
-        st.error("One or both SBOMs could not be generated or parsed.")
-        st.stop()
-
-    # 3) Compare them using compare_sboms (which expects two SBOM dicts)
-    # --- 2) Compare SBOMs ---
-if compare_button and file1 and file2:
-    st.subheader("📊 SBOM Comparison Results")
-
-    # 1) Save both files
-    file1_path = save_uploaded_file(file1)
-    file2_path = save_uploaded_file(file2)
-
-    if not file1_path or not file2_path:
-        st.error("❌ Could not save one (or both) uploaded files.")
-        st.stop()
-
-    # 2) If the file is an EXE, generate an SBOM via the API
-    #    Otherwise, parse it as an existing SBOM
-    def get_sbom_data(local_path):
-        if local_path.lower().endswith(".exe"):
-            return generate_sbom(local_path)  # returns dict
-        else:
-            return parse_sbom(local_path)     # also returns dict
-
-    sbom_data_1 = get_sbom_data(file1_path)
-    sbom_data_2 = get_sbom_data(file2_path)
-
-    if not sbom_data_1 or not sbom_data_2:
-        st.error("❌ Could not generate/parse one (or both) SBOMs.")
-        st.stop()
-
-    # 3) Compare them using compare_sboms (which returns 4 items now)
-    # --- 2) Compare SBOMs ---
-if compare_button and file1 and file2:
-    st.subheader("📊 SBOM Comparison Results")
-
-    # 1) Save both files
-    file1_path = save_uploaded_file(file1)
-    file2_path = save_uploaded_file(file2)
-
-    if not file1_path or not file2_path:
-        st.error("❌ Could not save one (or both) uploaded files.")
-        st.stop()
-
-    # 2) If the file is an EXE, generate an SBOM via the API
-    #    Otherwise, parse it as an existing SBOM
-    def get_sbom_data(local_path):
-        if local_path.lower().endswith(".exe"):
-            return generate_sbom(local_path)  # returns dict
-        else:
-            return parse_sbom(local_path)     # also returns dict
-
-    sbom_data_1 = get_sbom_data(file1_path)
-    sbom_data_2 = get_sbom_data(file2_path)
-
-    if not sbom_data_1 or not sbom_data_2:
-        st.error("❌ Could not generate/parse one (or both) SBOMs.")
-        st.stop()
-
-    # 3) Compare them using compare_sboms (which returns 4 items now)
-    added, removed, changed, error = compare_sboms(sbom_data_1, sbom_data_2)
-    if error:
-        st.error(f"Comparison error: {error}")
-    else:
-        # 3a) ADDED
-        st.write("### ✅ Added Components")
-        if added:
-            # If 'added' is a list of dicts or strings, adapt as needed
-            st.dataframe(pd.DataFrame(added))
-        else:
-            st.info("No newly added components.")
-
-        # 3b) REMOVED
-        st.write("### ❌ Removed Components")
-        if removed:
-            st.dataframe(pd.DataFrame(removed))
-        else:
-            st.info("No components removed.")
-
-        # 3c) CHANGED
-        st.write("### 🔄 Changed Components")
-        if changed:
-            # If 'changed' is a list of tuples like: (name, old_info, new_info)
-            # we can convert it to a list of dicts for easier display
-            changed_rows = []
-            for comp_name, old_data, new_data in changed:
-                changed_rows.append({
-                    "Component Name": comp_name,
-                    "Old Version": old_data.get("version", "N/A"),
-                    "New Version": new_data.get("version", "N/A"),
-                    "Old Supplier": old_data.get("supplier", ""),
-                    "New Supplier": new_data.get("supplier", "")
-                })
-            st.dataframe(pd.DataFrame(changed_rows))
-        else:
-            st.info("No components changed.")
-
-
-# --- 3) Search SBOM Components ---
-if search_button and file1:
-    file1_path = save_uploaded_file(file1)
-    if file1_path:
-        sbom_data = parse_sbom(file1_path)  # must be implemented in sbom_parser.py
-        if sbom_data:
-            search_term = st.text_input("Enter component name or keyword to search")
-            if search_term:
-                results = search_sbom(sbom_data, search_term)
-                st.write("Search Results:", results)
-        else:
-            st.error("❌ Parsing SBOM failed.")
-
-# --- 4) Parse SBOM Data ---
-if parse_button and file1:
-    file1_path = save_uploaded_file(file1)
-    if file1_path:
-        sbom_data = parse_sbom(file1_path)
-        if sbom_data:
-            display_sbom_data(sbom_data, file1_path)
-        else:
-            st.error("❌ Parsing SBOM returned no data.")
-
+            col1, col2 = st.columns(2)
+            with col1:
+                st.write("### ✅ Added Components")
+                st.dataframe(pd.DataFrame(list(added), columns=["Added Components"])) if added else st.info("No new components added.")
+            with col2:
+                st.write("### ❌ Removed Components")
+                st.dataframe(pd.DataFrame(list(removed), columns=["Removed Components"])) if removed else st.info("No components removed.")
