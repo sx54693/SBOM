@@ -1,18 +1,35 @@
+# Core frameworks
+streamlit==1.32.2
 fastapi
 uvicorn[standard]
-streamlit==1.32.2
+
+# Data handling
 pandas==2.2.1
 numpy==1.26.4
+
+# SBOM & Binary analysis
 pefile==2024.8.26
+py7zr==0.20.8
+
+# Git and HTTP
 GitPython==3.1.42
 requests==2.31.0
+
+# Fuzzy matching
 fuzzywuzzy==0.18.0
 python-Levenshtein==0.27.1
-py7zr==0.20.8
+
+# Machine Learning (if needed later)
 scikit-learn
 scipy
+
+# Parsing and Validation
 jsonschema
-datasets
 PyYAML
-pygments
 python-multipart
+
+# Syntax highlighting (for display)
+pygments
+
+# Optional (for comparing or analyzing datasets)
+datasets
