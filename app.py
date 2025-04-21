@@ -11,11 +11,16 @@ import sys
 if sys.platform.startswith("win"):
     import os
     os.environ["PYTHONIOENCODING"] = "utf-8"
+    file1_path = None
+    file1_sbom = None
+    apk_details = {}
 
 from sbom_compare import compare_sboms
 from sbom_generator import generate_sbom
 from sbom_parser import parse_sbom
-from sbom_search import search_sbom
+from sbom_search import load_sbom, fuzzy_search_components
+from features import display_advanced_features
+
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -36,9 +41,34 @@ st.title("🔍 SBOM Analyzer - Generator, Parser & Comparator")
 st.sidebar.header("📂 Upload Software Application or SBOM File")
 file1 = st.sidebar.file_uploader("🆕 Upload First File", type=["exe", "apk", "json", "spdx", "csv", "xml"])
 file2 = st.sidebar.file_uploader("📁 Upload Second File (Optional for Comparison)", type=["exe", "apk", "json", "spdx", "csv", "xml"])
+apk_details = {}
 
+if file1_path:
+    if file1_path.endswith(".json"):
+        with open(file1_path, "r", encoding="utf-8") as f:
+            file1_sbom = json.load(f)
+    else:
+        file1_sbom, *_rest = generate_sbom(file1_path)
+        apk_details = _rest[-1] if len(_rest) >= 1 else {}
 generate_button = st.sidebar.button("🔄 Generate SBOM")
 compare_button = st.sidebar.button("🔍 Compare SBOMs")
+display_advanced_features()
+# ✅ Run fuzzy search only if SBOM is loaded
+if "file1_sbom" in locals() and file1_sbom:
+    st.subheader("🔍 Fuzzy Search")
+    search_query = st.text_input("Enter component name to search", key="fuzzy_key")
+
+    if search_query:
+        results = fuzzy_search_components(file1_sbom, apk_details, search_query)
+        if results:
+            st.subheader("🔍 Fuzzy Search Results")
+            st.dataframe(pd.DataFrame(results))
+        else:
+            st.warning("No matching components found.")
+else:
+    st.info("📥 Please generate or upload an SBOM first.")
+
+
 import re  # Add this at the top
 
 def secure_filename(filename):
@@ -169,6 +199,7 @@ def display_sbom_data(sbom_data, file_path, apk_details=None):
         "Tool Used": tool_used,
         "Tool Version": tool_version,
         "Vendor": vendor,
+        "Binary Type": sbom_data.get("Binary Type", "Unknown"),
         "Platform": platform_info
     }
 
@@ -222,12 +253,15 @@ def display_sbom_data(sbom_data, file_path, apk_details=None):
             st.code("\n".join(apk_details.get("Permissions", [])))
             st.write("**Libraries:**")
             st.code("\n".join(apk_details.get("Libraries", [])))
+      
 
 if generate_button and file1:
     file1_path = save_uploaded_file(file1)
     sbom_data, _, _, _, _, apk_details = generate_sbom(file1_path)
     if sbom_data:
+        file1_sbom = sbom_data  # ✅ Needed for fuzzy search
         display_sbom_data(sbom_data, file1_path, apk_details)
+
 if compare_button and file1 and file2:
     file1_path = save_uploaded_file(file1)
     file2_path = save_uploaded_file(file2)
@@ -278,6 +312,7 @@ if compare_button and file1 and file2:
                     "Generated On": metadata.get("timestamp", "Unknown"),
                     "Vendor": metadata.get("supplier", {}).get("name", "Unknown"),
                     "Platform": platform.architecture()[0],
+                    "Binary Type": sbom_data.get("Binary Type", "Unknown"),
                     "APK Package": apk_info.get("Package Info", "N/A") if apk_info else "N/A"
                 }
 
@@ -316,3 +351,4 @@ if compare_button and file1 and file2:
             with col2:
                 st.markdown("**App 2 Libraries**")
                 st.code("\n".join(lib2) if lib2 else "N/A")
+                from sbom_search import load_sbom, fuzzy_search_components
