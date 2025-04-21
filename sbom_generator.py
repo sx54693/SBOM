@@ -4,7 +4,7 @@ import hashlib
 import platform
 import subprocess
 import pefile
-
+from platform_utils import detect_binary_type
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # ✅ Utility Functions (merged from utils.py)
@@ -91,6 +91,8 @@ def extract_apk_details(file_path):
         }
 
 # ✅ SBOM Generator
+from platform_utils import detect_binary_type  # Make sure this is imported at the top
+
 def generate_sbom(file_path):
     try:
         if not os.path.exists(file_path):
@@ -99,6 +101,7 @@ def generate_sbom(file_path):
         file_name = os.path.basename(file_path)
         file_hash = calculate_file_hash(file_path)
         vendor, version, compiler = "Unknown", "Unknown", "Unknown"
+        
         if file_path.endswith(".exe"):
             vendor, version, compiler = extract_metadata_from_exe(file_path)
 
@@ -112,6 +115,11 @@ def generate_sbom(file_path):
             return None, None, result.stderr, [], [], {}
 
         sbom_json = json.loads(result.stdout)
+
+        # 🔍 Detect binary type: Mobile or Desktop
+        binary_type = detect_binary_type(file_path)
+
+        # ⬇️ Add custom metadata
         sbom_json.update({
             "Software Name": file_name,
             "Vendor": vendor,
@@ -120,13 +128,15 @@ def generate_sbom(file_path):
             "Format": "CycloneDX",
             "OS Compatibility": platform.system(),
             "Binary Architecture": platform.machine(),
-            "Compiler": compiler
+            "Compiler": compiler,
+            "Binary Type": binary_type  # ✅ Here it goes!
         })
 
         with open(output_sbom, "w", encoding="utf-8") as f:
             json.dump(sbom_json, f, indent=2)
 
-        return sbom_json, sbom_json, result.stderr, [], [], extract_apk_details(file_path) if file_path.endswith(".apk") else {}
+        apk_info = extract_apk_details(file_path) if file_path.endswith(".apk") else {}
+        return sbom_json, sbom_json, result.stderr, [], [], apk_info
 
     except Exception as e:
         print(f"❌ Exception in generate_sbom: {e}")
