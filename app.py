@@ -18,7 +18,7 @@ if sys.platform.startswith("win"):
 from sbom_compare import compare_sboms
 from sbom_generator import generate_sbom
 from sbom_parser import parse_sbom
-from sbom_search import load_sbom, fuzzy_search_components
+from sbom_search import fuzzy_search_components
 from features import display_advanced_features
 
 
