@@ -11,18 +11,40 @@ import sys
 if sys.platform.startswith("win"):
     import os
     os.environ["PYTHONIOENCODING"] = "utf-8"
-    file1_path = None
-    file1_sbom = None
-    apk_details = {}
+
 
 from sbom_compare import compare_sboms
 from sbom_generator import generate_sbom
 from sbom_parser import parse_sbom
-from sbom_search import fuzzy_search_components
+from sbom_search import load_sbom, fuzzy_search_components
 from features import display_advanced_features
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# ✅ Save uploaded file safely
+def save_uploaded_file(uploaded_file, folder="uploaded_apps"):
+    import re
+    def secure_filename(filename):
+        filename = os.path.basename(filename)
+        filename = re.sub(r'[^\w\-.]', '_', filename)
+        return filename.strip()
+
+    if not uploaded_file:
+        return None
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+
+    try:
+        safe_name = secure_filename(uploaded_file.name)
+        file_path = os.path.join(folder, safe_name)
+        with open(file_path, "wb") as f:
+            f.write(uploaded_file.getbuffer())
+        os.chmod(file_path, 0o777)
+        return file_path
+    except Exception as e:
+        st.error(f"❌ Failed to save file: {e}")
+        return None
+
 
 st.set_page_config(page_title="SBOM Analyzer", page_icon="🔍", layout="wide")
 
@@ -41,17 +63,21 @@ st.title("🔍 SBOM Analyzer - Generator, Parser & Comparator")
 st.sidebar.header("📂 Upload Software Application or SBOM File")
 file1 = st.sidebar.file_uploader("🆕 Upload First File", type=["exe", "apk", "json", "spdx", "csv", "xml"])
 file2 = st.sidebar.file_uploader("📁 Upload Second File (Optional for Comparison)", type=["exe", "apk", "json", "spdx", "csv", "xml"])
-apk_details = {}
 
-if file1_path:
-    if file1_path.endswith(".json"):
-        with open(file1_path, "r", encoding="utf-8") as f:
-            file1_sbom = json.load(f)
-    else:
-        file1_sbom, *_rest = generate_sbom(file1_path)
-        apk_details = _rest[-1] if len(_rest) >= 1 else {}
 generate_button = st.sidebar.button("🔄 Generate SBOM")
 compare_button = st.sidebar.button("🔍 Compare SBOMs")
+file1_path = None
+file1_sbom = None
+apk_details = {}
+if file1:
+    file1_path = save_uploaded_file(file1)
+    if file1_path:
+        if file1_path.endswith(".json"):
+            with open(file1_path, "r", encoding="utf-8") as f:
+                file1_sbom = json.load(f)
+        else:
+            file1_sbom, *_rest = generate_sbom(file1_path)
+            apk_details = _rest[-1] if len(_rest) >= 1 else {}
 display_advanced_features()
 # ✅ Run fuzzy search only if SBOM is loaded
 if "file1_sbom" in locals() and file1_sbom:
@@ -69,29 +95,11 @@ else:
     st.info("📥 Please generate or upload an SBOM first.")
 
 
-import re  # Add this at the top
-
 def secure_filename(filename):
     filename = os.path.basename(filename)
     filename = re.sub(r'[^\w\-.]', '_', filename)
     return filename.strip()
 
-def save_uploaded_file(uploaded_file, folder="uploaded_apps"):
-    if not uploaded_file:
-        return None
-    if not os.path.exists(folder):
-        os.makedirs(folder)
-
-    try:
-        safe_name = secure_filename(uploaded_file.name)
-        file_path = os.path.join(folder, safe_name)
-        with open(file_path, "wb") as f:
-            f.write(uploaded_file.getbuffer())
-        os.chmod(file_path, 0o777)
-        return file_path
-    except Exception as e:
-        st.error(f"❌ Failed to save file: {e}")
-        return None
 
 def extract_with_7zip(file_path):
     try:
