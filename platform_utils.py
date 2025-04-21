@@ -8,4 +8,4 @@ def detect_binary_type(file_path):
     elif ext == ".exe":
         return "Desktop"
     else:
-        return "Unknown
+        return "Unknown"
