@@ -3,25 +3,23 @@ import os
 
 def load_sbom(file_path):
     """
-    Loads SBOM from a JSON file and extracts its components.
-
-    Parameters:
-    - file_path: str - Path to the SBOM file.
-
-    Returns:
-    - dict: Parsed SBOM JSON content.
+    Load SBOM JSON file and return the SBOM data.
     """
-    if not os.path.exists(file_path):
-        print(f"❌ Error: SBOM file {file_path} not found.")
+    if not file_path.endswith(".json"):
+        print("❌ Only JSON SBOM files are supported for search.")
         return None
+
+    if not os.path.exists(file_path):
+        print(f"❌ SBOM file not found: {file_path}")
+        return None
+
     try:
         with open(file_path, "r", encoding="utf-8") as f:
             return json.load(f)
-    except json.JSONDecodeError:
-        print(f"❌ Error: Invalid JSON format in {file_path}")
     except Exception as e:
-        print(f"❌ Error loading SBOM: {e}")
-    return None
+        print(f"❌ Error reading SBOM: {e}")
+        return None
+
 
 def compare_sboms(sbom1_data, sbom2_data):
     """
@@ -61,4 +59,3 @@ def compare_sboms(sbom1_data, sbom2_data):
         return added, removed, None
     except Exception as e:
         return None, None, f"❌ Error during comparison: {str(e)}"
-
