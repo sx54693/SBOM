@@ -44,7 +44,6 @@ def save_uploaded_file(uploaded_file, folder="uploaded_apps"):
         st.error(f"❌ Failed to save file: {e}")
         return None
 
-
 st.set_page_config(page_title="SBOM Analyzer", page_icon="🔍", layout="wide")
 
 st.markdown("""
