@@ -12,7 +12,9 @@ if sys.platform.startswith("win"):
     import os
     os.environ["PYTHONIOENCODING"] = "utf-8"
 
-
+file1_path = None
+file1_sbom = None
+apk_details = {}
 from sbom_compare import compare_sboms
 from sbom_generator import generate_sbom
 from sbom_parser import parse_sbom
