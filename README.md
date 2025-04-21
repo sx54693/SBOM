@@ -1,96 +1,84 @@
 # SBOM Analyzer for Software Applications and Apps
 
 ## Overview
-The **SBOM Finder** is a **Minimally Viable Product (MVP)** designed to generate, analyze, and validate **Software Bill of Materials (SBOMs)** for software applications and mobile apps. This project is built for sustained production use, ensuring **comprehensive dependency management, security vulnerability detection, and compliance validation**. It meets the requirements of **CycloneDX** and **SPDX** standards and provides features required for real-world application in the market.
+The **SBOM Finder** is a Minimally Viable Product (MVP) built to generate, analyze, and compare Software Bill of Materials (SBOMs) for desktop and mobile applications. It supports multiple SBOM formats (CycloneDX and SPDX), performs fuzzy component search, and enables side-by-side comparisons with a modern web interface powered by Streamlit.
 
 ## Features
-- **SBOM Generation**: Automatically generates SBOMs for software applications.
-- **Security Vulnerability Analysis**: Identifies security risks in software dependencies.
-- **License Compliance Checking**: Ensures adherence to open-source licenses.
-- **Multiple SBOM Formats**: Supports **CycloneDX** and **SPDX** standards.
-- **REST API for Automation**: Allows seamless integration with CI/CD pipelines.
-- **User-Friendly Interface**: Provides an intuitive UI for easy SBOM management.
-- **Comprehensive Reporting**: Generates detailed compliance and security reports.
-- **Market-Ready Deployment**: Designed for scalability and production use.
+- **SBOM Generation**: Automatically generates CycloneDX JSON SBOMs using Syft.
+- **SBOM Comparison**: Compares two applications' SBOMs and highlights added/removed components.
+- **Fuzzy Component Search**: Uses fuzzy matching to find components by name across parsed SBOM data.
+- **Platform Detection**: Identifies whether uploaded binaries are desktop (.exe) or mobile (.apk).
+- **Metadata Extraction**: Pulls out app metadata, permissions, libraries, and smali packages.
+- **Library Inference**: Uses apktool and aapt to extract Android app details (e.g., permissions, native libs).
+- **Advanced UI**: Streamlit interface with toggles, uploads, and custom visual comparison sections.
+- **API Integration Ready**: Modular backend designed to integrate with FastAPI (in development).
+- **Cross-format Support**: Parsing support added for CycloneDX XML SBOMs.
 
 ## Installation and Setup
+
 ### Prerequisites
 - Python 3.8+
-- PostgreSQL (for database integration)
-- Docker (optional for deployment)
-- Node.js (for frontend, if applicable)
+- Git
+- Streamlit Cloud or Localhost (CLI)
 
-### Installation Steps
-1. **Clone the repository:**
-   ```sh
-   git clone https://github.com/your-username/sbom-finder.git
-   cd sbom-finder
-   ```
-
-2. **Set up a virtual environment and install dependencies:**
-   ```sh
-   python -m venv venv
-   source venv/bin/activate   # On Windows: venv\Scripts\activate
-   pip install -r requirements.txt
-   ```
-
-3. **Run the application:**
-   ```sh
-   python main.py
-   ```
-
-### Running with Docker
-To deploy using Docker:
-```sh
-docker build -t sbom-finder .
-docker run -p 8000:8000 sbom-finder
+### Installation
+```bash
+git clone https://github.com/sx54693/sbom.git
+cd sbom
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
 ```
+
+### Run the App
+```bash
+streamlit run app.py
+```
+
+> ✅ Note: `apktool`, `aapt`, and `7z` binaries are required for APK analysis and must be available in the system path. On Streamlit Cloud, these tools are not supported — features will degrade gracefully with warnings.
 
 ## Usage
-### Generate SBOM
-```sh
-python sbom_finder.py --input path/to/project --format cyclonedx
-```
 
-### Scan for Vulnerabilities
-```sh
-python sbom_finder.py --scan sbom.json
-```
+- **Generate SBOM**: Upload `.exe`, `.apk`, or `.json` file and click "Generate SBOM".
+- **Compare Applications**: Upload two files to compare and click "Compare SBOMs".
+- **Search Components**: Type part of a library name (e.g., `androidx`, `kotlin`) to perform fuzzy matching.
 
-### API Usage
-Start the API server:
-```sh
+## REST API (Planned for Beta)
+To run with FastAPI (for future REST support):
+```bash
 uvicorn app:main --host 0.0.0.0 --port 8000
-```
-Upload an SBOM for analysis:
-```sh
-curl -X POST -F "file=@sbom.json" http://localhost:8000/api/upload
-```
-
-## Configuration
-Create a `.env` file with the following environment variables:
-```sh
-DB_HOST=localhost
-DB_USER=admin
-DB_PASS=password
-API_KEY=your-api-key
 ```
 
 ## Deployment
-The SBOM Finder MVP is designed for **scalable production deployment**. Recommended methods include:
-- **Containerized Deployment:** Using Docker/Kubernetes
-- **Cloud Deployment:** AWS, GCP, or Azure
-- **On-Premises Installation:** Enterprise setup with PostgreSQL and API integrations
+- **Local Deployment**: Fully supported using Streamlit and local Python environment.
+- **Cloud Deployment**: Streamlit Cloud supported (with limited APK feature compatibility).
+- **Advanced**: GCP or EC2 VM recommended for full toolchain support (apktool, 7z, aapt).
 
 ## Contributing
-1. Fork the repository.
-2. Create a feature branch (`git checkout -b feature-name`).
-3. Commit changes (`git commit -m 'Add feature X'`).
-4. Push the branch (`git push origin feature-name`).
-5. Open a Pull Request.
+- Fork the repository
+- Create a feature branch: `git checkout -b feature-xyz`
+- Commit and push changes
+- Open a Pull Request
 
 ## License
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+MIT License
 
 ## Contact
-For support or inquiries, please contact [your-email@example.com](mailto:your-email@example.com) or open an issue on GitHub.
+For support or inquiries, reach out to: [cyriackurian123](https://github.com/cyriackurian123) or open a GitHub issue.
+
+---
+
+## Authors
+- [@sx54693](https://github.com/sx54693)
+- [@cyriackurian123](https://github.com/cyriackurian123)
+
+---
+
+**Languages Used:**
+- Python 99.2%
+- Shell 0.8%
+
+## Tech Stack
+- Streamlit (Frontend/UI)
+- Python (Core logic)
+- apktool / aapt / 7z (External tools for APK/EXE analysis)
