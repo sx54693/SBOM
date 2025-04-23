@@ -1,6 +1,5 @@
 import os
 import json
-import hashlib
 import platform
 import subprocess
 import pefile
@@ -8,8 +7,8 @@ import re
 import streamlit as st
 import pandas as pd
 import sys
+
 if sys.platform.startswith("win"):
-    import os
     os.environ["PYTHONIOENCODING"] = "utf-8"
 
 from sbom_compare import compare_sboms
@@ -17,12 +16,11 @@ from sbom_generator import generate_sbom
 from sbom_parser import parse_sbom
 from sbom_search import load_sbom, fuzzy_search_components
 from features import display_advanced_features
-
+from sbom_security import scan_vulnerabilities_and_licenses
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# ✅ Save uploaded file safely
+
 def save_uploaded_file(uploaded_file, folder="uploaded_apps"):
-    import re
     def secure_filename(filename):
         filename = os.path.basename(filename)
         filename = re.sub(r'[^\w\-.]', '_', filename)
@@ -64,9 +62,11 @@ file2 = st.sidebar.file_uploader("📁 Upload Second File (Optional for Comparis
 
 generate_button = st.sidebar.button("🔄 Generate SBOM")
 compare_button = st.sidebar.button("🔍 Compare SBOMs")
+
 file1_path = None
 file1_sbom = None
 apk_details = {}
+
 if file1:
     file1_path = save_uploaded_file(file1)
     if file1_path:
@@ -76,9 +76,10 @@ if file1:
         else:
             file1_sbom, *_rest = generate_sbom(file1_path)
             apk_details = _rest[-1] if len(_rest) >= 1 else {}
+
 display_advanced_features()
-# ✅ Run fuzzy search only if SBOM is loaded
-if "file1_sbom" in locals() and file1_sbom:
+
+if file1_sbom:
     st.subheader("🔍 Fuzzy Search")
     search_query = st.text_input("Enter component name to search", key="fuzzy_key")
 
@@ -91,13 +92,6 @@ if "file1_sbom" in locals() and file1_sbom:
             st.warning("No matching components found.")
 else:
     st.info("📥 Please generate or upload an SBOM first.")
-
-
-def secure_filename(filename):
-    filename = os.path.basename(filename)
-    filename = re.sub(r'[^\w\-.]', '_', filename)
-    return filename.strip()
-
 
 def extract_with_7zip(file_path):
     try:
@@ -188,7 +182,6 @@ def parse_apk_with_apktool(file_path):
     except Exception as e:
         return f"❌ APKTool Error: {str(e)}", [], {}
 
-
 def display_sbom_data(sbom_data, file_path, apk_details=None):
     metadata = sbom_data.get("metadata", {})
     tool_used = "Syft"
@@ -259,20 +252,18 @@ def display_sbom_data(sbom_data, file_path, apk_details=None):
             st.code("\n".join(apk_details.get("Permissions", [])))
             st.write("**Libraries:**")
             st.code("\n".join(apk_details.get("Libraries", [])))
-      
 
 if generate_button and file1:
     file1_path = save_uploaded_file(file1)
     sbom_data, _, _, _, _, apk_details = generate_sbom(file1_path)
     if sbom_data:
-        file1_sbom = sbom_data  # ✅ Needed for fuzzy search
+        file1_sbom = sbom_data
         display_sbom_data(sbom_data, file1_path, apk_details)
 
 if compare_button and file1 and file2:
     file1_path = save_uploaded_file(file1)
     file2_path = save_uploaded_file(file2)
 
-    # Process File 1
     if file1_path.endswith(".json"):
         with open(file1_path, "r", encoding="utf-8") as f:
             file1_sbom = json.load(f)
@@ -281,7 +272,6 @@ if compare_button and file1 and file2:
         file1_sbom, *_rest = generate_sbom(file1_path)
         apk_details_1 = _rest[-1] if len(_rest) >= 1 else {}
 
-    # Process File 2
     if file2_path.endswith(".json"):
         with open(file2_path, "r", encoding="utf-8") as f:
             file2_sbom = json.load(f)
@@ -297,7 +287,6 @@ if compare_button and file1 and file2:
         else:
             st.subheader("🔄 SBOM Comparison Results")
 
-            # ✅ ADDED/REMOVED
             col1, col2 = st.columns(2)
             with col1:
                 st.markdown("### ✅ Added Components")
@@ -306,7 +295,6 @@ if compare_button and file1 and file2:
                 st.markdown("### ❌ Removed Components")
                 st.dataframe(pd.DataFrame(list(removed), columns=["Removed Components"])) if removed else st.info("No components removed.")
 
-            # 📄 METADATA COMPARISON
             st.subheader("📄 Metadata Comparison")
 
             def extract_metadata(sbom_data, file_path, apk_info=None):
@@ -333,7 +321,6 @@ if compare_button and file1 and file2:
                 st.markdown("**App 2**")
                 st.table(pd.DataFrame(meta2.items(), columns=["Attribute", "Value"]))
 
-            # 🔐 PERMISSIONS COMPARISON
             st.subheader("🔐 Permissions Comparison")
             col1, col2 = st.columns(2)
             with col1:
@@ -343,7 +330,6 @@ if compare_button and file1 and file2:
                 st.markdown("**App 2 Permissions**")
                 st.code("\n".join(apk_details_2.get("Permissions", [])) if apk_details_2 else "N/A")
 
-           # 📚 LIBRARIES COMPARISON
             st.subheader("📚 Library Comparison")
             col1, col2 = st.columns(2)
 
@@ -357,4 +343,23 @@ if compare_button and file1 and file2:
             with col2:
                 st.markdown("**App 2 Libraries**")
                 st.code("\n".join(lib2) if lib2 else "N/A")
-                from sbom_search import load_sbom, fuzzy_search_components
+# 🛡️ VULNERABILITY & LICENSE CHECKS
+if apk_details:
+    vulnerabilities, licenses = scan_vulnerabilities_and_licenses(apk_details)
+
+    # Vulnerability Scan Results
+    st.subheader("🛡️ Vulnerability Scan Results")
+    if vulnerabilities:
+        for lib, vulns in vulnerabilities.items():
+            st.markdown(f"**{lib}**: {', '.join(vulns) if vulns else '✅ No known vulnerabilities'}")
+    else:
+        st.info("No libraries detected for vulnerability scanning.")
+
+    # License Compliance Results
+    st.subheader("📜 License Compliance Results")
+    if licenses:
+        for lib, license in licenses.items():
+            st.markdown(f"**{lib}**: `{license}`")
+    else:
+        st.info("No libraries detected for license analysis.")
+
