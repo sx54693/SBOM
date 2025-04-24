@@ -17,6 +17,9 @@ from sbom_parser import parse_sbom
 from sbom_search import load_sbom, fuzzy_search_components
 from features import display_advanced_features
 from sbom_security import scan_vulnerabilities_and_licenses
+from sbom_report import download_sbom_report  
+from sbom_parser import parse_sbom
+
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -62,6 +65,7 @@ file2 = st.sidebar.file_uploader("📁 Upload Second File (Optional for Comparis
 
 generate_button = st.sidebar.button("🔄 Generate SBOM")
 compare_button = st.sidebar.button("🔍 Compare SBOMs")
+parse_button = st.sidebar.button("📂 Parse Uploaded SBOM (JSON Only)")
 
 file1_path = None
 file1_sbom = None
@@ -77,7 +81,33 @@ if file1:
             file1_sbom, *_rest = generate_sbom(file1_path)
             apk_details = _rest[-1] if len(_rest) >= 1 else {}
 
+# ▶️ Generate SBOM Flow
+if generate_button and file1_sbom:
+    st.success("✅ SBOM Generated Successfully!")
+    st.download_button(
+        label="📥 Download SBOM Report (JSON)",
+        data=json.dumps(file1_sbom, indent=4),
+        file_name="sbom_report.json",
+        mime="application/json"
+    )
+
+# ▶️ Parse SBOM Flow
+if parse_button and file1 and file1.name.endswith(".json"):
+    parsed_sbom = parse_sbom(file1_path)
+    if parsed_sbom:
+        st.success("✅ SBOM Parsed Successfully!")
+        st.download_button(
+            label="📥 Download Parsed SBOM",
+            data=json.dumps(parsed_sbom, indent=4),
+            file_name="parsed_sbom.json",
+            mime="application/json"
+        )
+    else:
+        st.error("❌ Failed to parse SBOM file.")
+
+# Advanced features section
 display_advanced_features()
+
 
 if file1_sbom:
     st.subheader("🔍 Fuzzy Search")
@@ -362,4 +392,5 @@ if apk_details:
             st.markdown(f"**{lib}**: `{license}`")
     else:
         st.info("No libraries detected for license analysis.")
+
 
