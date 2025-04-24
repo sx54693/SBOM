@@ -1,84 +1,123 @@
-# SBOM Analyzer for Software Applications and Apps
+SBOM Analyzer for Software Applications and Apps
+Overview
+The SBOM Finder is a Minimally Viable Product (MVP) designed to generate, analyze, and compare Software Bill of Materials (SBOMs) for desktop and mobile applications. It supports multiple SBOM formats (CycloneDX, SPDX), enables fuzzy component search, and offers side-by-side SBOM comparisons through a modern web interface powered by Streamlit.
 
-## Overview
-The **SBOM Finder** is a Minimally Viable Product (MVP) built to generate, analyze, and compare Software Bill of Materials (SBOMs) for desktop and mobile applications. It supports multiple SBOM formats (CycloneDX and SPDX), performs fuzzy component search, and enables side-by-side comparisons with a modern web interface powered by Streamlit.
+Features
+SBOM Generation: Generate CycloneDX JSON SBOMs using Syft.
 
-## Features
-- **SBOM Generation**: Automatically generates CycloneDX JSON SBOMs using Syft.
-- **SBOM Comparison**: Compares two applications' SBOMs and highlights added/removed components.
-- **Fuzzy Component Search**: Uses fuzzy matching to find components by name across parsed SBOM data.
-- **Platform Detection**: Identifies whether uploaded binaries are desktop (.exe) or mobile (.apk).
-- **Metadata Extraction**: Pulls out app metadata, permissions, libraries, and smali packages.
-- **Library Inference**: Uses apktool and aapt to extract Android app details (e.g., permissions, native libs).
-- **Advanced UI**: Streamlit interface with toggles, uploads, and custom visual comparison sections.
-- **API Integration Ready**: Modular backend designed to integrate with FastAPI (in development).
-- **Cross-format Support**: Parsing support added for CycloneDX XML SBOMs.
+SBOM Comparison: Highlight added/removed components between two SBOMs.
 
-## Installation and Setup
+Fuzzy Component Search: Find components via fuzzy matching.
 
-### Prerequisites
-- Python 3.8+
-- Git
-- Streamlit Cloud or Localhost (CLI)
+Platform Detection: Auto-detect desktop (.exe) or mobile (.apk) binaries.
 
-### Installation
-```bash
+Metadata Extraction: Extract app metadata, permissions, libraries, and smali packages.
+
+Library Inference: Use apktool, aapt, and 7z for Android analysis.
+
+Advanced UI: Interactive Streamlit interface with upload, toggles, and comparison views.
+
+API Integration Ready: Backend modularity for future integration.
+
+Cross-format Support: Supports parsing CycloneDX XML SBOMs.
+
+Docker Support: Containerized deployment for consistent environment setup.
+
+Installation and Setup
+Prerequisites
+Python 3.8+
+
+Git
+
+Docker (for containerized deployment)
+
+Optional: Local installation of apktool, aapt, 7z for full APK/EXE analysis.
+
+Clone the Repository
+bash
+Copy
+Edit
 git clone https://github.com/sx54693/sbom.git
 cd sbom
+Local Installation
+bash
+Copy
+Edit
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+# Activate Virtual Environment
+source venv/bin/activate    # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
-```
-
-### Run the App
-```bash
+Run the App Locally
+bash
+Copy
+Edit
 streamlit run app.py
-```
+✅ Note: For APK analysis, ensure apktool, aapt, and 7z are available in your system path. On Streamlit Cloud, APK features will degrade gracefully with warnings.
 
-> ✅ Note: `apktool`, `aapt`, and `7z` binaries are required for APK analysis and must be available in the system path. On Streamlit Cloud, these tools are not supported — features will degrade gracefully with warnings.
+Docker Deployment
+Build Docker Image
+bash
+Copy
+Edit
+docker build -t sbom-analyzer .
+Run Docker Container
+bash
+Copy
+Edit
+docker run -d -p 8501:8501 sbom-analyzer
+Access the app at: http://localhost:8501
 
-## Usage
+Usage
+Generate SBOM: Upload .exe, .apk, or .json and click "Generate SBOM".
 
-- **Generate SBOM**: Upload `.exe`, `.apk`, or `.json` file and click "Generate SBOM".
-- **Compare Applications**: Upload two files to compare and click "Compare SBOMs".
-- **Search Components**: Type part of a library name (e.g., `androidx`, `kotlin`) to perform fuzzy matching.
+Compare Applications: Upload two files and click "Compare SBOMs".
 
-## REST API (Planned for Beta)
-To run with FastAPI (for future REST support):
-```bash
-uvicorn app:main --host 0.0.0.0 --port 8000
-```
+Search Components: Use fuzzy search to find libraries (e.g., androidx, kotlin).
 
-## Deployment
-- **Local Deployment**: Fully supported using Streamlit and local Python environment.
-- **Cloud Deployment**: Streamlit Cloud supported (with limited APK feature compatibility).
-- **Advanced**: GCP or EC2 VM recommended for full toolchain support (apktool, 7z, aapt).
+Deployment Options
+Local: Full support via Streamlit.
 
-## Contributing
-- Fork the repository
-- Create a feature branch: `git checkout -b feature-xyz`
-- Commit and push changes
-- Open a Pull Request
+Streamlit Cloud: Limited APK feature compatibility.
 
-## License
-MIT License
+Advanced: Deploy on GCP, AWS EC2, or Docker for complete toolchain support.
 
-## Contact
-For support or inquiries, reach out to: [cyriackurian123](https://github.com/cyriackurian123) or open a GitHub issue.
+Contributing
+Fork this repo
 
----
+Create a feature branch:
 
-## Authors
-- [@sx54693](https://github.com/sx54693)
-- [@cyriackurian123](https://github.com/cyriackurian123)
+bash
+Copy
+Edit
+git checkout -b feature-xyz
+Commit & push changes
 
----
+Open a Pull Request
 
-**Languages Used:**
-- Python 99.2%
-- Shell 0.8%
+License
+This project is licensed under the MIT License.
 
-## Tech Stack
-- Streamlit (Frontend/UI)
-- Python (Core logic)
-- apktool / aapt / 7z (External tools for APK/EXE analysis)
+Contact
+For support or queries:
+
+GitHub: @cyriackurian123
+
+Or open a GitHub issue.
+
+Authors
+@sx54693
+
+@cyriackurian123
+
+Languages Used
+Python: 99.2%
+
+Shell: 0.8%
+
+Tech Stack
+Frontend/UI: Streamlit
+
+Core Logic: Python
+
+External Tools: apktool, aapt, 7z
+
