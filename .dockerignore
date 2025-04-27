@@ -1,0 +1,48 @@
+# Ignore Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore virtual environments
+venv/
+env/
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore Git files
+.git
+.gitignore
+
+# Ignore backup files
+*.bak
+*.swp
+*.tmp
+
+# Ignore archives and installers
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+*.exe
+*.apk
+
+# Ignore logs
+*.log
+
+# Ignore IDE/project files
+.vscode/
+.idea/
+
+# Ignore large folders (if not needed)
+node_modules/
+dist/
+build/
+
+# Ignore uploaded files or test data
+uploaded_apps/
+test_files/
+output/
