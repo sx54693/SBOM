@@ -90,12 +90,15 @@ def extract_apk_details(file_path):
             "Libraries": []
         }
 
-# ✅ SBOM Generator
-from platform_utils import detect_binary_type  # Make sure this is imported at the top
-
 def generate_sbom(file_path):
     try:
+        # Validate file path
+        if not file_path or not isinstance(file_path, (str, bytes, os.PathLike)):
+            print("❌ Invalid file path provided to generate_sbom.")
+            return None, None, None, None, None, None
+
         if not os.path.exists(file_path):
+            print(f"❌ File does not exist: {file_path}")
             return None, None, None, None, None, None
 
         file_name = os.path.basename(file_path)
@@ -105,21 +108,22 @@ def generate_sbom(file_path):
         if file_path.endswith(".exe"):
             vendor, version, compiler = extract_metadata_from_exe(file_path)
 
+        # Prepare output directory
         output_dir = os.path.join(BASE_DIR, "sbom_outputs")
         os.makedirs(output_dir, exist_ok=True)
         output_sbom = os.path.join(output_dir, secure_filename(file_name) + ".json")
 
+        # Run Syft to generate SBOM
         command = ["syft", file_path, "-o", "cyclonedx-json"]
         result = subprocess.run(command, capture_output=True, text=True)
+
         if result.returncode != 0:
+            print(f"❌ Syft error: {result.stderr}")
             return None, None, result.stderr, [], [], {}
 
         sbom_json = json.loads(result.stdout)
 
-        # 🔍 Detect binary type: Mobile or Desktop
-        binary_type = detect_binary_type(file_path)
-
-        # ⬇️ Add custom metadata
+        # Add custom metadata
         sbom_json.update({
             "Software Name": file_name,
             "Vendor": vendor,
@@ -129,15 +133,22 @@ def generate_sbom(file_path):
             "OS Compatibility": platform.system(),
             "Binary Architecture": platform.machine(),
             "Compiler": compiler,
-            "Binary Type": binary_type  # ✅ Here it goes!
+            "Binary Type": detect_binary_type(file_path)
         })
 
+        # Save SBOM to file
         with open(output_sbom, "w", encoding="utf-8") as f:
             json.dump(sbom_json, f, indent=2)
 
+        # APK-specific extraction
         apk_info = extract_apk_details(file_path) if file_path.endswith(".apk") else {}
+
         return sbom_json, sbom_json, result.stderr, [], [], apk_info
 
+    except json.JSONDecodeError:
+        print("❌ Failed to decode SBOM JSON output from Syft.")
+        return None, None, "Invalid SBOM JSON format", [], [], {}
+
     except Exception as e:
-        print(f"❌ Exception in generate_sbom: {e}")
+        print(f"❌ Unexpected error in generate_sbom: {e}")
         return None, None, None, None, None, None
