@@ -21,108 +21,8 @@ from sbom_report import download_sbom_report
 from sbom_parser import parse_sbom
 
 
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-def save_uploaded_file(uploaded_file, folder="uploaded_apps"):
-    def secure_filename(filename):
-        filename = os.path.basename(filename)
-        filename = re.sub(r'[^\w\-.]', '_', filename)
-        return filename.strip()
-
-    if not uploaded_file:
-        return None
-    if not os.path.exists(folder):
-        os.makedirs(folder)
-
-    try:
-        safe_name = secure_filename(uploaded_file.name)
-        file_path = os.path.join(folder, safe_name)
-        with open(file_path, "wb") as f:
-            f.write(uploaded_file.getbuffer())
-        os.chmod(file_path, 0o777)
-        return file_path
-    except Exception as e:
-        st.error(f"❌ Failed to save file: {e}")
-        return None
-
-st.set_page_config(page_title="SBOM Analyzer", page_icon="🔍", layout="wide")
-
-st.markdown("""
-    <style>
-    .stApp { background: linear-gradient(135deg, #1f4037, #99f2c8); color: white; }
-    [data-testid="stSidebar"] { background: #1f2833; color: white; }
-    .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 { color: #ffcc00; }
-    div.stButton > button { background-color: #008CBA; color: white; border-radius: 8px; }
-    div.stButton > button:hover { background-color: #005f73; }
-    </style>
-""", unsafe_allow_html=True)
-
-st.title("🔍 SBOM Analyzer - Generator, Parser & Comparator")
-
-st.sidebar.header("📂 Upload Software Application or SBOM File")
-file1 = st.sidebar.file_uploader("🆕 Upload First File", type=["exe", "apk", "json", "spdx", "csv", "xml"])
-file2 = st.sidebar.file_uploader("📁 Upload Second File (Optional for Comparison)", type=["exe", "apk", "json", "spdx", "csv", "xml"])
-
-generate_button = st.sidebar.button("🔄 Generate SBOM")
-compare_button = st.sidebar.button("🔍 Compare SBOMs")
-parse_button = st.sidebar.button("📂 Parse Uploaded SBOM (JSON Only)")
-
-file1_path = None
-file1_sbom = None
-apk_details = {}
-
-if file1:
-    file1_path = save_uploaded_file(file1)
-    if file1_path:
-        if file1_path.endswith(".json"):
-            with open(file1_path, "r", encoding="utf-8") as f:
-                file1_sbom = json.load(f)
-        else:
-            file1_sbom, *_rest = generate_sbom(file1_path)
-            apk_details = _rest[-1] if len(_rest) >= 1 else {}
-
-# ▶️ Generate SBOM Flow
-if generate_button and file1_sbom:
-    st.success("✅ SBOM Generated Successfully!")
-    st.download_button(
-        label="📥 Download SBOM Report (JSON)",
-        data=json.dumps(file1_sbom, indent=4),
-        file_name="sbom_report.json",
-        mime="application/json"
-    )
-
-# ▶️ Parse SBOM Flow
-if parse_button and file1 and file1.name.endswith(".json"):
-    parsed_sbom = parse_sbom(file1_path)
-    if parsed_sbom:
-        st.success("✅ SBOM Parsed Successfully!")
-        st.download_button(
-            label="📥 Download Parsed SBOM",
-            data=json.dumps(parsed_sbom, indent=4),
-            file_name="parsed_sbom.json",
-            mime="application/json"
-        )
-    else:
-        st.error("❌ Failed to parse SBOM file.")
-
-# Advanced features section
-display_advanced_features()
-
-
-if file1_sbom:
-    st.subheader("🔍 Fuzzy Search")
-    search_query = st.text_input("Enter component name to search", key="fuzzy_key")
-
-    if search_query:
-        results = fuzzy_search_components(file1_sbom, apk_details, search_query)
-        if results:
-            st.subheader("🔍 Fuzzy Search Results")
-            st.dataframe(pd.DataFrame(results))
-        else:
-            st.warning("No matching components found.")
-else:
-    st.info("📥 Please generate or upload an SBOM first.")
-
 def extract_with_7zip(file_path):
     try:
         result = subprocess.run(["7z", "l", file_path], capture_output=True, text=True)
@@ -142,7 +42,6 @@ def extract_exe_libraries(file_path):
         return imports
     except Exception as e:
         return [f"❌ Error extracting DLLs: {str(e)}"]
-
 def parse_apk_with_apktool(file_path):
     try:
         out_dir = os.path.join("decoded_apks", os.path.basename(file_path).replace(".apk", ""))
@@ -232,6 +131,9 @@ def display_sbom_data(sbom_data, file_path, apk_details=None):
         "Platform": platform_info
     }
 
+    # ⚡ FIX: Define archive_output once
+    archive_output = extract_with_7zip(file_path)
+
     st.subheader("📄 SBOM Metadata")
     st.table(pd.DataFrame(sbom_summary.items(), columns=["Attribute", "Value"]))
 
@@ -243,27 +145,25 @@ def display_sbom_data(sbom_data, file_path, apk_details=None):
         st.warning("⚠️ No components found.")
 
     with st.expander("📦 7-Zip Archive Contents"):
-        st.code(extract_with_7zip(file_path))
+        st.code(archive_output)
 
     if file_path.endswith(".exe"):
-        dlls = extract_exe_libraries(file_path)
-        st.subheader("App Details from Executable")
+        st.subheader("🖥️ Executable File Deep Analysis")
 
-        if dlls:
-            st.write("**Libraries (from DLL Imports):**")
-            st.code("\n".join(dlls))
-        else:
-            st.info("No DLL imports found or could not extract.")
+        with st.expander("🔗 DLL Imports (Extracted Libraries)"):
+            dlls = extract_exe_libraries(file_path)
+            if dlls:
+                st.code("\n".join(dlls))
+            else:
+                st.info("No DLL imports found or extraction failed.")
 
-        archive_output = extract_with_7zip(file_path)
-        archive_lines = archive_output.splitlines()
-        archive_components = [line.strip().split()[-1] for line in archive_lines if any(ext in line.lower() for ext in [".dll", ".exe"])]
+        inferred_components = [line.strip().split()[-1] for line in archive_output.splitlines() if any(ext in line.lower() for ext in [".dll", ".exe"])]
 
-        if archive_components:
-            st.write("**Inferred Libraries from Archive:**")
-            st.code("\n".join(sorted(set(archive_components))))
-        else:
-            st.info("No inferred libraries found in archive.")
+        with st.expander("📝 Inferred Libraries from Archive Structure"):
+            if inferred_components:
+                st.code("\n".join(sorted(set(inferred_components))))
+            else:
+                st.info("No inferred libraries detected.")
 
     if file_path.endswith(".apk"):
         log_output, packages, apk_details_partial = parse_apk_with_apktool(file_path)
@@ -282,6 +182,185 @@ def display_sbom_data(sbom_data, file_path, apk_details=None):
             st.code("\n".join(apk_details.get("Permissions", [])))
             st.write("**Libraries:**")
             st.code("\n".join(apk_details.get("Libraries", [])))
+                # 🛡️ VULNERABILITY & LICENSE CHECKS (For App 1)
+            st.subheader("🛡️ Vulnerability Scan Results")
+            vulnerabilities, licenses = scan_vulnerabilities_and_licenses(apk_details)
+
+            if vulnerabilities:
+                for lib, vulns in vulnerabilities.items():
+                    st.markdown(f"**{lib}**: {', '.join(vulns) if vulns else '✅ No known vulnerabilities'}")
+            else:
+                st.info("No libraries detected for vulnerability scanning.")
+
+            st.subheader("📜 License Compliance Results")
+            if licenses:
+                for lib, license in licenses.items():
+                    st.markdown(f"**{lib}**: `{license}`")
+            else:
+                st.info("No libraries detected for license analysis.")
+            
+    if generate_button:
+        if not file1:
+            st.error("❌ Please upload a file before generating SBOM.")
+    else:
+        file1_path = save_uploaded_file(file1)
+
+        if not file1_path:
+            st.error("❌ File upload failed. Cannot proceed.")
+        else:
+            if file1_path.endswith(".json"):
+                with open(file1_path, "r", encoding="utf-8") as f:
+                    sbom_data = json.load(f)
+                apk_details = {}   # No APK details for JSON
+                st.success("✅ SBOM Loaded from JSON!")
+            else:
+                sbom_data, _, _, _, _, apk_details = generate_sbom(file1_path)
+                if sbom_data:
+                    st.success("✅ SBOM Generated Successfully!")
+                else:
+                    st.error("❌ SBOM generation failed.")
+
+            if sbom_data:
+                display_sbom_data(sbom_data, file1_path, apk_details)
+
+
+
+def save_uploaded_file(uploaded_file, folder="uploaded_apps"):
+    if not uploaded_file:
+        return None
+
+    os.makedirs(folder, exist_ok=True)
+
+    # Full sanitization: Remove problematic characters & spaces
+    safe_name = re.sub(r'[<>:"/\\|?*]', '_', uploaded_file.name).strip()
+    safe_name = safe_name.replace(' ', '_')  # Replace spaces for safety
+
+    # Ensure filename is not empty after sanitization
+    if not safe_name:
+        st.error("❌ Invalid filename after sanitization.")
+        return None
+
+    file_path = os.path.join(folder, safe_name)
+
+    try:
+        with open(file_path, "wb") as f:
+            f.write(uploaded_file.getbuffer())
+        return file_path
+    except Exception as e:
+        st.error(f"❌ Failed to save file: {e}")
+        return None
+    # Load or Generate SBOMs
+def process_file(file_path):
+    if not file_path:
+        st.error("❌ Missing file path for SBOM processing.")
+        return None, {}
+    elif file_path.endswith(".json"):
+        with open(file_path, "r", encoding="utf-8") as f:
+            return json.load(f), {}
+    else:
+        sbom_data, *_rest = generate_sbom(file_path)
+        apk_info = _rest[-1] if len(_rest) >= 1 else {}
+        return sbom_data, apk_info
+    file1_sbom, apk_details_1 = process_file(file1_path)
+    file2_sbom, apk_details_2 = process_file(file2_path)
+
+    
+def extract_metadata(sbom_data, file_path, apk_info=None):
+    metadata = sbom_data.get("metadata", {})
+    return {
+        "Software Name": metadata.get("component", {}).get("name", os.path.basename(file_path)),
+        "Format": sbom_data.get("bomFormat", "Unknown"),
+        "Version": sbom_data.get("specVersion", "Unknown"),
+        "Generated On": metadata.get("timestamp", "Unknown"),
+        "Vendor": metadata.get("supplier", {}).get("name", "Unknown"),
+        "Platform": platform.architecture()[0],
+        "Binary Type": sbom_data.get("Binary Type", "Unknown"),
+        "APK Package": apk_info.get("Package Info", "N/A") if apk_info else "N/A"
+    }
+            
+        
+
+
+st.set_page_config(page_title="SBOM Analyzer", page_icon="🔍", layout="wide")
+
+st.markdown("""
+    <style>
+    .stApp { background: linear-gradient(135deg, #1f4037, #99f2c8); color: white; }
+    [data-testid="stSidebar"] { background: #1f2833; color: white; }
+    .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 { color: #ffcc00; }
+    div.stButton > button { background-color: #008CBA; color: white; border-radius: 8px; }
+    div.stButton > button:hover { background-color: #005f73; }
+    </style>
+""", unsafe_allow_html=True)
+
+st.title("🔍 SBOM Analyzer - Generator, Parser & Comparator")
+
+st.sidebar.header("📂 Upload Software Application or SBOM File")
+file1 = st.sidebar.file_uploader("🆕 Upload First File", type=["exe", "apk", "json", "spdx", "csv", "xml"])
+file2 = st.sidebar.file_uploader("📁 Upload Second File (Optional for Comparison)", type=["exe", "apk", "json", "spdx", "csv", "xml"])
+
+generate_button = st.sidebar.button("🔄 Generate SBOM")
+compare_button = st.sidebar.button("🔍 Compare SBOMs")
+parse_button = st.sidebar.button("📂 Parse Uploaded SBOM (JSON Only)")
+
+file1_path = None
+file1_sbom = None
+apk_details = {}
+# ▶️ Generate SBOM Flow
+# ▶️ SBOM Generation Logic
+if generate_button:
+    if not file1:
+        st.error("❌ Please upload a file before generating SBOM.")
+    else:
+        file1_path = save_uploaded_file(file1)
+
+        if not file1_path:
+            st.error("❌ File upload failed. Cannot proceed.")
+        else:
+            if file1_path.endswith(".json"):
+                with open(file1_path, "r", encoding="utf-8") as f:
+                    sbom_data = json.load(f)
+                st.success("✅ SBOM Loaded from JSON!")
+            else:
+                sbom_data, *_rest = generate_sbom(file1_path)
+                if sbom_data:
+                    st.success("✅ SBOM Generated Successfully!")
+                else:
+                    st.error("❌ SBOM generation failed.")
+
+            if sbom_data:
+                display_sbom_data(sbom_data, file1_path)
+
+# ▶️ Parse SBOM Flow
+if parse_button and file1 and file1.name.endswith(".json"):
+    parsed_sbom = parse_sbom(file1_path)
+    if parsed_sbom:
+        st.success("✅ SBOM Parsed Successfully!")
+        st.download_button(
+            label="📥 Download Parsed SBOM",
+            data=json.dumps(parsed_sbom, indent=4),
+            file_name="parsed_sbom.json",
+            mime="application/json"
+        )
+    else:
+        st.error("❌ Failed to parse SBOM file.")
+
+
+
+if file1_sbom:
+    st.subheader("🔍 Fuzzy Search")
+    search_query = st.text_input("Enter component name to search", key="fuzzy_key")
+
+    if search_query:
+        results = fuzzy_search_components(file1_sbom, apk_details, search_query)
+        if results:
+            st.subheader("🔍 Fuzzy Search Results")
+            st.dataframe(pd.DataFrame(results))
+        else:
+            st.warning("No matching components found.")
+else:
+    st.info("📥 Please generate or upload an SBOM first.")
+
 
 if generate_button and file1:
     file1_path = save_uploaded_file(file1)
@@ -289,42 +368,18 @@ if generate_button and file1:
     if sbom_data:
         file1_sbom = sbom_data
         display_sbom_data(sbom_data, file1_path, apk_details)
-
-if compare_button and file1 and file2:
-    file1_path = save_uploaded_file(file1)
-    file2_path = save_uploaded_file(file2)
-
-    if file1_path.endswith(".json"):
-        with open(file1_path, "r", encoding="utf-8") as f:
-            file1_sbom = json.load(f)
-        apk_details_1 = {}
+if compare_button:
+    if not file1 or not file2:
+        st.error("❌ Please upload two files for comparison.")
     else:
-        file1_sbom, *_rest = generate_sbom(file1_path)
-        apk_details_1 = _rest[-1] if len(_rest) >= 1 else {}
+        file1_path = save_uploaded_file(file1)
+        file2_path = save_uploaded_file(file2)
 
-    if file2_path.endswith(".json"):
-        with open(file2_path, "r", encoding="utf-8") as f:
-            file2_sbom = json.load(f)
-        apk_details_2 = {}
-    else:
-        file2_sbom, *_rest = generate_sbom(file2_path)
-        apk_details_2 = _rest[-1] if len(_rest) >= 1 else {}
+        file1_sbom, apk_details_1 = process_file(file1_path)
+        file2_sbom, apk_details_2 = process_file(file2_path)
 
-    if file1_sbom and file2_sbom:
-        added, removed, error = compare_sboms(file1_sbom, file2_sbom)
-        if error:
-            st.error(f"❌ {error}")
-        else:
-            st.subheader("🔄 SBOM Comparison Results")
-
-            col1, col2 = st.columns(2)
-            with col1:
-                st.markdown("### ✅ Added Components")
-                st.dataframe(pd.DataFrame(list(added), columns=["Added Components"])) if added else st.info("No new components added.")
-            with col2:
-                st.markdown("### ❌ Removed Components")
-                st.dataframe(pd.DataFrame(list(removed), columns=["Removed Components"])) if removed else st.info("No components removed.")
-
+        if file1_sbom and file2_sbom:
+            # --- 📄 Metadata Comparison ---
             st.subheader("📄 Metadata Comparison")
 
             def extract_metadata(sbom_data, file_path, apk_info=None):
@@ -345,12 +400,13 @@ if compare_button and file1 and file2:
 
             col1, col2 = st.columns(2)
             with col1:
-                st.markdown("**App 1**")
+                st.markdown("**App 1 Metadata**")
                 st.table(pd.DataFrame(meta1.items(), columns=["Attribute", "Value"]))
             with col2:
-                st.markdown("**App 2**")
+                st.markdown("**App 2 Metadata**")
                 st.table(pd.DataFrame(meta2.items(), columns=["Attribute", "Value"]))
 
+            # --- Permissions Comparison ---
             st.subheader("🔐 Permissions Comparison")
             col1, col2 = st.columns(2)
             with col1:
@@ -360,37 +416,62 @@ if compare_button and file1 and file2:
                 st.markdown("**App 2 Permissions**")
                 st.code("\n".join(apk_details_2.get("Permissions", [])) if apk_details_2 else "N/A")
 
+            # --- Library Comparison ---
             st.subheader("📚 Library Comparison")
             col1, col2 = st.columns(2)
-
             lib1 = apk_details_1.get("Libraries", []) if apk_details_1 else []
             lib2 = apk_details_2.get("Libraries", []) if apk_details_2 else []
-
             with col1:
                 st.markdown("**App 1 Libraries**")
                 st.code("\n".join(lib1) if lib1 else "N/A")
-
             with col2:
                 st.markdown("**App 2 Libraries**")
                 st.code("\n".join(lib2) if lib2 else "N/A")
-# 🛡️ VULNERABILITY & LICENSE CHECKS
-if apk_details:
-    vulnerabilities, licenses = scan_vulnerabilities_and_licenses(apk_details)
 
-    # Vulnerability Scan Results
-    st.subheader("🛡️ Vulnerability Scan Results")
-    if vulnerabilities:
-        for lib, vulns in vulnerabilities.items():
-            st.markdown(f"**{lib}**: {', '.join(vulns) if vulns else '✅ No known vulnerabilities'}")
-    else:
-        st.info("No libraries detected for vulnerability scanning.")
+            # --- Component Comparison ---
+            st.subheader("🔄 Component Comparison Results")
+            added, removed, modified = compare_sboms(file1_sbom, file2_sbom)
 
-    # License Compliance Results
-    st.subheader("📜 License Compliance Results")
-    if licenses:
-        for lib, license in licenses.items():
-            st.markdown(f"**{lib}**: `{license}`")
-    else:
-        st.info("No libraries detected for license analysis.")
+            if isinstance(modified, str):
+                st.info(modified)
+            else:
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.markdown("### ✅ Added Components")
+                    st.dataframe(pd.DataFrame(added)) if added else st.info("No new components added.")
+                with col2:
+                    st.markdown("### ❌ Removed Components")
+                    st.dataframe(pd.DataFrame(removed)) if removed else st.info("No components removed.")
 
+                st.markdown("### ✨ Modified Components")
+                if modified:
+                    for mod in modified:
+                        st.write(f"**Component:** `{mod['Component']}`")
+                        st.json({
+                            "SBOM 1": mod["SBOM 1"],
+                            "SBOM 2": mod["SBOM 2"]
+                        })
+                else:
+                    st.info("No modified components found.")
+
+            # 🛡️ VULNERABILITY & LICENSE CHECKS (For App 1)
+            if apk_details_1:
+                st.subheader("🛡️ App 1 Vulnerability & License Scan")
+                vulnerabilities, licenses = scan_vulnerabilities_and_licenses(apk_details_1)
+
+                if vulnerabilities:
+                    for lib, vulns in vulnerabilities.items():
+                        st.markdown(f"**{lib}**: {', '.join(vulns) if vulns else '✅ No known vulnerabilities'}")
+                else:
+                    st.info("No libraries detected for vulnerability scanning.")
+
+                st.subheader("📜 License Compliance")
+                if licenses:
+                    for lib, license in licenses.items():
+                        st.markdown(f"**{lib}**: `{license}`")
+                else:
+                    st.info("No libraries detected for license analysis.")
+# Advanced features section
+display_advanced_features()
+st.info("Thank you for using SBOM Analyzer! 🚀 More features coming soon.")
 
