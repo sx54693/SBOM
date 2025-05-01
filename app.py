@@ -306,68 +306,66 @@ parse_button = st.sidebar.button("📂 Parse Uploaded SBOM (JSON Only)")
 file1_path = None
 file1_sbom = None
 apk_details = {}
-# ▶️ Generate SBOM Flow
-# ▶️ SBOM Generation Logic
-if generate_button:
-    if not file1:
-        st.error("❌ Please upload a file before generating SBOM.")
-    else:
-        file1_path = save_uploaded_file(file1)
+sbom_data = None
 
-        if not file1_path:
-            st.error("❌ File upload failed. Cannot proceed.")
-        else:
-            if file1_path.endswith(".json"):
-                with open(file1_path, "r", encoding="utf-8") as f:
-                    sbom_data = json.load(f)
-                st.success("✅ SBOM Loaded from JSON!")
-            else:
-                sbom_data, *_rest = generate_sbom(file1_path)
-                if sbom_data:
-                    st.success("✅ SBOM Generated Successfully!")
-                else:
-                    st.error("❌ SBOM generation failed.")
-
-            if sbom_data:
-                display_sbom_data(sbom_data, file1_path)
-
-# ▶️ Parse SBOM Flow
-if parse_button and file1 and file1.name.endswith(".json"):
-    parsed_sbom = parse_sbom(file1_path)
-    if parsed_sbom:
-        st.success("✅ SBOM Parsed Successfully!")
-        st.download_button(
-            label="📥 Download Parsed SBOM",
-            data=json.dumps(parsed_sbom, indent=4),
-            file_name="parsed_sbom.json",
-            mime="application/json"
-        )
-    else:
-        st.error("❌ Failed to parse SBOM file.")
-
-
-
-if file1_sbom:
-    st.subheader("🔍 Fuzzy Search")
-    search_query = st.text_input("Enter component name to search", key="fuzzy_key")
-
-    if search_query:
-        results = fuzzy_search_components(file1_sbom, apk_details, search_query)
-        if results:
-            st.subheader("🔍 Fuzzy Search Results")
-            st.dataframe(pd.DataFrame(results))
-        else:
-            st.warning("No matching components found.")
-else:
-    st.info("📥 Please generate or upload an SBOM first.")
-
-
+# ▶️ Generate or Load SBOM
 if generate_button and file1:
     file1_path = save_uploaded_file(file1)
-    sbom_data, _, _, _, _, apk_details = generate_sbom(file1_path)
+    if file1_path:
+        if file1_path.endswith(".json"):
+            with open(file1_path, "r", encoding="utf-8") as f:
+                sbom_data = json.load(f)
+            st.success("✅ SBOM Loaded from JSON!")
+            apk_details = {}  # No APK info from JSON
+        else:
+            sbom_data, *_rest = generate_sbom(file1_path)
+            apk_details = _rest[-1] if len(_rest) >= 1 else {}
+            if sbom_data:
+                st.success("✅ SBOM Generated Successfully!")
+            else:
+                st.error("❌ SBOM generation failed.")
+    else:
+        st.error("❌ File upload failed.")
+
+    # ✅ Display and Store SBOM if successful
     if sbom_data:
         file1_sbom = sbom_data
-        display_sbom_data(sbom_data, file1_path, apk_details)
+        display_sbom_data(file1_sbom, file1_path, apk_details)
+
+        # 📥 Download SBOM JSON
+        st.download_button(
+            label="📥 Download SBOM JSON",
+            data=json.dumps(file1_sbom, indent=4),
+            file_name="generated_sbom.json",
+            mime="application/json"
+        )
+
+        # 🔍 Fuzzy Search
+        st.subheader("🔍 SBOM Fuzzy Search")
+        search_query = st.text_input("Enter component, permission, or library to search", key="fuzzy_input")
+        if search_query:
+            results = fuzzy_search_components(file1_sbom, apk_details, search_query, threshold=80)
+            if results:
+                df = pd.DataFrame(results)
+                st.success(f"✅ Found {len(results)} match(es)")
+                st.dataframe(df)
+                st.download_button("📥 Download CSV", df.to_csv(index=False), "fuzzy_search_results.csv", "text/csv")
+            else:
+                st.warning("No matches found.")
+
+# ▶️ Parse SBOM File (Standalone JSON parsing)
+elif parse_button and file1 and file1.name.endswith(".json"):
+    file1_path = save_uploaded_file(file1)
+    if file1_path:
+        parsed_sbom = parse_sbom(file1_path)
+        if parsed_sbom:
+            st.success("✅ SBOM Parsed Successfully!")
+            st.download_button("📥 Download Parsed SBOM", json.dumps(parsed_sbom, indent=4), "parsed_sbom.json", "application/json")
+        else:
+            st.error("❌ Failed to parse SBOM file.")
+
+
+
 if compare_button:
     if not file1 or not file2:
         st.error("❌ Please upload two files for comparison.")
